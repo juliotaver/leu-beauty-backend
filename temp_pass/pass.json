@@ -1,0 +1,51 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "pass.com.salondenails.loyalty",
+  "serialNumber": "test123",
+  "teamIdentifier": "C8PM27PK3X",
+  "organizationName": "Leu Beauty",
+  "description": "Tarjeta de Fidelidad - Cliente Prueba",
+  "logoText": "Leu Beauty",
+  "foregroundColor": "rgb(239, 233, 221)",
+  "backgroundColor": "rgb(132, 149, 105)",
+  "labelColor": "rgb(239, 233, 221)",
+  "storeCard": {
+    "headerFields": [
+      {
+        "key": "nombre",
+        "label": "NOMBRE",
+        "value": "Cliente Prueba",
+        "textAlignment": "PKTextAlignmentRight"
+      }
+    ],
+    "auxiliaryFields": [
+      {
+        "key": "nextReward",
+        "label": "SIGUIENTE PROMO",
+        "value": "Postre Gratis (faltan 5 visitas)",
+        "textAlignment": "PKTextAlignmentCenter"
+      }
+    ],
+    "secondaryFields": [
+      {
+        "key": "visits",
+        "label": "VISITAS",
+        "value": "0/5",
+        "textAlignment": "PKTextAlignmentCenter"
+      }
+    ],
+    "backFields": [
+      {
+        "key": "rewards",
+        "label": "Programa de Recompensas",
+        "value": "• 5 visitas: Postre gratis\n• 10 visitas: Bebida gratis\n• 15 visitas: Gel liso en manos\n• 20 visitas: Gel liso en pies\n• 25 visitas: 10% descuento en uñas"
+      }
+    ]
+  },
+  "barcode": {
+    "message": "test123",
+    "format": "PKBarcodeFormatQR",
+    "messageEncoding": "iso-8859-1",
+    "altText": "test123"
+  }
+}
