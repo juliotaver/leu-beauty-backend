@@ -40,9 +40,8 @@ export class PassService {
         passTypeIdentifier: "pass.com.salondenails.loyalty",
         serialNumber: cliente.id,
         teamIdentifier: "C8PM27PK3X",
-        webServiceURL: "https://tu-dominio.com/api/passes/v1",  // Cambiaremos esto cuando tengamos el dominio real
-        authenticationToken: "UNIQUE-TOKEN-FOR-CLIENT",  // Generaremos uno único por cliente
-        relevantDate: new Date().toISOString(),
+        webServiceURL: "https://api.leubeautylab.com/api/passes/v1",  // URL real
+        authenticationToken: cliente.id,  // Usando el ID del cliente como token
         organizationName: "Leu Beauty",
         description: `Tarjeta de Fidelidad - ${cliente.nombre}`,
         foregroundColor: "rgb(239, 233, 221)",
