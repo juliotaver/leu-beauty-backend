@@ -15,7 +15,7 @@ check_status() {
 
 # Create necessary directories
 log "Creating directories..."
-mkdir -p certificates templates public/passes
+mkdir -p certificates templates public/passes temp
 check_status "Failed to create directories"
 
 # Install dependencies including type definitions

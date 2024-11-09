@@ -1,6 +1,3 @@
 node_modules/
 dist/
 .env
-certificates/
-temp/
-public/passes/
