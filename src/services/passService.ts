@@ -59,7 +59,7 @@ export class PassService {
           auxiliaryFields: [
             {
               key: "nextReward",
-              label: "SIGUIENTE PROMO",
+              label: "SIGUIENTE PREMIO",
               value: cliente.proximaRecompensa,
               textAlignment: "PKTextAlignmentCenter"
             }
