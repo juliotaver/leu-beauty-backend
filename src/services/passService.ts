@@ -83,7 +83,8 @@ export class PassService {
         barcode: {
           message: cliente.id,
           format: "PKBarcodeFormatQR",
-          messageEncoding: "iso-8859-1"
+          messageEncoding: "iso-8859-1",
+          altText: cliente.id
         }
       };
 
