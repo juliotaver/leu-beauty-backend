@@ -53,14 +53,6 @@ else
     exit 1
 fi
 
-log "==> Ejecutando API Extractor..."
-npx api-extractor run --local
-check_status "API Extractor falló"
-
-log "==> Ejecutando API Extractor..."
-npx api-extractor run --local
-check_status "API Extractor falló"
-
 log "==> Clonando repositorio de plantillas..."
 if [ -d "assets-temp" ]; then
     rm -rf assets-temp
