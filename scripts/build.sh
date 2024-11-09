@@ -28,6 +28,15 @@ log "Installing type declarations..."
 npm install --save-dev @types/fs-extra @types/cors
 check_status "Failed to install type declarations"
 
+# Verify type declaration installation
+log "Verifying type declaration installation..."
+if [ -d "node_modules/@types/fs-extra" ] && [ -d "node_modules/@types/cors" ]; then
+    log "Type declarations installed successfully"
+else
+    log "Error: Type declarations not installed correctly"
+    exit 1
+fi
+
 # Verify environment variables
 log "Verifying environment variables..."
 for var in "PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM"; do
@@ -86,9 +95,23 @@ if [ -d "assets-temp" ]; then
     rm -rf assets-temp
 fi
 
+log "Cloning repository: https://github.com/juliotaver/leu-beauty-certs.git"
 git clone --depth 1 https://github.com/juliotaver/leu-beauty-certs.git assets-temp
 check_status "Failed to clone assets repository"
 
+# Verify cloned repository contents
+log "Verifying cloned repository contents..."
+if [ -d "assets-temp/templates" ]; then
+    log "Templates directory found"
+else
+    log "Error: Templates directory not found in cloned repository"
+fi
+
+if [ -f "assets-temp/icon.png" ] && [ -f "assets-temp/logo.png" ] && [ -f "assets-temp/strip.png" ]; then
+    log "Required asset files found"
+else
+    log "Error: Required asset files not found in cloned repository"
+fi
 # Copy templates and assets
 log "Copying templates and assets..."
 cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
