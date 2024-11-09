@@ -39,7 +39,7 @@ echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem || { log "Error al crear WW
 
 log "==> Instalando dependencias..."
 npm install
-npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
+npm install --save-dev typescript @types/cors @types/fs-extra @types/express @types/node
 check_status "No se pudieron instalar las dependencias"
 
 log "==> Compilando TypeScript..."
