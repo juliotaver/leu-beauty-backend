@@ -29,6 +29,10 @@ log "Installing type declarations..."
 npm install --save-dev @types/fs-extra @types/cors
 check_status "Failed to install type declarations"
 
+# Verify installed type declaration files
+log "Listing contents of node_modules/@types..."
+ls -l node_modules/@types
+
 # Verify type declaration installation
 log "Verifying type declaration installation..."
 if [ -d "node_modules/@types/fs-extra" ] && [ -d "node_modules/@types/cors" ]; then
