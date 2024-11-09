@@ -1,66 +1,85 @@
 #!/bin/bash
 
-# Instalar tipos primero
-echo "Installing type definitions..."
+# Function to log steps
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+# Function to check exit status
+check_status() {
+    if [ $? -ne 0 ]; then
+        log "Error: $1"
+        exit 1
+    fi
+}
+
+# Create necessary directories
+log "Creating directories..."
+mkdir -p certificates templates public/passes
+check_status "Failed to create directories"
+
+# Install dependencies including type definitions
+log "Installing dependencies..."
+npm install
 npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
+check_status "Failed to install dependencies"
 
-# Crear directorios necesarios
-echo "Creating directories..."
-mkdir -p certificates templates
+# Verify environment variables
+log "Verifying environment variables..."
+required_vars=("PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM")
+for var in "${required_vars[@]}"; do
+    if [ -z "${!var}" ]; then
+        log "Error: $var is not set"
+        exit 1
+    fi
+done
 
-# Clonar repositorio de assets
-echo "Cloning assets repository..."
+# Create certificates from environment variables
+log "Creating certificates..."
+# Remove any existing certificate files
+rm -f certificates/pass.pem certificates/pass.key certificates/WWDR.pem
+
+# Create certificate files
+echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem
+check_status "Failed to create pass.pem"
+
+echo "$PASS_KEY" | base64 -d > certificates/pass.key
+check_status "Failed to create pass.key"
+
+echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem
+check_status "Failed to create WWDR.pem"
+
+# Verify certificate files
+log "Verifying certificate files..."
+for cert in "pass.pem" "pass.key" "WWDR.pem"; do
+    if [ ! -s "certificates/$cert" ]; then
+        log "Error: $cert is empty or not created"
+        exit 1
+    fi
+done
+
+# Clone templates repository
+log "Cloning templates repository..."
+if [ -d "assets-temp" ]; then
+    rm -rf assets-temp
+fi
+
 git clone --depth 1 https://github.com/juliotaver/leu-beauty-certs.git assets-temp
-if [ $? -eq 0 ]; then
-    echo "Successfully cloned assets repository"
-    # Mostrar contenido del directorio clonado
-    ls -la assets-temp
-    ls -la assets-temp/templates
-else
-    echo "Failed to clone assets repository"
-    exit 1
-fi
+check_status "Failed to clone assets repository"
 
-# Copiar templates
-echo "Copying templates..."
-cp -rv assets-temp/templates/* templates/ || echo "Warning: No templates found"
+# Copy templates and assets
+log "Copying templates and assets..."
+cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
+mkdir -p public/images
+cp -r assets-temp/*.png public/images/ 2>/dev/null || log "No images found to copy"
 
-# Verificar las variables de entorno
-echo "Checking environment variables..."
-if [ -z "$PASS_CERT_PEM" ]; then
-    echo "Error: PASS_CERT_PEM is not set"
-    exit 1
-fi
-
-if [ -z "$PASS_KEY" ]; then
-    echo "Error: PASS_KEY is not set"
-    exit 1
-fi
-
-if [ -z "$WWDR_PEM" ]; then
-    echo "Error: WWDR_PEM is not set"
-    exit 1
-fi
-
-# Crear certificados desde variables de entorno
-echo "Creating certificates..."
-echo "$PASS_CERT_PEM" | base64 --decode > certificates/pass.pem || echo "Warning: Could not create pass.pem"
-echo "$PASS_KEY" | base64 --decode > certificates/pass.key || echo "Warning: Could not create pass.key"
-echo "$WWDR_PEM" | base64 --decode > certificates/WWDR.pem || echo "Warning: Could not create WWDR.pem"
-
-# Verificar que los archivos se crearon
-echo "Verifying files..."
-ls -la certificates/
-ls -la templates/
-
-# Limpiar
-echo "Cleaning up..."
+# Clean up
+log "Cleaning up..."
 rm -rf assets-temp
 
-# Instalar dependencias
-echo "Installing dependencies..."
-npm install
-
-# Construir
-echo "Building..."
+# Run TypeScript build
+log "Building TypeScript..."
 npm run build
+check_status "TypeScript build failed"
+
+log "Build completed successfully"
