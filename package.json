@@ -8,7 +8,7 @@
     "build": "tsc && npm run copy-assets",
     "dev": "nodemon src/index.ts",
     "copy-assets": "mkdir -p dist/public/passes dist/certificates dist/templates && cp -r certificates/* dist/certificates/ && cp -r templates/* dist/templates/",
-    "setup": "./scripts/setup.sh"
+    "render-build": "./scripts/build.sh"
   },
   "dependencies": {
     "cors": "^2.8.5",

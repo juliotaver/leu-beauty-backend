@@ -1,19 +1,22 @@
 #!/bin/bash
 
-# Crear directorios
-mkdir -p certs assets
+# Crear directorios necesarios
+mkdir -p certificates templates
 
-# Decodificar certificados
-echo "$PASS_CERT_PEM" | base64 -d > certs/pass.pem
-echo "$PASS_KEY" | base64 -d > certs/pass.key
-echo "$WWDR_PEM" | base64 -d > certs/WWDR.pem
+# Clonar repositorio de assets
+git clone https://github.com/juliotaver/leu-beauty-certs.git assets-temp
 
-# Decodificar recursos
-echo "$ICON_PNG" | base64 -d > assets/icon.png
-echo "$LOGO_PNG" | base64 -d > assets/logo.png
-echo "$STRIP_PNG" | base64 -d > assets/strip.png
+# Copiar templates
+cp -r assets-temp/templates/* templates/
+
+# Crear certificados desde variables de entorno
+echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem
+echo "$PASS_KEY" | base64 -d > certificates/pass.key
+echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem
+
+# Limpiar
+rm -rf assets-temp
 
 # Instalar dependencias y construir
 npm install
-npm run setup
 npm run build
