@@ -42,7 +42,7 @@ npm install --save-dev typescript
 check_status "No se pudieron instalar las dependencias"
 
 log "==> Compilando TypeScript..."
-npx tsc
+tsc
 check_status "Falló la compilación de TypeScript"
 
 log "==> Ejecutando API Extractor..."

@@ -6,7 +6,7 @@
     "build": "tsc && npm run copy-assets",
     "dev": "nodemon src/index.ts",
     "copy-assets": "mkdir -p dist/public/passes dist/certificates dist/templates && cp -r certificates/* dist/certificates/ && cp -r templates/* dist/templates/ && cp -r public/* dist/public/",
-    "render-build": "chmod +x ./scripts/build.sh && ./scripts/build.sh"
+    "render-build": "npm install typescript -g && chmod +x ./scripts/build.sh && ./scripts/build.sh"
   },
   "dependencies": {
     "cors": "^2.8.5",
