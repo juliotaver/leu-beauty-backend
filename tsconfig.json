@@ -1,24 +1,17 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "target": "es6",
+    "target": "ES6",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "sourceMap": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-  "src/**/*",
-  "dist/my-project.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "public",
-    "temp",
-    "certificates",
-    "templates"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
