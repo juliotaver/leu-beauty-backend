@@ -23,6 +23,10 @@ log "Installing dependencies..."
 npm install
 npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
 check_status "Failed to install dependencies"
+# Install type declarations
+log "Installing type declarations..."
+npm install --save-dev @types/fs-extra @types/cors
+check_status "Failed to install type declarations"
 
 # Verify environment variables
 log "Verifying environment variables..."
