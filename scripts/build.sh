@@ -13,170 +13,70 @@ check_status() {
     fi
 }
 
-# Create necessary directories
-log "Creating directories..."
-mkdir -p certificates templates public/passes temp
-check_status "Failed to create directories"
+log "==> Creando directorios necesarios..."
+mkdir -p certificates templates public/passes temp dist/types
+check_status "No se pudieron crear los directorios"
 
-# Copy type declaration files
-log "Copying type declaration files..."
-mkdir -p dist/types
-cp -r types/* dist/types/
+log "==> Configurando variables de entorno para certificados..."
+export PASS_CERT_PEM=$(cat pass_pem_b64.txt)
+export PASS_KEY=$(cat pass_key_b64.txt)
+export WWDR_PEM=$(cat wwdr_pem_b64.txt)
 
-# Install dependencies including type definitions
-log "Installing dependencies..."
-npm install
-npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
-check_status "Failed to install dependencies"
-
-# Generate type declaration files
-log "Generating type declaration files..."
-npx api-extractor run --local
-check_status "API Extractor failed"
-
-# Install type declarations
-log "Installing type declarations..."
-npm install --save-dev @types/fs-extra @types/cors
-check_status "Failed to install type declarations"
-
-# Verify installed type declaration files
-log "Listing contents of node_modules/@types..."
-ls -l node_modules/@types
-
-# Verify type declaration installation
-log "Verifying type declaration installation..."
-if [ -d "node_modules/@types/fs-extra" ] && [ -d "node_modules/@types/cors" ]; then
-    log "Type declarations installed successfully"
-else
-    log "Error: Type declarations not installed correctly"
-    exit 1
-fi
-
-# Get PASS_CERT_PEM value from file
-log "Getting PASS_CERT_PEM value from file..."
-PASS_CERT_PEM=$(cat pass_pem_b64.txt)
-log "First 10 chars of PASS_CERT_PEM: ${PASS_CERT_PEM:0:10}..."
-
-# Verify PASS_CERT_PEM value
-log "Verifying PASS_CERT_PEM value..."
-if [ -z "$PASS_CERT_PEM" ]; then
-    log "Error: PASS_CERT_PEM value is empty"
-    exit 1
-fi
-
-# Get PASS_KEY value from file
-log "Getting PASS_KEY value from file..."
-PASS_KEY=$(cat pass_key_b64.txt)
-log "First 10 chars of PASS_KEY: ${PASS_KEY:0:10}..."
-
-# Verify PASS_KEY value
-log "Verifying PASS_KEY value..."
-if [ -z "$PASS_KEY" ]; then
-    log "Error: PASS_KEY value is empty"
-    exit 1
-fi
-
-# Get WWDR_PEM value from file
-log "Getting WWDR_PEM value from file..."
-WWDR_PEM=$(cat wwdr_pem_b64.txt)
-log "First 10 chars of WWDR_PEM: ${WWDR_PEM:0:10}..."
-
-# Verify WWDR_PEM value
-log "Verifying WWDR_PEM value..."
-if [ -z "$WWDR_PEM" ]; then
-    log "Error: WWDR_PEM value is empty"
-    exit 1
-fi
-
-# Create certificates from loaded values
-log "Creating certificates..."
-# Remove any existing certificate files
-rm -f certificates/pass.pem certificates/pass.key certificates/WWDR.pem
-
-# Create certificate files with error checking
-echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem 2>/tmp/pass_pem_error
-if [ $? -ne 0 ]; then
-    log "Error creating pass.pem: $(cat /tmp/pass_pem_error)"
-    exit 1
-fi
-
-echo "$PASS_KEY" | base64 -d > certificates/pass.key 2>/tmp/pass_key_error
-if [ $? -ne 0 ]; then
-    log "Error creating pass.key: $(cat /tmp/pass_key_error)"
-    exit 1
-fi
-
-echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem 2>/tmp/wwdr_pem_error
-if [ $? -ne 0 ]; then
-    log "Error creating WWDR.pem: $(cat /tmp/wwdr_pem_error)"
-    exit 1
-fi
-
-# Verify certificate files
-log "Verifying certificate files..."
-for cert in "pass.pem" "pass.key" "WWDR.pem"; do
-    if [ ! -s "certificates/$cert" ]; then
-        log "Error: $cert is empty or not created"
+# Verificar valores de los certificados
+for VAR in "PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM"; do
+    if [ -z "${!VAR}" ]; then
+        log "Error: La variable $VAR está vacía"
         exit 1
     fi
-    log "Certificate $cert size: $(wc -c < "certificates/$cert") bytes"
+    log "Primero 10 caracteres de $VAR: ${!VAR:0:10}..."
 done
 
-# Clone templates repository
-log "Cloning templates repository..."
+# Crear archivos de certificados
+log "==> Creando archivos de certificados desde las variables de entorno..."
+echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem || { log "Error al crear pass.pem"; exit 1; }
+echo "$PASS_KEY" | base64 -d > certificates/pass.key || { log "Error al crear pass.key"; exit 1; }
+echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem || { log "Error al crear WWDR.pem"; exit 1; }
+
+log "==> Instalando dependencias..."
+npm install
+npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
+check_status "No se pudieron instalar las dependencias"
+
+log "==> Compilando TypeScript..."
+npx tsc
+check_status "Falló la compilación de TypeScript"
+
+log "==> Ejecutando API Extractor..."
+npx api-extractor run --local
+check_status "API Extractor falló"
+
+log "==> Clonando repositorio de plantillas..."
 if [ -d "assets-temp" ]; then
     rm -rf assets-temp
 fi
-
-log "Cloning repository: https://github.com/juliotaver/leu-beauty-certs.git"
 git clone --depth 1 https://github.com/juliotaver/leu-beauty-certs.git assets-temp
-check_status "Failed to clone assets repository"
+check_status "Falló la clonación del repositorio de plantillas"
 
-# Verify cloned repository contents
-log "Verifying cloned repository contents..."
+# Verificación y copia de plantillas y activos
+log "==> Verificando y copiando plantillas y activos..."
 if [ -d "assets-temp/templates" ]; then
-    log "Templates directory found"
+    cp -r assets-temp/templates/* templates/
+    mkdir -p public/images
+    cp -r assets-temp/*.png public/images/
 else
-    log "Error: Templates directory not found in cloned repository"
-fi
-
-if [ -f "assets-temp/icon.png" ] && [ -f "assets-temp/logo.png" ] && [ -f "assets-temp/strip.png" ]; then
-    log "Required asset files found"
-else
-    log "Error: Required asset files not found in cloned repository"
-fi
-
-# Copy templates and assets
-log "Copying templates and assets..."
-cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
-mkdir -p public/images
-cp -r assets-temp/*.png public/images/ 2>/dev/null || log "No images found to copy"
-
-# Verify templates and assets were copied
-if [ -z "$(ls -A templates)" ]; then
-    log "Error: No templates were copied"
+    log "Error: No se encontraron las plantillas necesarias en el repositorio clonado"
     exit 1
 fi
 
-if [ -z "$(ls public/images)" ]; then
-    log "Error: No images were copied"
-    exit 1
-fi
+# Verificación de archivos copiados
+for TEMPLATE in templates public/images; do
+    if [ -z "$(ls -A $TEMPLATE)" ]; then
+        log "Error: No se copiaron archivos en $TEMPLATE"
+        exit 1
+    fi
+done
 
-# Log copied templates and assets
-log "Copied templates:"
-ls -1 templates
-
-log "Copied images:"
-ls -1 public/images
-
-# Clean up
-log "Cleaning up..."
+log "==> Limpiando archivos temporales..."
 rm -rf assets-temp
 
-# Run TypeScript build
-log "Building TypeScript..."
-npm run build
-check_status "TypeScript build failed"
-
-log "Build completed successfully"
+log "==> Build completado exitosamente"
