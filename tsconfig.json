@@ -10,8 +10,8 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*",
-    "types/**/*"
+  "src/**/*",
+  "dist/my-project.d.ts"
   ],
   "exclude": [
     "node_modules",

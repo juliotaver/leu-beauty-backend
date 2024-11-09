@@ -29,6 +29,11 @@ npm install
 npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
 check_status "Failed to install dependencies"
 
+# Generate type declaration files
+log "Generating type declaration files..."
+npx api-extractor run --local
+check_status "API Extractor failed"
+
 # Install type declarations
 log "Installing type declarations..."
 npm install --save-dev @types/fs-extra @types/cors
