@@ -23,6 +23,7 @@ log "Installing dependencies..."
 npm install
 npm install --save-dev @types/cors @types/fs-extra @types/express @types/node
 check_status "Failed to install dependencies"
+
 # Install type declarations
 log "Installing type declarations..."
 npm install --save-dev @types/fs-extra @types/cors
@@ -37,25 +38,43 @@ else
     exit 1
 fi
 
-# Verify environment variables
-log "Verifying environment variables..."
-for var in "PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM"; do
-    if [ -z "${!var}" ]; then
-        log "Error: $var is not set"
-        exit 1
-    fi
-    
-    # Print the first 10 characters of each variable for debugging
-    log "First 10 chars of $var: ${!var:0:10}..."
-    
-    # Verify base64 format
-    if ! echo "${!var}" | base64 -d >/dev/null 2>&1; then
-        log "Error: $var is not valid base64"
-        exit 1
-    fi
-done
+# Get PASS_CERT_PEM value from file
+log "Getting PASS_CERT_PEM value from file..."
+PASS_CERT_PEM=$(cat pass_pem_b64.txt)
+log "First 10 chars of PASS_CERT_PEM: ${PASS_CERT_PEM:0:10}..."
 
-# Create certificates from environment variables
+# Verify PASS_CERT_PEM value
+log "Verifying PASS_CERT_PEM value..."
+if [ -z "$PASS_CERT_PEM" ]; then
+    log "Error: PASS_CERT_PEM value is empty"
+    exit 1
+fi
+
+# Get PASS_KEY value from file
+log "Getting PASS_KEY value from file..."
+PASS_KEY=$(cat pass_key_b64.txt)
+log "First 10 chars of PASS_KEY: ${PASS_KEY:0:10}..."
+
+# Verify PASS_KEY value
+log "Verifying PASS_KEY value..."
+if [ -z "$PASS_KEY" ]; then
+    log "Error: PASS_KEY value is empty"
+    exit 1
+fi
+
+# Get WWDR_PEM value from file
+log "Getting WWDR_PEM value from file..."
+WWDR_PEM=$(cat wwdr_pem_b64.txt)
+log "First 10 chars of WWDR_PEM: ${WWDR_PEM:0:10}..."
+
+# Verify WWDR_PEM value
+log "Verifying WWDR_PEM value..."
+if [ -z "$WWDR_PEM" ]; then
+    log "Error: WWDR_PEM value is empty"
+    exit 1
+fi
+
+# Create certificates from loaded values
 log "Creating certificates..."
 # Remove any existing certificate files
 rm -f certificates/pass.pem certificates/pass.key certificates/WWDR.pem
@@ -112,6 +131,7 @@ if [ -f "assets-temp/icon.png" ] && [ -f "assets-temp/logo.png" ] && [ -f "asset
 else
     log "Error: Required asset files not found in cloned repository"
 fi
+
 # Copy templates and assets
 log "Copying templates and assets..."
 cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
@@ -128,23 +148,18 @@ if [ -z "$(ls public/images)" ]; then
     log "Error: No images were copied"
     exit 1
 fi
+
 # Log copied templates and assets
 log "Copied templates:"
 ls -1 templates
 
 log "Copied images:"
 ls -1 public/images
+
 # Clean up
 log "Cleaning up..."
 rm -rf assets-temp
-# Copy templates and assets
-log "Copying templates and assets..."
-cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
-mkdir -p public/images
-cp -r assets-temp/*.png public/images/ 2>/dev/null
-if [ -z "$(ls public/images)" ]; then
-    log "Warning: No images found to copy"
-fi
+
 # Run TypeScript build
 log "Building TypeScript..."
 npm run build
