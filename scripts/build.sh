@@ -18,6 +18,11 @@ log "Creating directories..."
 mkdir -p certificates templates public/passes temp
 check_status "Failed to create directories"
 
+# Copy type declaration files
+log "Copying type declaration files..."
+mkdir -p dist/types
+cp -r types/* dist/types/
+
 # Install dependencies including type definitions
 log "Installing dependencies..."
 npm install
