@@ -45,6 +45,18 @@ log "==> Compilando TypeScript..."
 tsc
 check_status "Falló la compilación de TypeScript"
 
+log "==> Verificando existencia de dist/index.d.ts..."
+if [ -f "./dist/index.d.ts" ]; then
+    log "Archivo dist/index.d.ts encontrado exitosamente."
+else
+    log "Error: Archivo dist/index.d.ts no encontrado."
+    exit 1
+fi
+
+log "==> Ejecutando API Extractor..."
+npx api-extractor run --local
+check_status "API Extractor falló"
+
 log "==> Ejecutando API Extractor..."
 npx api-extractor run --local
 check_status "API Extractor falló"
