@@ -57,7 +57,7 @@ export class PushNotificationService {
         ...clienteData
       });
 
-      // Enviar notificación push a Apple
+      // Construir el comando curl para enviar la notificación a Apple
       const pushCommand = `curl -X POST \
         --cert "${path.join(this.certsDir, 'pass.pem')}" \
         --key "${path.join(this.certsDir, 'pass.key')}" \
@@ -65,6 +65,7 @@ export class PushNotificationService {
         --data '{"pushToken": "${clienteData.pushToken}"}' \
         "https://api.push.apple.com/3/device/${clienteData.pushToken}"`;
 
+      // Ejecutar el comando para enviar la notificación
       await execAsync(pushCommand);
       console.log('Push notification sent successfully for client:', clienteId);
     } catch (error) {
@@ -73,3 +74,5 @@ export class PushNotificationService {
     }
   }
 }
+
+export const pushNotificationService = new PushNotificationService();
