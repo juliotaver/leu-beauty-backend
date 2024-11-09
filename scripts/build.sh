@@ -26,10 +26,18 @@ check_status "Failed to install dependencies"
 
 # Verify environment variables
 log "Verifying environment variables..."
-required_vars=("PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM")
-for var in "${required_vars[@]}"; do
+for var in "PASS_CERT_PEM" "PASS_KEY" "WWDR_PEM"; do
     if [ -z "${!var}" ]; then
         log "Error: $var is not set"
+        exit 1
+    fi
+    
+    # Print the first 10 characters of each variable for debugging
+    log "First 10 chars of $var: ${!var:0:10}..."
+    
+    # Verify base64 format
+    if ! echo "${!var}" | base64 -d >/dev/null 2>&1; then
+        log "Error: $var is not valid base64"
         exit 1
     fi
 done
@@ -39,15 +47,24 @@ log "Creating certificates..."
 # Remove any existing certificate files
 rm -f certificates/pass.pem certificates/pass.key certificates/WWDR.pem
 
-# Create certificate files
-echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem
-check_status "Failed to create pass.pem"
+# Create certificate files with error checking
+echo "$PASS_CERT_PEM" | base64 -d > certificates/pass.pem 2>/tmp/pass_pem_error
+if [ $? -ne 0 ]; then
+    log "Error creating pass.pem: $(cat /tmp/pass_pem_error)"
+    exit 1
+fi
 
-echo "$PASS_KEY" | base64 -d > certificates/pass.key
-check_status "Failed to create pass.key"
+echo "$PASS_KEY" | base64 -d > certificates/pass.key 2>/tmp/pass_key_error
+if [ $? -ne 0 ]; then
+    log "Error creating pass.key: $(cat /tmp/pass_key_error)"
+    exit 1
+fi
 
-echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem
-check_status "Failed to create WWDR.pem"
+echo "$WWDR_PEM" | base64 -d > certificates/WWDR.pem 2>/tmp/wwdr_pem_error
+if [ $? -ne 0 ]; then
+    log "Error creating WWDR.pem: $(cat /tmp/wwdr_pem_error)"
+    exit 1
+fi
 
 # Verify certificate files
 log "Verifying certificate files..."
@@ -56,6 +73,7 @@ for cert in "pass.pem" "pass.key" "WWDR.pem"; do
         log "Error: $cert is empty or not created"
         exit 1
     fi
+    log "Certificate $cert size: $(wc -c < "certificates/$cert") bytes"
 done
 
 # Clone templates repository
