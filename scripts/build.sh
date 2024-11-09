@@ -110,7 +110,14 @@ ls -1 public/images
 # Clean up
 log "Cleaning up..."
 rm -rf assets-temp
-
+# Copy templates and assets
+log "Copying templates and assets..."
+cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found to copy"
+mkdir -p public/images
+cp -r assets-temp/*.png public/images/ 2>/dev/null
+if [ -z "$(ls public/images)" ]; then
+    log "Warning: No images found to copy"
+fi
 # Run TypeScript build
 log "Building TypeScript..."
 npm run build
