@@ -91,6 +91,22 @@ cp -r assets-temp/templates/* templates/ 2>/dev/null || log "No templates found 
 mkdir -p public/images
 cp -r assets-temp/*.png public/images/ 2>/dev/null || log "No images found to copy"
 
+# Verify templates and assets were copied
+if [ -z "$(ls -A templates)" ]; then
+    log "Error: No templates were copied"
+    exit 1
+fi
+
+if [ -z "$(ls public/images)" ]; then
+    log "Error: No images were copied"
+    exit 1
+fi
+# Log copied templates and assets
+log "Copied templates:"
+ls -1 templates
+
+log "Copied images:"
+ls -1 public/images
 # Clean up
 log "Cleaning up..."
 rm -rf assets-temp
