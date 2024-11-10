@@ -1,23 +1,31 @@
-import { Router } from 'express';
-import { 
-  generatePass, 
-  getPass, 
-  registerDevice, 
-  unregisterDevice,
-  getSerialNumbers,
-  handlePassUpdate
-} from '../controllers/passController';
+// src/routes/passRoutes.ts
+import express from 'express';
+import { passController } from '../controllers/passController';
 
-const router = Router();
+const router = express.Router();
 
 // Rutas existentes
-router.post('/generate', generatePass);
-router.get('/:passId', getPass);
+router.post('/generate', passController.generatePass);
 
-// Nuevas rutas para el servicio push
-router.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', registerDevice);
-router.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', unregisterDevice);
-router.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', getSerialNumbers);
-router.get('/v1/passes/:passTypeIdentifier/:serialNumber', handlePassUpdate);
+// Nuevas rutas para actualizaciones de pases
+router.post(
+  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  passController.registerDevice
+);
+
+router.delete(
+  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  passController.unregisterDevice
+);
+
+router.get(
+  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+  passController.getSerialNumbers
+);
+
+router.get(
+  '/v1/passes/:passTypeIdentifier/:serialNumber',
+  passController.getLatestPass
+);
 
 export default router;

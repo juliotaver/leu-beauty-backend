@@ -1,185 +1,121 @@
 // src/controllers/passController.ts
 import { Request, Response } from 'express';
 import { PassService } from '../services/passService';
-import { PushNotificationService } from '../services/pushNotificationService';
-import { Cliente } from '../types';
-import path from 'path';
-import fs from 'fs-extra';
+import { pushNotificationService } from '../services/pushNotificationService';
+import { db } from '../config/firebase';
 
-export const generatePass = async (req: Request, res: Response) => {
-  try {
-    console.log('Recibiendo solicitud para generar pase');
-    console.log('Body:', req.body);
+const passService = new PassService();
 
-    const cliente = req.body;
-    
-    if (!cliente || !cliente.nombre || !cliente.id) {
-      console.log('Datos de cliente inválidos:', cliente);
-      return res.status(400).json({
-        success: false,
-        error: 'Datos del cliente incompletos'
-      });
-    }
-
-    console.log('Iniciando generación de pase para cliente:', cliente.nombre);
-    const passService = new PassService();
-
+export const passController = {
+  // Mantener los métodos existentes
+  generatePass: async (req: Request, res: Response) => {
     try {
-      // Verificar que los directorios existen
-      const directories = [
-        path.join(__dirname, '../../public'),
-        path.join(__dirname, '../../public/passes'),
-        path.join(__dirname, '../../certificates'),
-        path.join(__dirname, '../../templates')
-      ];
+      const passUrl = await passService.generatePass(req.body);
+      res.json({ passUrl });
+    } catch (error) {
+      console.error('Error generating pass:', error);
+      res.status(500).json({ error: 'Error generating pass' });
+    }
+  },
 
-      for (const dir of directories) {
-        if (!fs.existsSync(dir)) {
-          console.log(`Creando directorio: ${dir}`);
-          fs.mkdirSync(dir, { recursive: true });
-        } else {
-          console.log(`Directorio existe: ${dir}`);
-        }
+  // Nuevos métodos para la actualización de pases
+  registerDevice: async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+      const { pushToken } = req.body;
+
+      await pushNotificationService.registerDevice({
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber,
+        pushToken
+      });
+
+      res.status(201).json({ message: 'Device registered successfully' });
+    } catch (error) {
+      console.error('Error registering device:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
+  unregisterDevice: async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+
+      await pushNotificationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
+
+      res.status(200).json({ message: 'Device unregistered successfully' });
+    } catch (error) {
+      console.error('Error unregistering device:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
+  getSerialNumbers: async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
+      const { passesUpdatedSince } = req.query;
+
+      const registrationsSnapshot = await db
+        .collection('deviceRegistrations')
+        .doc(deviceLibraryIdentifier)
+        .get();
+
+      if (!registrationsSnapshot.exists) {
+        return res.status(404).json({ error: 'Device not found' });
       }
 
-      // Verificar que los archivos necesarios existen
-      const requiredFiles = {
-        'pass.pem': path.join(__dirname, '../../certificates/pass.pem'),
-        'pass.key': path.join(__dirname, '../../certificates/pass.key'),
-        'WWDR.pem': path.join(__dirname, '../../certificates/WWDR.pem'),
-        'icon.png': path.join(__dirname, '../../templates/icon.png'),
-        'logo.png': path.join(__dirname, '../../templates/logo.png'),
-        'strip.png': path.join(__dirname, '../../templates/strip.png')
-      };
+      // Obtener pases actualizados después de la fecha proporcionada
+      const clientesSnapshot = await db
+        .collection('clientes')
+        .where('passTypeIdentifier', '==', passTypeIdentifier)
+        .where('lastPassUpdate', '>', new Date(passesUpdatedSince as string))
+        .get();
 
-      for (const [name, filePath] of Object.entries(requiredFiles)) {
-        if (!fs.existsSync(filePath)) {
-          console.error(`Archivo faltante: ${name} en ${filePath}`);
-          throw new Error(`Archivo requerido faltante: ${name}`);
-        } else {
-          console.log(`Archivo encontrado: ${name}`);
-        }
-      }
+      const serialNumbers = clientesSnapshot.docs.map(doc => doc.id);
 
-      const passUrl = await passService.generatePass(cliente);
-      console.log('Pase generado exitosamente:', passUrl);
-
-      res.json({
-        success: true,
-        passUrl
+      res.status(200).json({ 
+        serialNumbers,
+        lastUpdated: new Date().toISOString()
       });
     } catch (error) {
-      console.error('Error detallado al generar pase:', error);
-      throw error;
+      console.error('Error getting serial numbers:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-  } catch (error) {
-    console.error('Error en generatePass:', error);
-    res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Error al generar el pase'
-    });
-  }
-};
+  },
 
-export const getPass = async (req: Request, res: Response) => {
-  try {
-    const { passId } = req.params;
-    console.log('Solicitando pase:', passId);
+  getLatestPass: async (req: Request, res: Response) => {
+    try {
+      const { passTypeIdentifier, serialNumber } = req.params;
+      
+      // Obtener datos actualizados del cliente
+      const clienteSnapshot = await db
+        .collection('clientes')
+        .doc(serialNumber)
+        .get();
 
-    const passService = new PassService();
-    const passPath = await passService.getPassPath(passId);
-    
-    console.log('Pase encontrado en:', passPath);
-    res.download(passPath);
-  } catch (error) {
-    console.error('Error al servir el pase:', error);
-    res.status(404).json({
-      success: false,
-      error: 'Pase no encontrado'
-    });
-  }
-};
+      if (!clienteSnapshot.exists) {
+        return res.status(404).json({ error: 'Pass not found' });
+      }
 
-export const updatePass = async (req: Request, res: Response) => {
-  try {
-    const { passId } = req.params;
-    const cliente: Cliente = req.body;
-    
-    const passService = new PassService();
-    const passUrl = await passService.generatePass(cliente);
+      const clienteData = clienteSnapshot.data();
+      
+      // Generar pase actualizado
+      const passUrl = await passService.generatePass({
+        id: serialNumber,
+        ...clienteData
+      });
 
-    res.json({
-      success: true,
-      passUrl
-    });
-  } catch (error) {
-    console.error('Error updating pass:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Error al actualizar el pase'
-    });
-  }
-};
-
-// Nuevos controladores
-
-export const registerDevice = async (req: Request, res: Response) => {
-  try {
-    const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-    const { pushToken } = req.body;
-
-    const pushService = new PushNotificationService();
-    await pushService.registerDevice({
-      pushToken,
-      deviceLibraryIdentifier,
-      passTypeIdentifier,
-      serialNumber
-    });
-
-    res.status(201).json({ status: 'registered' });
-  } catch (error) {
-    console.error('Error registering device:', error);
-    res.status(500).json({ error: 'Error registering device' });
-  }
-};
-
-export const unregisterDevice = async (req: Request, res: Response) => {
-  try {
-    const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-    // Implementar lógica para eliminar el token
-    res.status(200).json({ status: 'unregistered' });
-  } catch (error) {
-    console.error('Error unregistering device:', error);
-    res.status(500).json({ error: 'Error unregistering device' });
-  }
-};
-
-export const getSerialNumbers = async (req: Request, res: Response) => {
-  try {
-    const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
-    const { passesUpdatedSince } = req.query;
-    
-    // Implementar lógica para obtener números de serie actualizados
-    res.json({
-      serialNumbers: ['123456789'],
-      lastUpdated: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error getting serial numbers:', error);
-    res.status(500).json({ error: 'Error getting serial numbers' });
-  }
-};
-
-export const handlePassUpdate = async (req: Request, res: Response) => {
-  try {
-    const { passTypeIdentifier, serialNumber } = req.params;
-    
-    const passService = new PassService();
-    const passPath = await passService.getPassPath(`${Date.now()}-${serialNumber}`);
-    
-    res.download(passPath);
-  } catch (error) {
-    console.error('Error updating pass:', error);
-    res.status(500).json({ error: 'Error updating pass' });
+      // Enviar el archivo .pkpass actualizado
+      const passPath = await passService.getPassPath(passUrl.split('/').pop()!);
+      res.sendFile(passPath);
+    } catch (error) {
+      console.error('Error getting latest pass:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 };
