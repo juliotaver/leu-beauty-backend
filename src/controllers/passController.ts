@@ -18,19 +18,49 @@ export const passController = {
     }
   },
 
-  // Nuevos métodos para la actualización de pases
+  // Método para registrar el dispositivo
   registerDevice: async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      await pushNotificationService.registerDevice({
+      console.log('Registrando dispositivo:', {
         deviceLibraryIdentifier,
         passTypeIdentifier,
         serialNumber,
         pushToken
       });
 
+      // Primero, verificar si el cliente existe
+      const clienteRef = db.collection('clientes').doc(serialNumber);
+      const clienteDoc = await clienteRef.get();
+
+      if (!clienteDoc.exists) {
+        console.error('Cliente no encontrado:', serialNumber);
+        return res.status(404).json({ error: 'Cliente no encontrado' });
+      }
+
+      // Registrar el dispositivo y actualizar el cliente
+      await Promise.all([
+        // Guardar en la colección de registros de dispositivos
+        db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).set({
+          passTypeIdentifier,
+          serialNumber,
+          pushToken,
+          timestamp: new Date(),
+          lastUpdated: new Date()
+        }),
+
+        // Actualizar el documento del cliente con la información del dispositivo
+        clienteRef.update({
+          pushToken,
+          deviceLibraryIdentifier,
+          passTypeIdentifier,
+          lastPassUpdate: new Date()
+        })
+      ]);
+
+      console.log('Dispositivo registrado exitosamente');
       res.status(201).json({ message: 'Device registered successfully' });
     } catch (error) {
       console.error('Error registering device:', error);
@@ -38,6 +68,7 @@ export const passController = {
     }
   },
 
+  // Método para anular el registro del dispositivo
   unregisterDevice: async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -55,6 +86,7 @@ export const passController = {
     }
   },
 
+  // Obtener serial numbers de los pases actualizados
   getSerialNumbers: async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -88,6 +120,7 @@ export const passController = {
     }
   },
 
+  // Obtener el pase actualizado más reciente
   getLatestPass: async (req: Request, res: Response) => {
     try {
       const { passTypeIdentifier, serialNumber } = req.params;
@@ -116,6 +149,40 @@ export const passController = {
     } catch (error) {
       console.error('Error getting latest pass:', error);
       res.status(500).json({ error: 'Internal server error' });
+    }
+  },
+
+  // Método para enviar notificación de actualización
+  async sendUpdateNotification(clienteId: string): Promise<void> {
+    try {
+      const clienteRef = db.collection('clientes').doc(clienteId);
+      const clienteSnap = await clienteRef.get();
+
+      if (!clienteSnap.exists) {
+        throw new Error('Cliente no encontrado');
+      }
+
+      const clienteData = clienteSnap.data();
+      
+      if (!clienteData?.pushToken || !clienteData?.passTypeIdentifier) {
+        console.log('Datos del cliente:', clienteData);
+        throw new Error(`Cliente ${clienteId} no tiene token push o identificador de pase registrado`);
+      }
+
+      // Regenerar el pase con los datos actualizados
+      const passService = new PassService();
+      await passService.generatePass({
+        id: clienteId,
+        ...clienteData
+      });
+
+      // Enviar la notificación push
+      await pushNotificationService.sendUpdateNotification(clienteId);
+
+      console.log('Notificación enviada exitosamente para cliente:', clienteId);
+    } catch (error) {
+      console.error('Error en sendUpdateNotification:', error);
+      throw error;
     }
   }
 };

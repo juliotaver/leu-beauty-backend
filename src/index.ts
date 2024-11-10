@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import passRoutes from './routes/passRoutes';
 import { db } from './config/firebase';
+import { passController } from './controllers/passController';
 import { PushNotificationService } from './services/pushNotificationService';
 
 dotenv.config();
@@ -22,7 +23,7 @@ const allowedOrigins = [
 
 // Configuración de CORS
 app.use(cors({
-  origin: function(origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
+  origin: function (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -70,7 +71,6 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 
   try {
-    // Obtener datos del cliente
     const clienteRef = db.collection('clientes').doc(clienteId);
     const clienteSnap = await clienteRef.get();
 
@@ -78,18 +78,25 @@ app.post('/api/push/update-pass', async (req, res) => {
       return res.status(404).json({ error: 'Cliente no encontrado' });
     }
 
-    // Enviar notificación de actualización
-    await pushNotificationService.sendUpdateNotification(clienteId);
+    const clienteData = clienteSnap.data();
+    console.log('Datos del cliente para actualización:', {
+      clienteId,
+      pushToken: clienteData?.pushToken,
+      passTypeIdentifier: clienteData?.passTypeIdentifier
+    });
+
+    // Generar nuevo pase y enviar notificación
+    await passController.sendUpdateNotification(clienteId);
     
     res.status(200).json({ 
-      message: 'Notificación de actualización enviada correctamente',
+      message: 'Pase actualizado y notificación enviada correctamente',
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error al enviar notificación de actualización:', error);
+    console.error('Error al actualizar pase:', error);
     res.status(500).json({ 
-      error: 'Error al enviar notificación de actualización',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Error al actualizar pase',
+      details: error instanceof Error ? error.message : 'Error desconocido'
     });
   }
 });
