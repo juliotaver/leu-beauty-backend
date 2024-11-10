@@ -1,90 +1,94 @@
 // src/services/pushNotificationService.ts
 import { db } from '../config/firebase';
-import * as apn from 'node-apn';
 import path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { firestore } from 'firebase-admin';
+
+const execAsync = promisify(exec);
+
+interface ClienteData {
+  pushToken?: string;
+  passTypeIdentifier?: string;
+  nombre: string;
+  email: string;
+  visitas: number;
+  ultimaVisita: firestore.Timestamp;
+  fechaRegistro: firestore.Timestamp;
+  recompensasCanjeadas: string[];
+  proximaRecompensa?: string;
+}
 
 export class PushNotificationService {
-  private apnProvider: apn.Provider;
   private certsDir: string;
 
   constructor() {
     this.certsDir = path.join(__dirname, '../../certificates');
-    
-    // Inicializar el proveedor de APN con los certificados
-    this.apnProvider = new apn.Provider({
-      cert: path.join(this.certsDir, 'pass.pem'),
-      key: path.join(this.certsDir, 'pass.key'),
-      production: process.env.NODE_ENV === 'production' // false para desarrollo
-    });
-  }
-
-  async registerDevice(token: {
-    pushToken: string;
-    deviceLibraryIdentifier: string;
-    passTypeIdentifier: string;
-    serialNumber: string;
-  }): Promise<void> {
-    try {
-      // Registrar en Firestore
-      const registrationRef = db.collection('deviceRegistrations').doc(token.deviceLibraryIdentifier);
-      await registrationRef.set({
-        ...token,
-        timestamp: new Date(),
-        lastUpdated: new Date()
-      });
-
-      // Actualizar el documento del cliente
-      const clienteRef = db.collection('clientes').doc(token.serialNumber);
-      await clienteRef.update({
-        pushToken: token.pushToken,
-        deviceLibraryIdentifier: token.deviceLibraryIdentifier,
-        passTypeIdentifier: token.passTypeIdentifier
-      });
-
-      console.log(`Dispositivo registrado: ${token.deviceLibraryIdentifier}`);
-    } catch (error) {
-      console.error('Error registrando dispositivo:', error);
-      throw error;
-    }
   }
 
   async sendUpdateNotification(clienteId: string): Promise<void> {
     try {
-      const clienteRef = db.collection('clientes').doc(clienteId);
-      const clienteSnap = await clienteRef.get();
+      console.log('Iniciando actualización para cliente:', clienteId);
 
-      if (!clienteSnap.exists) {
+      const clienteDoc = await db.collection('clientes').doc(clienteId).get();
+      
+      if (!clienteDoc.exists) {
         throw new Error('Cliente no encontrado');
       }
 
-      const clienteData = clienteSnap.data();
-      if (!clienteData?.pushToken || !clienteData?.passTypeIdentifier) {
-        console.log('No hay token de push o identificador de pase para el cliente:', clienteId);
+      let clienteData = clienteDoc.data() as ClienteData;
+      
+      if (!clienteData.pushToken) {
+        const registrationSnapshot = await db
+          .collection('deviceRegistrations')
+          .where('serialNumber', '==', clienteId)
+          .limit(1)
+          .get();
+
+        if (!registrationSnapshot.empty) {
+          const registration = registrationSnapshot.docs[0].data();
+          clienteData = {
+            ...clienteData,
+            pushToken: registration.pushToken,
+            passTypeIdentifier: registration.passTypeIdentifier
+          };
+
+          await db.collection('clientes').doc(clienteId).update({
+            pushToken: registration.pushToken,
+            passTypeIdentifier: registration.passTypeIdentifier
+          });
+        }
+      }
+
+      if (!clienteData.pushToken) {
+        console.log('No se encontró pushToken para el cliente:', clienteId);
         return;
       }
 
-      // Crear notificación
-      const notification = new apn.Notification();
-      notification.pushType = 'background';
-      notification.topic = clienteData.passTypeIdentifier;
-      notification.payload = {
-        aps: {
-          'content-available': 1
-        }
-      };
+      const pushCommand = `curl -X POST \
+        --cert "${path.join(this.certsDir, 'pass.pem')}" \
+        --key "${path.join(this.certsDir, 'pass.key')}" \
+        -H "Content-Type: application/json" \
+        -d '{"pushToken": "${clienteData.pushToken}"}' \
+        "https://api.push.apple.com/v1/pushPackages/${clienteData.passTypeIdentifier || 'pass.com.salondenails.loyalty'}"`;
 
-      // Enviar notificación
-      const result = await this.apnProvider.send(notification, clienteData.pushToken);
-      console.log('Resultado de envío de notificación:', result);
+      console.log('Ejecutando comando push:', pushCommand);
+      
+      const { stdout, stderr } = await execAsync(pushCommand);
+      
+      if (stderr) {
+        console.error('Error en curl:', stderr);
+      }
+      
+      console.log('Respuesta de Apple:', stdout);
 
-      // Actualizar timestamp de última actualización
-      await clienteRef.update({
+      await db.collection('clientes').doc(clienteId).update({
         lastPassUpdate: new Date()
       });
 
-      console.log('Notificación de actualización enviada para cliente:', clienteId);
+      console.log('Notificación enviada exitosamente');
     } catch (error) {
-      console.error('Error enviando notificación de actualización:', error);
+      console.error('Error enviando notificación:', error);
       throw error;
     }
   }
@@ -95,19 +99,35 @@ export class PushNotificationService {
     serialNumber: string
   ): Promise<void> {
     try {
-      // Eliminar registro del dispositivo
-      await db.collection('deviceRegistrations')
-        .doc(deviceLibraryIdentifier)
-        .delete();
-
-      // Actualizar documento del cliente
-      const clienteRef = db.collection('clientes').doc(serialNumber);
-      await clienteRef.update({
-        pushToken: null,
-        deviceLibraryIdentifier: null
+      console.log('Dando de baja dispositivo:', {
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
       });
 
-      console.log(`Dispositivo dado de baja: ${deviceLibraryIdentifier}`);
+      // Eliminar el registro del dispositivo
+      const deviceRegistrationRef = db
+        .collection('deviceRegistrations')
+        .doc(deviceLibraryIdentifier);
+
+      await deviceRegistrationRef.delete();
+
+      // Actualizar el documento del cliente
+      const clienteRef = db.collection('clientes').doc(serialNumber);
+      const clienteDoc = await clienteRef.get();
+
+      if (clienteDoc.exists) {
+        const clienteData = clienteDoc.data();
+        if (clienteData?.deviceLibraryIdentifier === deviceLibraryIdentifier) {
+          await clienteRef.update({
+            pushToken: firestore.FieldValue.delete(),
+            deviceLibraryIdentifier: firestore.FieldValue.delete(),
+            passTypeIdentifier: firestore.FieldValue.delete()
+          });
+        }
+      }
+
+      console.log('Dispositivo dado de baja exitosamente');
     } catch (error) {
       console.error('Error dando de baja dispositivo:', error);
       throw error;
