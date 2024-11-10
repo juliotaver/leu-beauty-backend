@@ -18,7 +18,7 @@ export const passController = {
     }
   },
 
-  // Método para registrar el dispositivo
+  // Método actualizado para registrar el dispositivo
   registerDevice: async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -28,43 +28,40 @@ export const passController = {
         deviceLibraryIdentifier,
         passTypeIdentifier,
         serialNumber,
-        pushToken
+        pushToken,
+        headers: req.headers
       });
 
-      // Primero, verificar si el cliente existe
-      const clienteRef = db.collection('clientes').doc(serialNumber);
-      const clienteDoc = await clienteRef.get();
-
-      if (!clienteDoc.exists) {
-        console.error('Cliente no encontrado:', serialNumber);
-        return res.status(404).json({ error: 'Cliente no encontrado' });
+      // Verificar que todos los datos requeridos están presentes
+      if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
+        console.error('Faltan datos requeridos para el registro');
+        return res.status(400).send();
       }
 
-      // Registrar el dispositivo y actualizar el cliente
-      await Promise.all([
-        // Guardar en la colección de registros de dispositivos
-        db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).set({
-          passTypeIdentifier,
-          serialNumber,
-          pushToken,
-          timestamp: new Date(),
-          lastUpdated: new Date()
-        }),
+      // Registrar en deviceRegistrations
+      await db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).set({
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber,
+        pushToken,
+        registeredAt: new Date(),
+        lastUpdated: new Date()
+      });
 
-        // Actualizar el documento del cliente con la información del dispositivo
-        clienteRef.update({
-          pushToken,
-          deviceLibraryIdentifier,
-          passTypeIdentifier,
-          lastPassUpdate: new Date()
-        })
-      ]);
+      // Actualizar el cliente
+      const clienteRef = db.collection('clientes').doc(serialNumber);
+      await clienteRef.update({
+        pushToken,
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        lastPassUpdate: new Date()
+      });
 
-      console.log('Dispositivo registrado exitosamente');
-      res.status(201).json({ message: 'Device registered successfully' });
+      console.log('Registro completado exitosamente');
+      res.status(201).send(); // Apple espera un 201 sin cuerpo
     } catch (error) {
-      console.error('Error registering device:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      console.error('Error en registerDevice:', error);
+      res.status(500).send();
     }
   },
 

@@ -6,29 +6,16 @@ import path from 'path';
 import passRoutes from './routes/passRoutes';
 import { db } from './config/firebase';
 import { passController } from './controllers/passController';
-import { PushNotificationService } from './services/pushNotificationService';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-const pushNotificationService = new PushNotificationService();
 
-// Lista de orígenes permitidos
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://admin.leubeautylab.com',
-  'https://leu-beauty-frontend-efur7s2wv-julio-taveras-projects.vercel.app'
-];
-
-// Configuración de CORS
+// Configuración CORS
 app.use(cors({
-  origin: function (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('No permitido por CORS'), false);
-    }
+  origin: function(origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
+    callback(null, true); // Permitir todas las solicitudes por ahora para debugging
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
@@ -39,30 +26,39 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para logging
+// Logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
-
-// Middleware para autenticación de pases de Apple Wallet
-app.use('/api/passes/v1', (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Authorization header required' });
+  console.log('Headers:', req.headers);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Body:', req.body);
   }
-
-  // Aquí podrías implementar una validación más robusta si lo necesitas
   next();
 });
 
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas principales
+// Rutas principales de pases
 app.use('/api/passes', passRoutes);
 
-// Ruta para actualización de pases
+// Rutas específicas para el registro de dispositivos
+app.post('/api/passes/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+  async (req, res) => {
+    console.log('Recibida solicitud de registro de dispositivo:', {
+      params: req.params,
+      body: req.body,
+      headers: req.headers
+    });
+    
+    try {
+      await passController.registerDevice(req, res);
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      res.status(500).send();
+    }
+});
+
 app.post('/api/push/update-pass', async (req, res) => {
   const { clienteId } = req.body;
   
@@ -71,25 +67,37 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 
   try {
-    const clienteRef = db.collection('clientes').doc(clienteId);
-    const clienteSnap = await clienteRef.get();
-
-    if (!clienteSnap.exists) {
-      return res.status(404).json({ error: 'Cliente no encontrado' });
+    // Primero, verificar si el cliente tiene un pase registrado
+    const clienteDoc = await db.collection('clientes').doc(clienteId).get();
+    if (!clienteDoc.exists) {
+      throw new Error('Cliente no encontrado');
     }
 
-    const clienteData = clienteSnap.data();
-    console.log('Datos del cliente para actualización:', {
-      clienteId,
-      pushToken: clienteData?.pushToken,
-      passTypeIdentifier: clienteData?.passTypeIdentifier
-    });
+    const clienteData = clienteDoc.data();
+    console.log('Datos del cliente para actualización:', clienteData);
 
-    // Generar nuevo pase y enviar notificación
+    // Buscar registro del dispositivo si no hay token en el cliente
+    if (!clienteData?.pushToken) {
+      const registrationSnapshot = await db
+        .collection('deviceRegistrations')
+        .where('serialNumber', '==', clienteId)
+        .limit(1)
+        .get();
+
+      if (!registrationSnapshot.empty) {
+        const registration = registrationSnapshot.docs[0].data();
+        await clienteDoc.ref.update({
+          pushToken: registration.pushToken,
+          passTypeIdentifier: registration.passTypeIdentifier
+        });
+      }
+    }
+
+    // Enviar notificación de actualización
     await passController.sendUpdateNotification(clienteId);
     
     res.status(200).json({ 
-      message: 'Pase actualizado y notificación enviada correctamente',
+      message: 'Pase actualizado correctamente',
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -101,15 +109,6 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 });
 
-// Manejador de errores global
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error no manejado:', err);
-  res.status(500).json({ 
-    error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
-  });
-});
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({ 
@@ -119,15 +118,18 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Iniciar servidor
+// Manejador de errores global
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Error no manejado:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
+  });
+});
+
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
-  console.log(`📁 Static files served from: ${path.join(__dirname, '../public/passes')}`);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
 export default app;
