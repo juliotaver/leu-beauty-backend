@@ -4,27 +4,27 @@ import { passController } from '../controllers/passController';
 
 const router = express.Router();
 
-// Rutas existentes
+// Ruta para generar pases
 router.post('/generate', passController.generatePass);
 
-// Nuevas rutas para actualizaciones de pases
+// Rutas de Apple Wallet
 router.post(
-  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   passController.registerDevice
 );
 
 router.delete(
-  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   passController.unregisterDevice
 );
 
 router.get(
-  '/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   passController.getSerialNumbers
 );
 
 router.get(
-  '/v1/passes/:passTypeIdentifier/:serialNumber',
+  '/passes/:passTypeIdentifier/:serialNumber',
   passController.getLatestPass
 );
 

@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 });
 
 // Middleware para autenticación de pases de Apple Wallet
-app.use('/api/passes/v1', (req, res, next) => {
+app.use('/api/passes', (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ error: 'Authorization header required' });
@@ -61,6 +61,9 @@ app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
 // Rutas principales
 app.use('/api/passes', passRoutes);
+
+// Rutas de Apple Wallet (para actualizaciones)
+app.use('/', passRoutes);
 
 // Ruta para actualización de pases
 app.post('/api/push/update-pass', async (req, res) => {
