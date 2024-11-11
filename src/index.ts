@@ -63,35 +63,34 @@ app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
 // Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.log('🔐 Checking auth for:', req.method, req.path);
-  
-  // Ignorar auth para rutas específicas
-  if (req.path.includes('/generate') || req.path === '/health' || req.path === '/log') {
-    console.log('⏩ Skipping auth for exempt route');
+  // Rutas que NO requieren autenticación
+  const excludedPaths = [
+    '/api/push/update-pass',
+    '/api/passes/generate',
+    '/health',
+    '/log'
+  ];
+
+  if (excludedPaths.some(path => req.path.includes(path))) {
+    console.log('⏩ Saltando autenticación para ruta:', req.path);
     return next();
   }
 
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    console.log('❌ No authorization header for path:', req.path);
-    return res.status(401).send('Authorization required');
+    console.log('❌ No authorization header for protected path:', req.path);
+    return res.status(401).send();
   }
 
-  // Validar formato del header (ApplePass TOKEN)
-  const [scheme, token] = authHeader.split(' ');
-  if (scheme !== 'ApplePass' || !token) {
-    console.log('❌ Invalid authorization format');
-    return res.status(401).send('Invalid authorization format');
-  }
-
-  console.log('✅ Valid auth header found');
+  console.log('✅ Auth header found:', authHeader);
   next();
 };
 
-// Rutas de la API (sin autenticación)
-app.use('/api/passes', passRoutes);
+// Rutas de la API sin autenticación
+app.use('/api/passes/generate', passRoutes);
+app.use('/api/push/update-pass', passRoutes);
 
-// Rutas de Apple Wallet (con autenticación)
+// Rutas de Wallet (con autenticación)
 app.use('/', walletAuthMiddleware, passRoutes);
 app.use('/api/v1', walletAuthMiddleware, passRoutes);
 
@@ -133,9 +132,6 @@ app.post('/api/push/update-pass', async (req, res) => {
     });
   }
 });
-
-app.use('/api/v1/devices', walletAuthMiddleware, passRoutes);
-app.use('/api/v1/passes', walletAuthMiddleware, passRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {
