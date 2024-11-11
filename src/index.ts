@@ -73,10 +73,10 @@ const authMiddleware = async (req: Request, res: Response, next: Function) => {
 };
 
 // Aplicar autenticación a las rutas de pases
-app.use('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', authMiddleware);
-app.use('/v1/passes/:passTypeIdentifier/:serialNumber', authMiddleware);
+app.use('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', authMiddleware);
+app.use('/passes/:passTypeIdentifier/:serialNumber', authMiddleware);
 
-// En vez de /api/v1/devices/... usar /devices/...
+// Rutas para el webservice de pases (TODAS sin /api/ ni /v1/)
 app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     console.log('📱 Recibida solicitud de registro:', {
@@ -87,7 +87,15 @@ app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:s
     await passController.registerDevice(req, res);
 });
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    console.log('🗑️ Solicitando baja de dispositivo:', {
+      params: req.params
+    });
+    await passController.unregisterDevice(req, res);
+});
+
+app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   async (req: Request, res: Response) => {
     console.log('🔍 Buscando actualizaciones:', {
       params: req.params,
@@ -96,7 +104,7 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
     await passController.getSerialNumbers(req, res);
 });
 
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
+app.get('/passes/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     console.log('📲 Solicitando pase actualizado:', {
       params: req.params
@@ -104,7 +112,8 @@ app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
     await passController.getLatestPass(req, res);
 });
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+
+app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     console.log('🗑️ Solicitando baja de dispositivo:', {
       params: req.params
@@ -113,7 +122,7 @@ app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifi
 });
 
 // Ruta para logs (opcional pero útil para debugging)
-app.post('/v1/log', (req: Request, res: Response) => {
+app.post('/log', (req: Request, res: Response) => {
   console.log('📝 Logs del dispositivo:', req.body);
   res.status(200).send();
 });
