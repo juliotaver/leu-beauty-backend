@@ -50,30 +50,24 @@ app.use((req, res, next) => {
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas de generación de pases (sin autenticación)
-app.use('/api/passes', passRoutes);
-
 // Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (req.method === 'POST' && req.path === '/generate') {
-    return next(); // Saltar autenticación para generación de pases
-  }
-  
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     console.log('❌ No authorization header provided');
     return res.status(401).send();
   }
-  
   console.log('✅ Auth header found:', authHeader);
   next();
 };
 
-// Rutas de Apple Wallet (con autenticación)
-app.use('/api/v1', walletAuthMiddleware, walletRoutes);
-app.use('/', walletAuthMiddleware, walletRoutes);
+// Rutas de generación de pases (sin autenticación)
+app.use('/api/passes', passRoutes);
 
-// Ruta para actualización de pases
+// Rutas de Wallet (con autenticación)
+app.use('/api/v1', walletAuthMiddleware, walletRoutes);
+
+// Ruta para actualización de pases (sin autenticación)
 app.post('/api/push/update-pass', async (req, res) => {
   const { clienteId } = req.body;
   
