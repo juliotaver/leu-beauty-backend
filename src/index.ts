@@ -1,5 +1,5 @@
 // src/index.ts
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -42,8 +42,8 @@ app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 // Rutas principales de pases
 app.use('/api/passes', passRoutes);
 
-// Rutas específicas para el registro de dispositivos
-app.post('/api/passes/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+// Rutas específicas para el registro de dispositivos y actualización de pases
+app.post('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req, res) => {
     console.log('Recibida solicitud de registro de dispositivo:', {
       params: req.params,
@@ -59,55 +59,41 @@ app.post('/api/passes/v1/devices/:deviceLibraryIdentifier/registrations/:passTyp
     }
 });
 
-app.post('/api/push/update-pass', async (req, res) => {
-  const { clienteId } = req.body;
-  
-  if (!clienteId) {
-    return res.status(400).json({ error: 'ClienteId es requerido' });
-  }
-
-  try {
-    // Primero, verificar si el cliente tiene un pase registrado
-    const clienteDoc = await db.collection('clientes').doc(clienteId).get();
-    if (!clienteDoc.exists) {
-      throw new Error('Cliente no encontrado');
+// Ruta para obtener actualizaciones de pases
+app.get('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
+  async (req, res) => {
+    try {
+      await passController.getSerialNumbers(req, res);
+    } catch (error) {
+      console.error('Error obteniendo números de serie:', error);
+      res.status(500).send();
     }
-
-    const clienteData = clienteDoc.data();
-    console.log('Datos del cliente para actualización:', clienteData);
-
-    // Buscar registro del dispositivo si no hay token en el cliente
-    if (!clienteData?.pushToken) {
-      const registrationSnapshot = await db
-        .collection('deviceRegistrations')
-        .where('serialNumber', '==', clienteId)
-        .limit(1)
-        .get();
-
-      if (!registrationSnapshot.empty) {
-        const registration = registrationSnapshot.docs[0].data();
-        await clienteDoc.ref.update({
-          pushToken: registration.pushToken,
-          passTypeIdentifier: registration.passTypeIdentifier
-        });
-      }
-    }
-
-    // Enviar notificación de actualización
-    await passController.sendUpdateNotification(clienteId);
-    
-    res.status(200).json({ 
-      message: 'Pase actualizado correctamente',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error al actualizar pase:', error);
-    res.status(500).json({ 
-      error: 'Error al actualizar pase',
-      details: error instanceof Error ? error.message : 'Error desconocido'
-    });
-  }
 });
+
+// Ruta para obtener la última versión del pase
+app.get('/api/v1/passes/:passTypeIdentifier/:serialNumber', 
+  async (req, res) => {
+    try {
+      await passController.getLatestPass(req, res);
+    } catch (error) {
+      console.error('Error obteniendo pase:', error);
+      res.status(500).send();
+    }
+});
+
+// Ruta para dar de baja un dispositivo
+app.delete('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  async (req, res) => {
+    try {
+      await passController.unregisterDevice(req, res);
+    } catch (error) {
+      console.error('Error dando de baja dispositivo:', error);
+      res.status(500).send();
+    }
+});
+
+// Ruta para actualizar el pase manualmente
+app.post('/api/push/update-pass', passController.handleUpdateNotification);
 
 // Health check
 app.get('/health', (req, res) => {
