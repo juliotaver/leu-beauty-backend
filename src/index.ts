@@ -19,10 +19,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logging middleware
-app.use((req, res, next) => {
-  console.log(`🔍 ${req.method} ${req.url}`);
-  console.log('Headers:', req.headers);
-  if (req.body) console.log('Body:', req.body);
+// Middleware de logging mejorado
+app.use((req, res, next) =>  {
+  console.log('\n🔍 ====== Nueva Solicitud ======');
+  console.log(`📍 Método: ${req.method}`);
+  console.log(`📍 URL Original: ${req.originalUrl}`);
+  console.log(`📍 URL Base: ${req.baseUrl}`);
+  console.log(`📍 Ruta: ${req.path}`);
+  console.log('📍 Parámetros:', req.params);
+  console.log('🔒 Headers:', JSON.stringify(req.headers, null, 2));
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('📦 Body:', JSON.stringify(req.body, null, 2));
+  }
+  console.log('===============================\n');
+
+  // Capturar la respuesta con tipado correcto
+  const oldSend = res.send;
+  res.send = function(body: any) {
+    console.log(`📤 Respuesta [${res.statusCode}]:`, body);
+    return oldSend.call(res, body);
+  } as any;
+
   next();
 });
 
