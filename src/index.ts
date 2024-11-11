@@ -42,99 +42,81 @@ app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 // Rutas principales de pases
 app.use('/api/passes', passRoutes);
 
-// Rutas de Apple Wallet Pass
-const webServiceRouter = express.Router();
+// Middleware de autenticación para las rutas de pases
+const authMiddleware = async (req: Request, res: Response, next: Function) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      console.log('❌ No authorization header');
+      return res.status(401).send();
+    }
 
-// Registro de dispositivos
-webServiceRouter.post(
-  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+    // El header debe ser "ApplePass <token>"
+    const [scheme, token] = authHeader.split(' ');
+    if (scheme !== 'ApplePass' || !token) {
+      console.log('❌ Invalid authorization format');
+      return res.status(401).send();
+    }
+
+    // El token debe coincidir con el serialNumber del pase
+    const serialNumber = req.params.serialNumber;
+    if (serialNumber && token !== serialNumber) {
+      console.log('❌ Token mismatch');
+      return res.status(401).send();
+    }
+
+    next();
+  } catch (error) {
+    console.error('Error en autenticación:', error);
+    res.status(401).send();
+  }
+};
+
+// Aplicar autenticación a las rutas de pases
+app.use('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', authMiddleware);
+app.use('/v1/passes/:passTypeIdentifier/:serialNumber', authMiddleware);
+
+// Rutas para el webservice de pases
+app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
-    console.log('📱 Solicitud de registro de dispositivo recibida:', {
+    console.log('📱 Recibida solicitud de registro:', {
       params: req.params,
       body: req.body,
-      headers: req.headers
+      auth: req.headers.authorization
     });
-    
-    try {
-      await passController.registerDevice(req, res);
-    } catch (error) {
-      console.error('❌ Error en registro:', error);
-      res.status(500).send();
-    }
-  }
-);
+    await passController.registerDevice(req, res);
+});
 
-// Obtener actualizaciones
-webServiceRouter.get(
-  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   async (req: Request, res: Response) => {
-    console.log('🔄 Solicitud de actualizaciones recibida:', {
+    console.log('🔍 Buscando actualizaciones:', {
       params: req.params,
       query: req.query
     });
-    
-    try {
-      await passController.getSerialNumbers(req, res);
-    } catch (error) {
-      console.error('❌ Error obteniendo actualizaciones:', error);
-      res.status(500).send();
-    }
-  }
-);
-
-// Obtener pase actualizado
-webServiceRouter.get(
-  '/passes/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    console.log('📲 Solicitud de pase actualizado recibida:', {
-      params: req.params
-    });
-    
-    try {
-      await passController.getLatestPass(req, res);
-    } catch (error) {
-      console.error('❌ Error obteniendo pase:', error);
-      res.status(500).send();
-    }
-  }
-);
-
-// Dar de baja dispositivo
-webServiceRouter.delete(
-  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    console.log('🗑️ Solicitud de baja de dispositivo recibida:', {
-      params: req.params
-    });
-    
-    try {
-      await passController.unregisterDevice(req, res);
-    } catch (error) {
-      console.error('❌ Error dando de baja dispositivo:', error);
-      res.status(500).send();
-    }
-  }
-);
-
-// Middleware de autenticación para las rutas de Apple Wallet
-app.use('/v1', (req: Request, res: Response, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).send('Authorization header required');
-  }
-  
-  // La autenticación viene en formato "ApplePass <token>"
-  const [scheme, token] = authHeader.split(' ');
-  if (scheme !== 'ApplePass' || !token) {
-    return res.status(401).send('Invalid authorization format');
-  }
-  
-  // Aquí podrías verificar el token si lo necesitas
-  next();
+    await passController.getSerialNumbers(req, res);
 });
 
-// Montar las rutas del webservice
-app.use('/v1', webServiceRouter);
+app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    console.log('📲 Solicitando pase actualizado:', {
+      params: req.params
+    });
+    await passController.getLatestPass(req, res);
+});
+
+app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    console.log('🗑️ Solicitando baja de dispositivo:', {
+      params: req.params
+    });
+    await passController.unregisterDevice(req, res);
+});
+
+// Ruta para logs (opcional pero útil para debugging)
+app.post('/v1/log', (req: Request, res: Response) => {
+  console.log('📝 Logs del dispositivo:', req.body);
+  res.status(200).send();
+});
 
 // Ruta de actualización de pases existente
 app.post('/api/push/update-pass', async (req: Request, res: Response) => {
