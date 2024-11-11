@@ -76,8 +76,8 @@ const authMiddleware = async (req: Request, res: Response, next: Function) => {
 app.use('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', authMiddleware);
 app.use('/v1/passes/:passTypeIdentifier/:serialNumber', authMiddleware);
 
-// Rutas para el webservice de pases
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+// En vez de /api/v1/devices/... usar /devices/...
+app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     console.log('📱 Recibida solicitud de registro:', {
       params: req.params,
