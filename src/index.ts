@@ -53,54 +53,49 @@ const authMiddleware = (req: Request, res: Response, next: Function) => {
   next();
 };
 
-// Rutas de Wallet (con auth)
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.registerDevice
-);
+// Rutas de Wallet (con auth) usando walletEndpoints
+const walletEndpoints = [
+  // Registro de dispositivo
+  {
+    method: 'post',
+    path: '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+    handler: passController.registerDevice
+  },
+  // Baja de dispositivo
+  {
+    method: 'delete',
+    path: '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+    handler: passController.unregisterDevice
+  },
+  // Obtener actualizaciones
+  {
+    method: 'get',
+    path: '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+    handler: passController.getSerialNumbers
+  },
+  // Obtener pase actualizado
+  {
+    method: 'get',
+    path: '/passes/:passTypeIdentifier/:serialNumber',
+    handler: passController.getLatestPass
+  }
+];
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.unregisterDevice
-);
+// Montar las rutas de Wallet con el prefijo correcto
+walletEndpoints.forEach(endpoint => {
+  const handler = [authMiddleware, endpoint.handler];
+  // Montar en /v1
+  (app as any)[endpoint.method](`/v1${endpoint.path}`, ...handler);
+  // También montar en /api/v1 si es necesario
+  (app as any)[endpoint.method](`/api/v1${endpoint.path}`, ...handler);
+});
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
-  authMiddleware, 
-  passController.getSerialNumbers
-);
-
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.getLatestPass
-);
-
-// También montar las mismas rutas en /api/v1
-app.post('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.registerDevice
-);
-
-app.delete('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.unregisterDevice
-);
-
-app.get('/api/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
-  authMiddleware, 
-  passController.getSerialNumbers
-);
-
-app.get('/api/v1/passes/:passTypeIdentifier/:serialNumber', 
-  authMiddleware, 
-  passController.getLatestPass
-);
-
-// Ruta de actualización
+// Ruta de actualización de pases (sin autenticación)
 app.post('/api/push/update-pass', async (req, res) => {
   try {
     const { clienteId } = req.body;
     if (!clienteId) return res.status(400).json({ error: 'ClienteId requerido' });
-    
+
     await pushNotificationService.sendUpdateNotification(clienteId);
     res.status(200).json({ success: true });
   } catch (error) {
