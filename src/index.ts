@@ -58,20 +58,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Servir archivos estáticos
-app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
-
-// Middleware de autenticación para rutas de Wallet
+// Middleware de autenticación actualizado
 const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   // Rutas que NO requieren autenticación
-  const excludedPaths = [
-    '/api/push/update-pass',
-    '/api/passes/generate',
-    '/health',
-    '/log'
-  ];
-
-  if (excludedPaths.some(path => req.path.includes(path))) {
+  if (req.path.includes('/generate') || 
+      req.path.includes('/push/update-pass') || 
+      req.path === '/health' || 
+      req.path === '/log') {
     console.log('⏩ Saltando autenticación para ruta:', req.path);
     return next();
   }
@@ -82,17 +75,27 @@ const walletAuthMiddleware = (req: express.Request, res: express.Response, next:
     return res.status(401).send();
   }
 
-  console.log('✅ Auth header found:', authHeader);
+  const [scheme, token] = authHeader.split(' ');
+  if (scheme !== 'ApplePass') {
+    console.log('❌ Invalid authorization format');
+    return res.status(401).send();
+  }
+
+  console.log('✅ Valid auth token:', token);
   next();
 };
 
-// Rutas de la API sin autenticación
-app.use('/api/passes/generate', passRoutes);
-app.use('/api/push/update-pass', passRoutes);
+// Servir archivos estáticos
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas de Wallet (con autenticación)
-app.use('/', walletAuthMiddleware, passRoutes);
-app.use('/api/v1', walletAuthMiddleware, passRoutes);
+// Health check route
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV
+  });
+});
 
 // Ruta para logs de Apple Wallet
 app.post('/log', (req, res) => {
@@ -133,31 +136,35 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 });
 
-// Health check route
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
-  });
-});
+// Rutas de generación de pases
+app.use('/api/passes', passRoutes);
+
+// Rutas de Wallet
+const walletRouter = express.Router();
+walletRouter.use(walletAuthMiddleware);
+walletRouter.use('/', passRoutes);
+
+// Montar el router de Wallet en ambas rutas
+app.use('/v1', walletRouter);
+app.use('/api/v1', walletRouter);
 
 // Logging de rutas al iniciar
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+  console.log('📍 Rutas disponibles:');
   
-  // Imprimir todas las rutas registradas
-  console.log('\n📍 Rutas registradas:');
-  app._router.stack.forEach((middleware: any) => {
-    if (middleware.route) {
-      const path = middleware.route.path;
-      const methods = Object.keys(middleware.route.methods);
-      console.log(`${methods.join(', ').toUpperCase()} ${path}`);
-    } else if (middleware.name === 'router') {
-      console.log('Router middleware:', middleware.regexp);
-    }
-  });
+  function printRoutes(stack: any[], prefix = '') {
+    stack.forEach(r => {
+      if (r.route) {
+        const methods = Object.keys(r.route.methods).join(',').toUpperCase();
+        console.log(`${methods} ${prefix}${r.route.path}`);
+      } else if (r.name === 'router') {
+        printRoutes(r.handle.stack, prefix + r.regexp.source.replace(/\\/g, '').replace(/\?\(\?=\/\|\$\)/i, ''));
+      }
+    });
+  }
+  
+  printRoutes(app._router.stack);
 });
 
 export default app;
