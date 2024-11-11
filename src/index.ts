@@ -33,7 +33,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization', 'If-Modified-Since']
 }));
 
-// Middlewares
+// Middlewares básicos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -47,23 +47,25 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware para autenticación de pases de Apple Wallet
-app.use('/api/passes', (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Authorization header required' });
-  }
-  next();
-});
-
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas principales
-app.use('/api/passes', passRoutes);
+// Rutas de API sin autenticación (incluyendo generación de pases)
+app.use('/api/passes/generate', passRoutes);
 
-// Rutas de Apple Wallet (para actualizaciones)
-app.use('/', passRoutes);
+// Middleware de autenticación solo para rutas de actualización de Wallet
+const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (req.path.includes('/devices/') || req.path.includes('/passes/')) {
+    if (!authHeader) {
+      return res.status(401).json({ error: 'Authorization header required' });
+    }
+  }
+  next();
+};
+
+// Rutas de Apple Wallet con autenticación
+app.use('/', walletAuthMiddleware, passRoutes);
 
 // Ruta para actualización de pases
 app.post('/api/push/update-pass', async (req, res) => {
