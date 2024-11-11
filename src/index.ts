@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import passRoutes from './routes/passRoutes';
+import { passRoutes, walletRoutes } from './routes/passRoutes';
 import { db } from './config/firebase';
 import { PushNotificationService } from './services/pushNotificationService';
 
@@ -19,7 +19,7 @@ const allowedOrigins = [
   'https://leu-beauty-frontend-efur7s2wv-julio-taveras-projects.vercel.app'
 ];
 
-// Configurar CORS
+// Configuración CORS
 app.use(cors({
   origin: function(origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -50,22 +50,28 @@ app.use((req, res, next) => {
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas de API sin autenticación (incluyendo generación de pases)
-app.use('/api/passes/generate', passRoutes);
+// Rutas de generación de pases (sin autenticación)
+app.use('/api/passes', passRoutes);
 
-// Middleware de autenticación solo para rutas de actualización de Wallet
+// Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const authHeader = req.headers.authorization;
-  if (req.path.includes('/devices/') || req.path.includes('/passes/')) {
-    if (!authHeader) {
-      return res.status(401).json({ error: 'Authorization header required' });
-    }
+  if (req.method === 'POST' && req.path === '/generate') {
+    return next(); // Saltar autenticación para generación de pases
   }
+  
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    console.log('❌ No authorization header provided');
+    return res.status(401).send();
+  }
+  
+  console.log('✅ Auth header found:', authHeader);
   next();
 };
 
-// Rutas de Apple Wallet con autenticación
-app.use('/', walletAuthMiddleware, passRoutes);
+// Rutas de Apple Wallet (con autenticación)
+app.use('/api/v1', walletAuthMiddleware, walletRoutes);
+app.use('/', walletAuthMiddleware, walletRoutes);
 
 // Ruta para actualización de pases
 app.post('/api/push/update-pass', async (req, res) => {
@@ -100,7 +106,7 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 });
 
-// Health check
+// Health check route
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK',
@@ -109,19 +115,20 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Manejador de errores global
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Error no manejado:', err);
-  res.status(500).json({ 
-    error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
-  });
-});
-
+// Logging de rutas al iniciar
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
-  console.log(`📁 Static files served from: ${path.join(__dirname, '../public/passes')}`);
+  
+  // Imprimir todas las rutas registradas
+  console.log('\n📍 Rutas registradas:');
+  app._router.stack.forEach((middleware: any) => {
+    if (middleware.route) {
+      const path = middleware.route.path;
+      const methods = Object.keys(middleware.route.methods);
+      console.log(`${methods.join(', ').toUpperCase()} ${path}`);
+    }
+  });
 });
 
 export default app;

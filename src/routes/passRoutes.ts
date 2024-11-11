@@ -4,28 +4,31 @@ import { passController } from '../controllers/passController';
 
 const router = express.Router();
 
-// Ruta para generar pases
+// Ruta de generación de pase (sin autenticación)
 router.post('/generate', passController.generatePass);
 
-// Rutas de Apple Wallet
-router.post(
+// Rutas de Apple Wallet (con autenticación)
+const walletRoutes = express.Router();
+
+walletRoutes.post(
   '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   passController.registerDevice
 );
 
-router.delete(
+walletRoutes.delete(
   '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   passController.unregisterDevice
 );
 
-router.get(
+walletRoutes.get(
   '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   passController.getSerialNumbers
 );
 
-router.get(
+walletRoutes.get(
   '/passes/:passTypeIdentifier/:serialNumber',
   passController.getLatestPass
 );
 
-export default router;
+// Exportar ambos routers
+export { router as passRoutes, walletRoutes };
