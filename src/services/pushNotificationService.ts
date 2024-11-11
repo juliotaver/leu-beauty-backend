@@ -10,13 +10,8 @@ const execAsync = promisify(exec);
 interface ClienteData {
   pushToken?: string;
   passTypeIdentifier?: string;
-  nombre: string;
-  email: string;
-  visitas: number;
-  ultimaVisita: firestore.Timestamp;
-  fechaRegistro: firestore.Timestamp;
-  recompensasCanjeadas: string[];
-  proximaRecompensa?: string;
+  deviceLibraryIdentifier?: string;
+  lastPassUpdate?: firestore.Timestamp;
 }
 
 export class PushNotificationService {
@@ -52,25 +47,22 @@ export class PushNotificationService {
             pushToken: registration.pushToken,
             passTypeIdentifier: registration.passTypeIdentifier
           };
-
-          await db.collection('clientes').doc(clienteId).update({
-            pushToken: registration.pushToken,
-            passTypeIdentifier: registration.passTypeIdentifier
-          });
         }
       }
 
-      if (!clienteData.pushToken) {
-        console.log('No se encontró pushToken para el cliente:', clienteId);
+      if (!clienteData.pushToken || !clienteData.passTypeIdentifier) {
+        console.log('No se encontró pushToken o passTypeIdentifier para el cliente:', clienteId);
         return;
       }
 
-      const pushCommand = `curl -X POST \
+      // URL correcta para APNs
+      const pushCommand = `curl -v -X POST \
         --cert "${path.join(this.certsDir, 'pass.pem')}" \
         --key "${path.join(this.certsDir, 'pass.key')}" \
+        -H "apns-topic: ${clienteData.passTypeIdentifier}" \
         -H "Content-Type: application/json" \
-        -d '{"pushToken": "${clienteData.pushToken}"}' \
-        "https://api.push.apple.com/v1/pushPackages/${clienteData.passTypeIdentifier || 'pass.com.salondenails.loyalty'}"`;
+        --data '{"aps": {"content-available": 1}}' \
+        "https://api.push.apple.com/3/device/${clienteData.pushToken}"`;
 
       console.log('Ejecutando comando push:', pushCommand);
       
@@ -82,8 +74,9 @@ export class PushNotificationService {
       
       console.log('Respuesta de Apple:', stdout);
 
+      // Actualizar timestamp de última actualización
       await db.collection('clientes').doc(clienteId).update({
-        lastPassUpdate: new Date()
+        lastPassUpdate: firestore.Timestamp.now()
       });
 
       console.log('Notificación enviada exitosamente');
@@ -99,25 +92,15 @@ export class PushNotificationService {
     serialNumber: string
   ): Promise<void> {
     try {
-      console.log('Dando de baja dispositivo:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      });
+      await db.collection('deviceRegistrations')
+        .doc(deviceLibraryIdentifier)
+        .delete();
 
-      // Eliminar el registro del dispositivo
-      const deviceRegistrationRef = db
-        .collection('deviceRegistrations')
-        .doc(deviceLibraryIdentifier);
-
-      await deviceRegistrationRef.delete();
-
-      // Actualizar el documento del cliente
       const clienteRef = db.collection('clientes').doc(serialNumber);
       const clienteDoc = await clienteRef.get();
 
       if (clienteDoc.exists) {
-        const clienteData = clienteDoc.data();
+        const clienteData = clienteDoc.data() as ClienteData;
         if (clienteData?.deviceLibraryIdentifier === deviceLibraryIdentifier) {
           await clienteRef.update({
             pushToken: firestore.FieldValue.delete(),
