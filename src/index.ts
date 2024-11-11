@@ -1,86 +1,122 @@
 // src/index.ts
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import path from 'path';
-import { passController } from './controllers/passController';
+import passRoutes from './routes/passRoutes';
+import { db } from './config/firebase';
+import { PushNotificationService } from './services/pushNotificationService';
+
+dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 3001;
+const pushNotificationService = new PushNotificationService();
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://admin.leubeautylab.com',
+  'https://leu-beauty-frontend-efur7s2wv-julio-taveras-projects.vercel.app'
+];
+
+// Configurar CORS
+app.use(cors({
+  origin: function(origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'), false);
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'If-Modified-Since']
+}));
+
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Logging para debug
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log(`🔍 ${req.method} ${req.url}`);
+// Middleware para logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Body:', req.body);
+  }
+  next();
+});
+
+// Middleware para autenticación de pases de Apple Wallet
+app.use('/api/passes/v1', (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Authorization header required' });
+  }
   next();
 });
 
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas de Apple Wallet
-app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    try {
-      console.log('📱 Registro de dispositivo:', {
-        deviceId: req.params.deviceLibraryIdentifier,
-        passType: req.params.passTypeIdentifier,
-        serialNumber: req.params.serialNumber,
-        pushToken: req.body.pushToken
-      });
+// Rutas principales
+app.use('/api/passes', passRoutes);
 
-      await passController.registerDevice(req, res);
-    } catch (error) {
-      console.error('❌ Error en registro:', error);
-      res.status(500).send();
-    }
-});
+// Ruta para actualización de pases
+app.post('/api/push/update-pass', async (req, res) => {
+  const { clienteId } = req.body;
+  
+  if (!clienteId) {
+    return res.status(400).json({ error: 'ClienteId es requerido' });
+  }
 
-app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
-  async (req: Request, res: Response) => {
-    try {
-      console.log('🔍 Buscando actualizaciones:', req.params);
-      await passController.getSerialNumbers(req, res);
-    } catch (error) {
-      console.error('❌ Error buscando actualizaciones:', error);
-      res.status(500).send();
-    }
-});
-
-app.get('/passes/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    try {
-      console.log('📲 Solicitando pase:', req.params);
-      await passController.getLatestPass(req, res);
-    } catch (error) {
-      console.error('❌ Error obteniendo pase:', error);
-      res.status(500).send();
-    }
-});
-
-// Ruta para actualizar pase
-app.post('/api/push/update-pass', async (req: Request, res: Response) => {
   try {
-    const { clienteId } = req.body;
-    console.log('🔄 Actualizando pase para:', clienteId);
-    await passController.sendUpdateNotification(clienteId);
-    res.status(200).json({ success: true });
+    // Obtener datos del cliente
+    const clienteRef = db.collection('clientes').doc(clienteId);
+    const clienteSnap = await clienteRef.get();
+
+    if (!clienteSnap.exists) {
+      return res.status(404).json({ error: 'Cliente no encontrado' });
+    }
+
+    // Enviar notificación de actualización
+    await pushNotificationService.sendUpdateNotification(clienteId);
+    
+    res.status(200).json({ 
+      message: 'Notificación de actualización enviada correctamente',
+      timestamp: new Date().toISOString()
+    });
   } catch (error) {
-    console.error('❌ Error actualizando pase:', error);
-    res.status(500).json({ error: error instanceof Error ? error.message : 'Error desconocido' });
+    console.error('Error al enviar notificación de actualización:', error);
+    res.status(500).json({ 
+      error: 'Error al enviar notificación de actualización',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
-// Ruta de logs
-app.post('/log', (req: Request, res: Response) => {
-  console.log('📝 Log de dispositivo:', req.body);
-  res.status(200).send();
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV
+  });
 });
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`🚀 Servidor corriendo en puerto ${port}`));
+// Manejador de errores global
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Error no manejado:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
+  });
+});
+
+app.listen(port, () => {
+  console.log(`🚀 Server running on port ${port}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
+  console.log(`📁 Static files served from: ${path.join(__dirname, '../public/passes')}`);
+});
 
 export default app;
