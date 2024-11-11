@@ -43,45 +43,32 @@ export const passController = {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
-  
-      console.log('📱 Recibida solicitud de registro:', {
-        deviceId: deviceLibraryIdentifier,
-        passType: passTypeIdentifier,
-        serialNumber,
-        pushToken,
+
+      console.log('📱 Intento de registro:', {
+        device: deviceLibraryIdentifier,
+        pass: passTypeIdentifier,
+        serial: serialNumber,
+        token: pushToken,
         auth: req.headers.authorization
       });
-  
-      // Verificar autenticación
-      const authHeader = req.headers.authorization;
-      const token = authHeader?.split(' ')[1];
-  
-      if (!authHeader || !token || token !== serialNumber) {
-        console.error('❌ Error de autenticación:', {
-          hasHeader: !!authHeader,
-          token,
-          serialNumber
-        });
-        return res.status(401).send();
-      }
-  
+
       // Verificar que el cliente existe
       const clienteRef = db.collection('clientes').doc(serialNumber);
       const clienteDoc = await clienteRef.get();
-  
+
       if (!clienteDoc.exists) {
         console.error('❌ Cliente no encontrado:', serialNumber);
         return res.status(404).send();
       }
-  
-      // Usar el servicio de registro
+
+      // Registrar usando deviceRegistrationService
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
         pushToken,
         passTypeIdentifier,
         serialNumber
       });
-  
+
       console.log('✅ Dispositivo registrado exitosamente');
       res.status(201).send();
     } catch (error) {
@@ -94,29 +81,17 @@ export const passController = {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
 
-      console.log('🗑️ Dando de baja dispositivo:', {
-        deviceId: deviceLibraryIdentifier,
-        passType: passTypeIdentifier,
-        serialNumber
+      console.log('🗑️ Solicitud de baja de dispositivo:', {
+        device: deviceLibraryIdentifier,
+        pass: passTypeIdentifier,
+        serial: serialNumber
       });
 
-      // Eliminar registro del dispositivo
-      await db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).delete();
-
-      // Limpiar información del dispositivo en el cliente
-      const clienteRef = db.collection('clientes').doc(serialNumber);
-      const clienteDoc = await clienteRef.get();
-
-      if (clienteDoc.exists) {
-        const clienteData = clienteDoc.data();
-        if (clienteData?.deviceLibraryIdentifier === deviceLibraryIdentifier) {
-          await clienteRef.update({
-            pushToken: firestore.FieldValue.delete(),
-            deviceLibraryIdentifier: firestore.FieldValue.delete(),
-            passTypeIdentifier: firestore.FieldValue.delete()
-          });
-        }
-      }
+      await deviceRegistrationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
 
       console.log('✅ Dispositivo dado de baja exitosamente');
       res.status(200).send();
@@ -132,23 +107,20 @@ export const passController = {
       const passesUpdatedSince = req.query.passesUpdatedSince as string;
 
       console.log('🔍 Buscando actualizaciones:', {
-        deviceId: deviceLibraryIdentifier,
-        passType: passTypeIdentifier,
+        device: deviceLibraryIdentifier,
+        pass: passTypeIdentifier,
         since: passesUpdatedSince
       });
 
-      // Verificar registro del dispositivo
-      const deviceRegistration = await db
-        .collection('deviceRegistrations')
-        .doc(deviceLibraryIdentifier)
-        .get();
+      // Verificar que el dispositivo está registrado
+      const registration = await deviceRegistrationService.getDeviceRegistration(deviceLibraryIdentifier);
 
-      if (!deviceRegistration.exists) {
+      if (!registration) {
         console.log('❌ Dispositivo no registrado');
         return res.status(404).send();
       }
 
-      // Buscar pases actualizados
+      // Buscar clientes actualizados
       const query = db.collection('clientes')
         .where('passTypeIdentifier', '==', passTypeIdentifier);
 
@@ -175,8 +147,8 @@ export const passController = {
       const { passTypeIdentifier, serialNumber } = req.params;
       
       console.log('📲 Solicitando pase actualizado:', {
-        passType: passTypeIdentifier,
-        serialNumber
+        pass: passTypeIdentifier,
+        serial: serialNumber
       });
 
       const clienteDoc = await db
@@ -204,11 +176,16 @@ export const passController = {
     }
   },
 
-  sendUpdateNotification: async (clienteId: string): Promise<void> => {
+  sendUpdateNotification: async (req: Request, res: Response) => {
     try {
+      const { clienteId } = req.body;
+
+      if (!clienteId) {
+        return res.status(400).json({ error: 'ClienteId es requerido' });
+      }
+
       console.log('🔄 Iniciando actualización para cliente:', clienteId);
 
-      // Obtener datos del cliente
       const clienteRef = db.collection('clientes').doc(clienteId);
       const clienteDoc = await clienteRef.get();
 
@@ -221,14 +198,9 @@ export const passController = {
       // Buscar registro del dispositivo si no hay token
       if (!clienteData.pushToken) {
         console.log('🔍 Buscando registro de dispositivo...');
-        const registrations = await db
-          .collection('deviceRegistrations')
-          .where('serialNumber', '==', clienteId)
-          .limit(1)
-          .get();
+        const registration = await deviceRegistrationService.getDeviceRegistration(clienteId);
 
-        if (!registrations.empty) {
-          const registration = registrations.docs[0].data() as DeviceRegistration;
+        if (registration) {
           await clienteRef.update({
             pushToken: registration.pushToken,
             passTypeIdentifier: registration.passTypeIdentifier,
@@ -246,31 +218,16 @@ export const passController = {
 
       // Enviar notificación
       await pushNotificationService.sendUpdateNotification(clienteId);
+      
       console.log('✅ Notificación enviada exitosamente');
-
-    } catch (error) {
-      console.error('❌ Error enviando notificación:', error);
-      throw error;
-    }
-  },
-
-  handleUpdateNotification: async (req: Request, res: Response) => {
-    const { clienteId } = req.body;
-
-    if (!clienteId) {
-      return res.status(400).json({ error: 'ClienteId es requerido' });
-    }
-
-    try {
-      await passController.sendUpdateNotification(clienteId);
       res.status(200).json({ 
         message: 'Notificación enviada correctamente',
         timestamp: new Date().toISOString()
       });
     } catch (error) {
-      console.error('❌ Error en actualización:', error);
+      console.error('❌ Error enviando notificación:', error);
       res.status(500).json({ 
-        error: 'Error al actualizar pase',
+        error: 'Error al enviar notificación',
         details: error instanceof Error ? error.message : 'Error desconocido'
       });
     }

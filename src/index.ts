@@ -134,6 +134,9 @@ app.post('/api/push/update-pass', async (req, res) => {
   }
 });
 
+app.use('/api/v1/devices', walletAuthMiddleware, passRoutes);
+app.use('/api/v1/passes', walletAuthMiddleware, passRoutes);
+
 // Health check route
 app.get('/health', (req, res) => {
   res.json({ 
