@@ -1,11 +1,25 @@
 // src/index.ts
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction, Router } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { passController } from './controllers/passController';
 import passRoutes from './routes/passRoutes';
 import { db } from './config/firebase';
+
+interface Route {
+  path: string;
+  methods: string[];
+}
+
+interface RouterStack {
+  route?: {
+    path: string;
+    methods: {
+      [key: string]: boolean;
+    };
+  };
+}
 
 dotenv.config();
 
@@ -14,9 +28,7 @@ const port = process.env.PORT || 3001;
 
 // Configuración CORS
 app.use(cors({
-  origin: function(origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) {
-    callback(null, true); // Permitir todas las solicitudes por ahora para debugging
-  },
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'If-Modified-Since']
@@ -27,7 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logging middleware
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   console.log('Headers:', req.headers);
   if (req.body && Object.keys(req.body).length > 0) {
@@ -39,26 +51,23 @@ app.use((req, res, next) => {
 // Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Rutas principales de pases
-app.use('/api/passes', passRoutes);
-
-// Middleware de autenticación para las rutas de pases
-const authMiddleware = async (req: Request, res: Response, next: Function) => {
+// Middleware de autenticación para pases de Apple Wallet
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
+    console.log('Auth header:', authHeader);
+    
     if (!authHeader) {
       console.log('❌ No authorization header');
       return res.status(401).send();
     }
 
-    // El header debe ser "ApplePass <token>"
     const [scheme, token] = authHeader.split(' ');
     if (scheme !== 'ApplePass' || !token) {
       console.log('❌ Invalid authorization format');
       return res.status(401).send();
     }
 
-    // El token debe coincidir con el serialNumber del pase
     const serialNumber = req.params.serialNumber;
     if (serialNumber && token !== serialNumber) {
       console.log('❌ Token mismatch');
@@ -72,12 +81,14 @@ const authMiddleware = async (req: Request, res: Response, next: Function) => {
   }
 };
 
-// Aplicar autenticación a las rutas de pases
-app.use('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', authMiddleware);
-app.use('/passes/:passTypeIdentifier/:serialNumber', authMiddleware);
+// Rutas de la API web
+app.use('/api/passes', passRoutes);
 
-// Rutas para el webservice de pases (TODAS sin /api/ ni /v1/)
-app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+// Rutas de Apple Wallet
+const walletRouter = express.Router();
+
+walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  authMiddleware,
   async (req: Request, res: Response) => {
     console.log('📱 Recibida solicitud de registro:', {
       params: req.params,
@@ -87,7 +98,8 @@ app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:s
     await passController.registerDevice(req, res);
 });
 
-app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  authMiddleware,
   async (req: Request, res: Response) => {
     console.log('🗑️ Solicitando baja de dispositivo:', {
       params: req.params
@@ -95,7 +107,8 @@ app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/
     await passController.unregisterDevice(req, res);
 });
 
-app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+  authMiddleware,
   async (req: Request, res: Response) => {
     console.log('🔍 Buscando actualizaciones:', {
       params: req.params,
@@ -104,7 +117,8 @@ app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
     await passController.getSerialNumbers(req, res);
 });
 
-app.get('/passes/:passTypeIdentifier/:serialNumber',
+walletRouter.get('/passes/:passTypeIdentifier/:serialNumber',
+  authMiddleware,
   async (req: Request, res: Response) => {
     console.log('📲 Solicitando pase actualizado:', {
       params: req.params
@@ -112,22 +126,16 @@ app.get('/passes/:passTypeIdentifier/:serialNumber',
     await passController.getLatestPass(req, res);
 });
 
+// Montar las rutas de Apple Wallet
+app.use('/', walletRouter);
 
-app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    console.log('🗑️ Solicitando baja de dispositivo:', {
-      params: req.params
-    });
-    await passController.unregisterDevice(req, res);
-});
-
-// Ruta para logs (opcional pero útil para debugging)
+// Ruta de logs para Apple Wallet
 app.post('/log', (req: Request, res: Response) => {
   console.log('📝 Logs del dispositivo:', req.body);
   res.status(200).send();
 });
 
-// Ruta de actualización de pases existente
+// Ruta de actualización de pases
 app.post('/api/push/update-pass', async (req: Request, res: Response) => {
   const { clienteId } = req.body;
   
@@ -151,7 +159,7 @@ app.post('/api/push/update-pass', async (req: Request, res: Response) => {
 });
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
   res.json({ 
     status: 'OK',
     timestamp: new Date().toISOString(),
@@ -159,13 +167,36 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Debug route para ver todas las rutas registradas
+app.get('/debug/routes', (req: Request, res: Response) => {
+  const routes: Route[] = [];
+  
+  app._router.stack.forEach((middleware: RouterStack) => {
+    if(middleware.route){
+      routes.push({
+        path: middleware.route.path,
+        methods: Object.keys(middleware.route.methods)
+      });
+    }
+  });
+  
+  res.json(routes);
+});
+
 // Manejador de errores global
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Error no manejado:', err);
   res.status(500).json({ 
     error: 'Internal Server Error',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Algo salió mal'
   });
+});
+
+// Imprimir todas las rutas al iniciar
+app._router.stack.forEach((r: RouterStack) => {
+    if (r.route && r.route.path){
+        console.log(`${Object.keys(r.route.methods)} ${r.route.path}`);
+    }
 });
 
 app.listen(port, () => {
