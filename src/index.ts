@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-import { passRoutes, walletRoutes } from './routes/passRoutes';
+import passRoutes from './routes/passRoutes';
 import { db } from './config/firebase';
 import { PushNotificationService } from './services/pushNotificationService';
 
@@ -37,13 +37,24 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware para logging
+// Middleware de logging mejorado
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  console.log('Headers:', req.headers);
+  console.log('\n🔍 Nueva solicitud:');
+  console.log(`📍 ${req.method} ${req.url}`);
+  console.log('🔒 Auth:', req.headers.authorization || 'No auth header');
+  console.log('📄 Headers:', JSON.stringify(req.headers, null, 2));
+  
   if (req.body && Object.keys(req.body).length > 0) {
-    console.log('Body:', req.body);
+    console.log('📦 Body:', JSON.stringify(req.body, null, 2));
   }
+
+  // Capturar la respuesta
+  const oldSend = res.send;
+  res.send = function(data) {
+    console.log(`📤 Response Status: ${res.statusCode}`);
+    return oldSend.apply(res, arguments as any);
+  };
+
   next();
 });
 
@@ -52,20 +63,43 @@ app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
 // Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.log('🔐 Checking auth for:', req.method, req.path);
+  
+  // Ignorar auth para rutas específicas
+  if (req.path.includes('/generate') || req.path === '/health' || req.path === '/log') {
+    console.log('⏩ Skipping auth for exempt route');
+    return next();
+  }
+
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    console.log('❌ No authorization header provided');
-    return res.status(401).send();
+    console.log('❌ No authorization header for path:', req.path);
+    return res.status(401).send('Authorization required');
   }
-  console.log('✅ Auth header found:', authHeader);
+
+  // Validar formato del header (ApplePass TOKEN)
+  const [scheme, token] = authHeader.split(' ');
+  if (scheme !== 'ApplePass' || !token) {
+    console.log('❌ Invalid authorization format');
+    return res.status(401).send('Invalid authorization format');
+  }
+
+  console.log('✅ Valid auth header found');
   next();
 };
 
-// Rutas de generación de pases (sin autenticación)
+// Rutas de la API (sin autenticación)
 app.use('/api/passes', passRoutes);
 
-// Rutas de Wallet (con autenticación)
-app.use('/api/v1', walletAuthMiddleware, walletRoutes);
+// Rutas de Apple Wallet (con autenticación)
+app.use('/', walletAuthMiddleware, passRoutes);
+app.use('/api/v1', walletAuthMiddleware, passRoutes);
+
+// Ruta para logs de Apple Wallet
+app.post('/log', (req, res) => {
+  console.log('📱 Apple Wallet Log:', req.body);
+  res.status(200).send();
+});
 
 // Ruta para actualización de pases (sin autenticación)
 app.post('/api/push/update-pass', async (req, res) => {
@@ -121,6 +155,8 @@ app.listen(port, () => {
       const path = middleware.route.path;
       const methods = Object.keys(middleware.route.methods);
       console.log(`${methods.join(', ').toUpperCase()} ${path}`);
+    } else if (middleware.name === 'router') {
+      console.log('Router middleware:', middleware.regexp);
     }
   });
 });

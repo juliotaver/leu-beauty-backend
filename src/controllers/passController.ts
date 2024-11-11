@@ -43,50 +43,45 @@ export const passController = {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
-
-      console.log('📱 Registrando dispositivo:', {
+  
+      console.log('📱 Recibida solicitud de registro:', {
         deviceId: deviceLibraryIdentifier,
         passType: passTypeIdentifier,
         serialNumber,
-        pushToken
+        pushToken,
+        auth: req.headers.authorization
       });
-
+  
       // Verificar autenticación
       const authHeader = req.headers.authorization;
       const token = authHeader?.split(' ')[1];
-
+  
       if (!authHeader || !token || token !== serialNumber) {
-        console.error('❌ Error de autenticación');
+        console.error('❌ Error de autenticación:', {
+          hasHeader: !!authHeader,
+          token,
+          serialNumber
+        });
         return res.status(401).send();
       }
-
+  
       // Verificar que el cliente existe
       const clienteRef = db.collection('clientes').doc(serialNumber);
       const clienteDoc = await clienteRef.get();
-
+  
       if (!clienteDoc.exists) {
         console.error('❌ Cliente no encontrado:', serialNumber);
         return res.status(404).send();
       }
-
-      // Registrar dispositivo en Firestore
-      await db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).set({
+  
+      // Usar el servicio de registro
+      await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber,
         pushToken,
-        registeredAt: firestore.Timestamp.now(),
-        lastUpdated: firestore.Timestamp.now()
-      });
-
-      // Actualizar cliente con información del dispositivo
-      await clienteRef.update({
-        pushToken,
-        deviceLibraryIdentifier,
         passTypeIdentifier,
-        lastPassUpdate: firestore.Timestamp.now()
+        serialNumber
       });
-
+  
       console.log('✅ Dispositivo registrado exitosamente');
       res.status(201).send();
     } catch (error) {
