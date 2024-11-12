@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { passController } from './controllers/passController';
 import { db } from './config/firebase';
-import { firestore } from 'firebase-admin';
 import { PushNotificationService } from './services/pushNotificationService';
 import { deviceRegistrationService } from './services/deviceRegistrationService';
 
@@ -14,32 +13,6 @@ const app = express();
 const port = process.env.PORT || 3001;
 const walletRouter = Router();
 const pushNotificationService = new PushNotificationService();
-
-// Función para imprimir rutas
-function printRoutes(app: express.Application) {
-  console.log('\n🛣️  Rutas registradas:');
-  function print(path: string, layer: any) {
-    if (layer.route) {
-      layer.route.stack.forEach((stack: any) => {
-        console.log('%s %s', stack.method.toUpperCase(), path.concat(layer.route.path));
-      });
-    } else if (layer.name === 'router' && layer.handle.stack) {
-      layer.handle.stack.forEach((stack: any) => {
-        print(path.concat(layer.regexp.source.replace("^","").replace("/?(?=\\/|$)","").replace(/\\\//g, "/")), 
-              stack);
-      });
-    }
-  }
-  app._router.stack.forEach((layer: any) => {
-    print('', layer);
-  });
-}
-
-// Primero, añadimos un middleware para permitir puntos en las URLs
-app.use((req, res, next) => {
-  req.url = decodeURIComponent(req.url);
-  next();
-});
 
 // Configuración CORS
 app.use(cors({
@@ -52,19 +25,6 @@ app.use(cors({
 // Middlewares básicos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('🔍 Incoming Request:', {
-    originalUrl: req.originalUrl,
-    decodedUrl: decodeURIComponent(req.originalUrl),
-    method: req.method,
-    headers: {
-      host: req.headers.host,
-      authorization: req.headers.authorization ? 'Present' : 'None',
-    }
-  });
-  next();
-});
 
 // Middleware de logging
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -107,12 +67,12 @@ app.get('/health', (_, res) => {
   });
 });
 
-// Servir archivos estáticos
-app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
-
-// Middleware de autenticación para rutas de Apple Wallet
+// Middleware de autenticación
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.path === '/log') {
+  if (req.path === '/health' || 
+      req.path === '/log' || 
+      req.path.includes('/generate') || 
+      req.path.includes('/push/update-pass')) {
     return next();
   }
 
@@ -132,58 +92,76 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-// Configurar rutas de Apple Wallet
-walletRouter.use(authMiddleware);
-
-walletRouter.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('🎫 Wallet Route:', {
-    method: req.method,
-    originalUrl: req.originalUrl,
-    path: req.path,
-    params: req.params,
-    body: req.body
-  });
-  next();
-});
-
-// Modificamos cómo definimos las rutas del wallet
+// Wallet Routes
 walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('📱 DEBUG - Datos recibidos:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber,
-        pushToken: pushToken?.substring(0, 10) + '...'
+      console.log('📱 Procesando registro de dispositivo:', {
+        params: req.params,
+        body: {
+          ...req.body,
+          pushToken: pushToken?.substring(0, 10) + '...'
+        }
       });
 
-      // Validar que tenemos todos los datos necesarios
+      // Validaciones explícitas
       if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
-        console.error('❌ Faltan datos requeridos para el registro');
-        return res.status(400).send('Missing required parameters');
+        console.error('❌ Faltan datos requeridos:', {
+          deviceLibraryIdentifier: !!deviceLibraryIdentifier,
+          passTypeIdentifier: !!passTypeIdentifier,
+          serialNumber: !!serialNumber,
+          pushToken: !!pushToken
+        });
+        return res.status(400).json({ error: 'Missing required parameters' });
       }
 
-      await deviceRegistrationService.registerDevice({
-        deviceLibraryIdentifier,
-        pushToken,
-        passTypeIdentifier,
-        serialNumber
-      });
-
-      console.log('✅ Registro completado exitosamente');
-      return res.status(201).send();
+      // Intentar registro
+      try {
+        await deviceRegistrationService.registerDevice({
+          deviceLibraryIdentifier,
+          pushToken,
+          passTypeIdentifier,
+          serialNumber
+        });
+        console.log('✅ Registro completado');
+        return res.status(201).send();
+      } catch (regError) {
+        console.error('❌ Error en registerDevice:', regError);
+        return res.status(500).json({ 
+          error: 'Registration failed', 
+          details: regError instanceof Error ? regError.message : 'Unknown error'
+        });
+      }
     } catch (error) {
-      console.error('❌ Error en registro:', error);
-      console.error('Stack:', error instanceof Error ? error.stack : 'No stack available');
+      console.error('❌ Error general en handler:', error);
       return res.status(500).send();
     }
   }
 );
 
-walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)',
+walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+      
+      await deviceRegistrationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
+      
+      res.status(200).send();
+    } catch (error) {
+      console.error('❌ Error en unregister:', error);
+      res.status(500).send();
+    }
+  }
+);
+
+walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -208,26 +186,7 @@ walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdent
   }
 );
 
-walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)/:serialNumber',
-  async (req: Request, res: Response) => {
-    try {
-      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-      
-      await deviceRegistrationService.unregisterDevice(
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      );
-      
-      res.status(200).send();
-    } catch (error) {
-      console.error('❌ Error en unregister:', error);
-      res.status(500).send();
-    }
-  }
-);
-
-walletRouter.get('/passes/:passTypeIdentifier([^/]*?)/:serialNumber',
+walletRouter.get('/passes/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
@@ -244,40 +203,36 @@ walletRouter.post('/log', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
-// Montar las rutas de Wallet
-app.use('/v1', walletRouter);
+// Configuración de rutas
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
+app.use(authMiddleware);
 
 // Rutas de API
 app.post('/api/passes/generate', passController.generatePass);
+app.post('/api/push/update-pass', passController.sendUpdateNotification);
 
-app.post('/api/push/update-pass', async (req: Request, res: Response) => {
-  try {
-    const { clienteId } = req.body;
-    if (!clienteId) {
-      return res.status(400).json({ error: 'ClienteId requerido' });
-    }
-
-    await pushNotificationService.sendUpdateNotification(clienteId);
-    res.status(200).json({ 
-      success: true, 
-      message: 'Notificación enviada correctamente',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ 
-      error: 'Error interno',
-      details: error instanceof Error ? error.message : 'Error desconocido'
-    });
-  }
-});
-
-// Imprimir todas las rutas registradas
-printRoutes(app);
+// Montar rutas de Wallet
+app.use('/v1', walletRouter);
 
 // Iniciar servidor
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
   console.log('\n📍 Rutas disponibles:');
+  
+  const getRoutes = (stack: any[]): string[] => {
+    return stack.reduce((routes: string[], layer: any) => {
+      if (layer.route) {
+        const method = Object.keys(layer.route.methods)[0].toUpperCase();
+        routes.push(`${method} ${layer.route.path}`);
+      }
+      return routes;
+    }, []);
+  };
+
+  getRoutes(app._router.stack).sort().forEach(route => {
+    console.log(`${route}`);
+  });
 });
+
+export default app;
