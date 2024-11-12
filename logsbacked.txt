@@ -1,71 +1,9 @@
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /api/passes/generate
-📍 URL Base: 
-📍 Ruta: /api/passes/generate
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-  "content-length": "306",
-  "accept": "application/json",
-  "accept-encoding": "gzip, br",
-  "accept-language": "es,es-419;q=0.9,en;q=0.8,en-US;q=0.7,pl;q=0.6,pt;q=0.5",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e19009981ac524d-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "origin": "https://admin.leubeautylab.com",
-  "priority": "u=1, i",
-  "referer": "https://admin.leubeautylab.com/",
-  "render-proxy-ttl": "4",
-  "rndr-id": "ba23431e-4e38-42d0",
-  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
-  "sec-ch-ua-mobile": "?0",
-  "sec-ch-ua-platform": "\"macOS\"",
-  "sec-fetch-dest": "empty",
-  "sec-fetch-mode": "cors",
-  "sec-fetch-site": "same-site",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.69.164.136, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731440516309546"
-}
-📦 Body: {
-  "nombre": "stivo rome",
-  "email": "stivoer@gmail.com",
-  "telefono": "",
-  "visitas": 0,
-  "ultimaVisita": "2024-11-12T19:41:54.941Z",
-  "proximaRecompensa": "Postre Gratis",
-  "recompensasCanjeadas": [],
-  "id": "vpJn8lUQ175QSdPzkONP",
-  "lastPassUpdate": "2024-11-12T19:41:55.643Z",
-  "passTypeIdentifier": "pass.com.salondenails.loyalty"
-}
-===============================
-📝 Generando pase para: {
-  nombre: 'stivo rome',
-  email: 'stivoer@gmail.com',
-  telefono: '',
-  visitas: 0,
-  ultimaVisita: '2024-11-12T19:41:54.941Z',
-  proximaRecompensa: 'Postre Gratis',
-  recompensasCanjeadas: [],
-  id: 'vpJn8lUQ175QSdPzkONP',
-  lastPassUpdate: '2024-11-12T19:41:55.643Z',
-  passTypeIdentifier: 'pass.com.salondenails.loyalty'
-}
-🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP
+Creando directorio temporal: /opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT
 📝 Generando pass.json con webServiceURL: https://api.leubeautylab.com/v1
 📝 Escribiendo pass.json
 🖼️ Copiando recursos
 📋 Generando manifest.json
-📌 Hash para pass.json: 8c4b09854e872eeaa5d10552a8b44b0a260a0fd0
+📌 Hash para pass.json: 1fb1ed8805ff4727390649dd6431fb6b6e0993af
 📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
 📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
 📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
@@ -74,9 +12,87 @@
 ✅ Certificado encontrado: key
 ✅ Certificado encontrado: wwdr
 ✍️ Firmando el pase
-📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP/manifest.json" -out "/opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP/signature" -outform DER -binary
+📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT/manifest.json" -out "/opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT/signature" -outform DER -binary
 📦 Creando archivo .pkpass
-🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP" && zip -r "/opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP.pkpass" *
-✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731440516331-vpJn8lUQ175QSdPzkONP.pkpass (685254 bytes)
+🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT" && zip -r "/opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass" *
+✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass (685258 bytes)
 🧹 Directorio temporal limpiado
-📤 Respuesta [200]: {"passUrl":"/passes/1731440516331-vpJn8lUQ175QSdPzkONP.pkpass"}
+📤 Respuesta [200]: {"passUrl":"/passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass"}
+🔍 ====== Nueva Solicitud ======
+📍 Método: GET
+📍 URL Original: /passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass
+📍 URL Base: 
+📍 Ruta: /passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
+  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "accept-encoding": "gzip, br",
+  "accept-language": "en-US,en;q=0.9",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "13.52.186.123",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "US",
+  "cf-ray": "8e191de43228faa6-SJC",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIDllMjJhODE1NTJkMzc0M2QyY2FmZGYwNDZhMmY4ODFiMzYyZDkyMTY3NDY4ZDRiMTFiNGVkYzRiNmQ2NmIzYTE=;exp=1731442015",
+  "priority": "u=0, i",
+  "render-proxy-ttl": "4",
+  "rndr-id": "a6f0d315-51c8-4d6e",
+  "sec-fetch-dest": "document",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-site": "none",
+  "true-client-ip": "13.52.186.123",
+  "x-forwarded-for": "187.190.28.44,13.52.186.123, 172.68.174.52, 10.220.20.162",
+  "x-forwarded-host": "admin.leubeautylab.com",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731441715911412",
+  "x-vercel-forwarded-for": "187.190.28.44",
+  "x-vercel-id": "sfo1::tztdw-1731441715797-e46570d90c1d",
+  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
+  "x-vercel-proxied-for": "187.190.28.44",
+  "x-vercel-proxy-signature": "Bearer 9e22a81552d3743d2cafdf046a2f881b362d92167468d4b11b4edc4b6d66b3a1",
+  "x-vercel-proxy-signature-ts": "1731442015"
+}
+===============================
+🔍 ====== Nueva Solicitud ======
+📍 Método: GET
+📍 URL Original: /passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass
+📍 URL Base: 
+📍 Ruta: /passes/1731441698905-rgQaTkdtULYizKc5iMHT.pkpass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
+  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "accept-encoding": "gzip, br",
+  "accept-language": "en-US,en;q=0.9",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "13.52.220.80",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "US",
+  "cf-ray": "8e191df1158167f0-SJC",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGIxYTQ3YzVhNzc2ZWVjMzJkMGRkOTIwMmQ5YjYxM2MwYzRjODU2YmE5MjAyYjdiNjkzYmFkMjUwNzE2YjM0NzE=;exp=1731442017",
+  "priority": "u=0, i",
+  "render-proxy-ttl": "4",
+  "rndr-id": "2a94b496-2486-4a86",
+  "sec-fetch-dest": "document",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-site": "none",
+  "true-client-ip": "13.52.220.80",
+  "x-forwarded-for": "187.190.28.44,13.52.220.80, 172.68.174.251, 10.220.42.117",
+  "x-forwarded-host": "admin.leubeautylab.com",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731441717976823",
+  "x-vercel-forwarded-for": "187.190.28.44",
+  "x-vercel-id": "sfo1::lrrmv-1731441717822-7cb432f39b37",
+  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
+  "x-vercel-proxied-for": "187.190.28.44",
+  "x-vercel-proxy-signature": "Bearer b1a47c5a776eec32d0dd9202d9b613c0c4c856ba9202b7b693bad250716b3471",
+  "x-vercel-proxy-signature-ts": "1731442017"
+}
+===============================

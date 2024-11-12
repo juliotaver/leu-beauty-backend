@@ -4,13 +4,9 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
-
-// URL base según ambiente
 const BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://api.leubeautylab.com'
   : 'http://localhost:3001';
-
-console.log('🌐 Base URL configurada:', BASE_URL);
 
 interface ManifestData {
   [key: string]: string;
@@ -46,7 +42,7 @@ export class PassService {
         passTypeIdentifier: "pass.com.salondenails.loyalty",
         serialNumber: cliente.id,
         teamIdentifier: "C8PM27PK3X",
-        webServiceURL: `${BASE_URL}/v1`,  // URL base consistente
+        webServiceURL: `${BASE_URL}/v1`,
         authenticationToken: cliente.id,
         organizationName: "Leu Beauty",
         description: `Tarjeta de Fidelidad - ${cliente.nombre}`,
@@ -157,9 +153,9 @@ export class PassService {
         throw new Error('Failed to create .pkpass file');
       }
 
-      await fs.remove(passDir);
-      console.log('🧹 Directorio temporal limpiado');
+      // Opcional: aquí podrías eliminar `await fs.remove(passDir);` si deseas que el pase se conserve en el servidor.
 
+      console.log('🧹 Directorio temporal no eliminado para conservar pases.');
       return `/passes/${passId}.pkpass`;
     } catch (error) {
       console.error('Error in generatePass:', error);
