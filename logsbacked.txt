@@ -1,174 +1,80 @@
-🔍 ====== Nueva Solicitud ======
-📍 Método: GET
-📍 URL Original: /passes/1731383503538-niar4jvUzJaQpK51gKj7.pkpass
+====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /api/push/update-pass
 📍 URL Base: 
-📍 Ruta: /passes/1731383503538-niar4jvUzJaQpK51gKj7.pkpass
+📍 Ruta: /api/push/update-pass
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
   "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
-  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "content-length": "36",
+  "accept": "application/json",
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "54.67.100.87",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "US",
-  "cf-ray": "8e1393132084aab1-SJC",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGU3MTdmZmQ0N2YyYTU2Yjg5MmJjY2JhMzM1Mzg0MzQ4MTBkMDhlZjZhYmJlNmQxZDVlMTZjZGE0MTU2N2FhMzY=;exp=1731383901",
-  "priority": "u=0, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "dbd7f381-2f3c-4a77",
-  "sec-fetch-dest": "document",
-  "sec-fetch-mode": "navigate",
-  "sec-fetch-site": "none",
-  "true-client-ip": "54.67.100.87",
-  "x-forwarded-for": "187.190.28.44,54.67.100.87, 172.68.174.77, 10.220.159.198",
-  "x-forwarded-host": "admin.leubeautylab.com",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731383601181654",
-  "x-vercel-forwarded-for": "187.190.28.44",
-  "x-vercel-id": "sfo1::5ps2w-1731383601032-5e9f9c9e9659",
-  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
-  "x-vercel-proxied-for": "187.190.28.44",
-  "x-vercel-proxy-signature": "Bearer e717ffd47f2a56b892bccba33538434810d08ef6abbe6d1d5e16cda41567aa36",
-  "x-vercel-proxy-signature-ts": "1731383901"
-}
-===============================
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "80",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass niar4jvUzJaQpK51gKj7",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e139320e372521c-MEX",
+  "cf-ray": "8e13a762534f9a63-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
+  "origin": "https://admin.leubeautylab.com",
   "priority": "u=3, i",
+  "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "c0641e98-4d89-43e9",
+  "rndr-id": "11323631-658a-432a",
+  "sec-fetch-dest": "empty",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-site": "same-site",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.151.55, 10.220.42.117",
+  "x-forwarded-for": "187.190.28.44, 172.71.151.2, 10.220.42.117",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731383603418568"
+  "x-request-start": "1731384433132538"
 }
 📦 Body: {
-  "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
+  "clienteId": "H9Z4kFDOrTX3GHdqoHWf"
 }
 ===============================
-✅ Valid auth for: /v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-🔍 ====== Nueva Solicitud ======
-📍 Método: DELETE
-📍 URL Original: /v1/v1/devices/5809e5c896c6be45cadfd2e803f1ebc8/registrations/pass.com.salondenails.loyalty/TESQbveiBTf7BsSCsr3u
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/5809e5c896c6be45cadfd2e803f1ebc8/registrations/pass.com.salondenails.loyalty/TESQbveiBTf7BsSCsr3u
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass TESQbveiBTf7BsSCsr3u",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e139320e7445216-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "bdccf287-f529-4ef2",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.190, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731383603421553"
+🔄 Iniciando actualización para cliente: H9Z4kFDOrTX3GHdqoHWf
+📄 Datos del cliente: {
+  "recompensasCanjeadas": [],
+  "nombre": "stebe amgesp",
+  "email": "stebeamps2@gmail.com",
+  "telefono": "",
+  "proximaRecompensa": "Postre Gratis",
+  "fechaRegistro": {
+    "_seconds": 1731384355,
+    "_nanoseconds": 247000000
+  },
+  "ultimaVisita": {
+    "_seconds": 1731384432,
+    "_nanoseconds": 135000000
+  },
+  "lastPassUpdate": {
+    "_seconds": 1731384432,
+    "_nanoseconds": 135000000
+  },
+  "visitas": 1
 }
-===============================
-✅ Valid auth for: /v1/devices/5809e5c896c6be45cadfd2e803f1ebc8/registrations/pass.com.salondenails.loyalty/TESQbveiBTf7BsSCsr3u
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "80",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass niar4jvUzJaQpK51gKj7",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e13932216389a59-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "86acb3ed-9f03-47d7",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.121, 10.220.159.198",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731383603602066"
+🔍 Token no encontrado en cliente, buscando en registros...
+❌ No se encontró registro de dispositivo para el cliente: H9Z4kFDOrTX3GHdqoHWf
+❌ Error en sendUpdateNotification: Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
+    at Generator.next (<anonymous>)
+    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Error details: {
+  message: 'Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado',
+  stack: 'Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado\n' +
+    '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)\n' +
+    '    at Generator.next (<anonymous>)\n' +
+    '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
 }
-📦 Body: {
-  "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
-}
-===============================
-✅ Valid auth for: /v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "80",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass niar4jvUzJaQpK51gKj7",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e139323772d9a59-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "2ba85663-8c2f-46f1",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.153, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731383603818268"
-}
-📦 Body: {
-  "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
-}
-===============================
-✅ Valid auth for: /v1/devices/4f794997a0a95ddbd5120e1228a8a454/registrations/pass.com.salondenails.loyalty/niar4jvUzJaQpK51gKj7
+Error: Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
+    at Generator.next (<anonymous>)
+    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+📤 Respuesta [500]: {"error":"Error interno","details":"Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado"}

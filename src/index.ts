@@ -103,13 +103,16 @@ walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIden
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('📱 Registrando dispositivo:', {
-        device: deviceLibraryIdentifier,
-        pass: passTypeIdentifier,
-        serial: serialNumber,
-        token: pushToken
+      console.log('🔍 DEBUG - Intento de registro:', {
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber,
+        pushToken: pushToken?.substring(0, 10) + '...',
+        headers: req.headers,
+        path: req.path
       });
 
+      // Registrar usando deviceRegistrationService
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
         pushToken,
@@ -120,7 +123,8 @@ walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIden
       console.log('✅ Dispositivo registrado exitosamente');
       res.status(201).send();
     } catch (error) {
-      console.error('❌ Error en registro:', error);
+      console.error('❌ Error detallado en registro:', error);
+      console.error('Stack:', error instanceof Error ? error.stack : 'No stack available');
       res.status(500).send();
     }
   }
