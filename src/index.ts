@@ -6,7 +6,6 @@ import { passController } from './controllers/passController';
 import { db } from './config/firebase';
 import { PushNotificationService } from './services/pushNotificationService';
 import { deviceRegistrationService } from './services/deviceRegistrationService';
-import fs from 'fs';
 
 dotenv.config();
 
@@ -49,7 +48,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Ruta raíz
+// Rutas públicas
 app.get('/', (_, res) => {
   res.json({ 
     status: 'OK',
@@ -59,7 +58,6 @@ app.get('/', (_, res) => {
   });
 });
 
-// Ruta de health check
 app.get('/health', (_, res) => {
   res.json({ 
     status: 'OK', 
@@ -67,11 +65,12 @@ app.get('/health', (_, res) => {
   });
 });
 
-// 1. Servir archivos estáticos desde /public/passes
+// 1. Servir archivos estáticos
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Middleware de autenticación para rutas de Wallet
+// 2. Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  // Saltar autenticación para logs
   if (req.path === '/log') {
     return next();
   }
@@ -92,31 +91,21 @@ const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) =
   next();
 };
 
-// Middleware de debugging para rutas de Wallet
-app.use('/v1', walletAuthMiddleware, (req: Request, res: Response, next: NextFunction) => {
-  console.log('🎯 Wallet Route Debug:', {
-    fullPath: req.originalUrl,
-    path: req.path,
-    method: req.method,
-    params: req.params,
-    baseUrl: req.baseUrl
-  });
-  next();
-});
+// Aplicar autenticación solo a las rutas de /v1
+app.use('/v1', walletAuthMiddleware);
 
-// Rutas de Wallet directamente definidas
+// 3. Definir rutas de Wallet
 app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('📱 Registro de dispositivo:', {
+      console.log('📱 DEBUG - Registration attempt:', {
         params: req.params,
-        body: {
-          ...req.body,
-          pushToken: req.body.pushToken?.substring(0, 10) + '...'
-        }
+        body: req.body,
+        url: req.url,
+        originalUrl: req.originalUrl
       });
 
       if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
@@ -199,7 +188,7 @@ app.post('/v1/log', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
-// 5. Rutas de API (sin autenticación)
+// 4. Rutas de API (sin autenticación)
 app.post('/api/passes/generate', passController.generatePass);
 app.post('/api/push/update-pass', passController.sendUpdateNotification);
 
