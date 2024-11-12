@@ -105,20 +105,21 @@ app.use('/v1', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // 4. Rutas de Wallet directamente definidas
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
+app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
-      console.log('🎯 Direct Route Debug:', {
-        fullPath: req.originalUrl,
-        params: req.params,
-        body: req.body
-      });
-
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
+      console.log('📱 DEBUG - Registration attempt:', {
+        params: req.params,
+        body: req.body,
+        url: req.url,
+        originalUrl: req.originalUrl
+      });
+
       if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
-        console.error('❌ Faltan datos requeridos:', {
+        console.error('❌ Missing required parameters:', {
           deviceLibraryIdentifier: !!deviceLibraryIdentifier,
           passTypeIdentifier: !!passTypeIdentifier,
           serialNumber: !!serialNumber,
@@ -134,38 +135,28 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
         serialNumber
       });
 
-      console.log('✅ Registro completado exitosamente');
       return res.status(201).send();
     } catch (error) {
-      console.error('❌ Error en registro:', error);
-      return res.status(500).json({
-        error: 'Registration failed',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
+      console.error('❌ Registration error:', error);
+      return res.status(500).send('Registration failed');
     }
   }
 );
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
+app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-      
-      await deviceRegistrationService.unregisterDevice(
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      );
-      
-      res.status(200).send();
+      await deviceRegistrationService.unregisterDevice(deviceLibraryIdentifier, passTypeIdentifier, serialNumber);
+      return res.status(200).send();
     } catch (error) {
-      console.error('❌ Error en unregister:', error);
-      res.status(500).send();
+      console.error('❌ Unregister error:', error);
+      return res.status(500).send();
     }
   }
 );
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)',
+app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -190,7 +181,7 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier(
   }
 );
 
-app.get('/v1/passes/:passTypeIdentifier([^/]+)/:serialNumber',
+app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
