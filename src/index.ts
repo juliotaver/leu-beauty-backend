@@ -19,27 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Logging middleware
-// Middleware de logging mejorado
-app.use((req, res, next) =>  {
-  console.log('\n🔍 ====== Nueva Solicitud ======');
-  console.log(`📍 Método: ${req.method}`);
-  console.log(`📍 URL Original: ${req.originalUrl}`);
-  console.log(`📍 URL Base: ${req.baseUrl}`);
-  console.log(`📍 Ruta: ${req.path}`);
-  console.log('📍 Parámetros:', req.params);
-  console.log('🔒 Headers:', JSON.stringify(req.headers, null, 2));
-  if (req.body && Object.keys(req.body).length > 0) {
-    console.log('📦 Body:', JSON.stringify(req.body, null, 2));
-  }
-  console.log('===============================\n');
-
-  // Capturar la respuesta con tipado correcto
-  const oldSend = res.send;
-  res.send = function(body: any) {
-    console.log(`📤 Respuesta [${res.statusCode}]:`, body);
-    return oldSend.call(res, body);
-  } as any;
-
+app.use((req, res, next) => {
+  console.log(`🔍 ${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+  if (req.body) console.log('Body:', req.body);
   next();
 });
 
@@ -56,17 +39,26 @@ app.post('/log', (req, res) => {
 // Ruta de generación de pases (sin auth)
 app.post('/api/passes/generate', passController.generatePass);
 
-// Middleware de autenticación
-const authMiddleware = (req: Request, res: Response, next: Function) => {
-  if (req.path.includes('/generate') || req.path.includes('/push/update-pass')) {
+// Middleware de autenticación para rutas de Wallet
+const walletAuthMiddleware = (req: Request, res: Response, next: Function) => {
+  // No requerir autenticación para la ruta de logs
+  if (req.path.includes('/log')) {
     return next();
   }
 
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('ApplePass ')) {
+  if (!authHeader) {
+    console.log('❌ No authorization header for:', req.path);
     return res.status(401).send();
   }
 
+  const [scheme, token] = authHeader.split(' ');
+  if (scheme !== 'ApplePass') {
+    console.log('❌ Invalid auth scheme:', scheme);
+    return res.status(401).send();
+  }
+
+  console.log('✅ Valid auth for:', req.path);
   next();
 };
 
@@ -100,7 +92,7 @@ const walletEndpoints = [
 
 // Montar las rutas de Wallet con el prefijo correcto
 walletEndpoints.forEach(endpoint => {
-  const handler = [authMiddleware, endpoint.handler];
+  const handler = [walletAuthMiddleware, endpoint.handler];
   // Montar en /v1
   (app as any)[endpoint.method](`/v1${endpoint.path}`, ...handler);
   // También montar en /api/v1 si es necesario

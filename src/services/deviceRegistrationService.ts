@@ -42,20 +42,36 @@ export class DeviceRegistrationService {
     serialNumber: string
   ): Promise<void> {
     try {
-      // Eliminar registro de deviceRegistrations
-      await db.collection('deviceRegistrations').doc(deviceLibraryIdentifier).delete();
-
-      // Limpiar información del dispositivo en el cliente
-      await db.collection('clientes').doc(serialNumber).update({
-        pushToken: firestore.FieldValue.delete(),
-        deviceLibraryIdentifier: firestore.FieldValue.delete(),
-        passTypeIdentifier: firestore.FieldValue.delete()
-      });
-
-      console.log('Dispositivo dado de baja exitosamente');
+      console.log('🗑️ Eliminando registro de dispositivo:', deviceLibraryIdentifier);
+  
+      // Primero verificar si existe el documento del cliente
+      const clienteDoc = await db.collection('clientes').doc(serialNumber).get();
+      
+      if (clienteDoc.exists) {
+        await clienteDoc.ref.update({
+          pushToken: firestore.FieldValue.delete(),
+          deviceLibraryIdentifier: firestore.FieldValue.delete(),
+          passTypeIdentifier: firestore.FieldValue.delete()
+        });
+        console.log('✅ Información de dispositivo eliminada del cliente');
+      } else {
+        console.log('⚠️ Cliente no encontrado, continuando con eliminación del registro');
+      }
+  
+      // Eliminar el registro del dispositivo si existe
+      const deviceRef = db.collection('deviceRegistrations').doc(deviceLibraryIdentifier);
+      const deviceDoc = await deviceRef.get();
+  
+      if (deviceDoc.exists) {
+        await deviceRef.delete();
+        console.log('✅ Registro de dispositivo eliminado');
+      } else {
+        console.log('⚠️ Registro de dispositivo no encontrado');
+      }
     } catch (error) {
-      console.error('Error dando de baja dispositivo:', error);
-      throw error;
+      console.error('❌ Error dando de baja dispositivo:', error);
+      // No lanzar el error, solo loggearlo
+      console.log('⚠️ Continuando a pesar del error');
     }
   }
 
