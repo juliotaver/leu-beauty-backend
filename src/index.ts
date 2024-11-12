@@ -50,7 +50,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  // Saltar autenticación para logs
   if (req.path === '/log') {
     return next();
   }
@@ -93,10 +92,10 @@ app.post('/api/passes/generate', passController.generatePass);
 app.post('/api/push/update-pass', passController.sendUpdateNotification);
 
 // Rutas de Wallet (con autenticación)
-app.use('/v1', walletAuthMiddleware);  // Aplicar autenticación solo a rutas /v1
 
-// Definir las rutas de Wallet
+// Registrar dispositivo
 app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+  walletAuthMiddleware,
   async (req: Request, res: Response) => {
     try {
       console.log('📱 Registro de dispositivo:', {
@@ -125,7 +124,9 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
   }
 );
 
+// Eliminar dispositivo
 app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+  walletAuthMiddleware,
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -138,7 +139,9 @@ app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifi
   }
 );
 
+// Obtener registros de dispositivos
 app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
+  walletAuthMiddleware,
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -163,7 +166,9 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
   }
 );
 
+// Obtener pase específico
 app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
+  walletAuthMiddleware,
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
@@ -175,6 +180,7 @@ app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
   }
 );
 
+// Log para Apple Wallet
 app.post('/v1/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
