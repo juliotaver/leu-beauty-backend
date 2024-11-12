@@ -40,7 +40,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   console.log('===============================\n');
 
   const oldSend = res.send;
-  res.send = function(body: any) {
+  res.send = function (body: any) {
     console.log(`📤 Respuesta [${res.statusCode}]:`, body);
     return oldSend.call(res, body);
   } as any;
@@ -66,11 +66,10 @@ app.get('/health', (_, res) => {
   });
 });
 
-// Rutas que no requieren autenticación
-app.post('/api/passes/generate', passController.generatePass);
-app.post('/api/push/update-pass', passController.sendUpdateNotification);
+// 1. Primero las rutas estáticas
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// Middleware de autenticación para rutas de Wallet
+// 2. Middleware de autenticación para rutas de Wallet
 const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Saltar autenticación para logs
   if (req.path === '/log') {
@@ -93,8 +92,20 @@ const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) =
   next();
 };
 
-// Aplicar autenticación solo a las rutas /v1
+// Aplicar el middleware de autenticación solo a las rutas /v1
 app.use('/v1', walletAuthMiddleware);
+
+// 3. Middleware de debugging para rutas de Wallet
+app.use('/v1', (req: Request, res: Response, next: NextFunction) => {
+  console.log('🎯 Wallet Route Debug:', {
+    fullPath: req.originalUrl,
+    path: req.path,
+    method: req.method,
+    params: req.params,
+    baseUrl: req.baseUrl
+  });
+  next();
+});
 
 // Rutas de Wallet directamente definidas
 app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
@@ -120,8 +131,8 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
 
       return res.status(201).send();
     } catch (error) {
-      console.error('❌ Error en registro de dispositivo:', error);
-      return res.status(500).send('Registration failed');
+      console.error('❌ Error en registro:', error);
+      return res.status(500).send();
     }
   }
 );
@@ -133,7 +144,7 @@ app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifi
       await deviceRegistrationService.unregisterDevice(deviceLibraryIdentifier, passTypeIdentifier, serialNumber);
       return res.status(200).send();
     } catch (error) {
-      console.error('❌ Error en anulación de registro:', error);
+      console.error('❌ Error en unregister:', error);
       return res.status(500).send();
     }
   }
@@ -150,7 +161,7 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
         .where('deviceLibraryIdentifier', '==', deviceLibraryIdentifier)
         .get();
 
-      const serialNumbers = clientesSnapshot.docs.map(doc => doc.id);
+      const serialNumbers = clientesSnapshot.docs.map((doc) => doc.id);
 
       if (serialNumbers.length > 0) {
         res.json({ serialNumbers });
@@ -181,12 +192,16 @@ app.post('/v1/log', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
+// Rutas de API (sin autenticación)
+app.post('/api/passes/generate', passController.generatePass);
+app.post('/api/push/update-pass', passController.sendUpdateNotification);
+
 // Iniciar servidor
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
   console.log('\n📍 Rutas disponibles:');
-
+  
   const getRoutes = (stack: any[]): string[] => {
     return stack.reduce((routes: string[], layer: any) => {
       if (layer.route) {

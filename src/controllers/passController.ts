@@ -1,4 +1,5 @@
 // src/controllers/passController.ts
+
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
 import { firestore } from 'firebase-admin';
