@@ -1,63 +1,3 @@
-
-==> Running 'npm start'
-> loyalty-backend@1.0.0 start
-> node dist/index.js
-🔥 Inicializando DeviceRegistrationService
-🔍 Verificando colección: deviceRegistrations
-🚀 Server running on port 3001
-🌍 Environment: production
-📍 Rutas disponibles:
-DELETE /v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber
-GET /
-GET /health
-GET /v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
-GET /v1/passes/:passTypeIdentifier/:serialNumber
-POST /api/passes/generate
-POST /api/push/update-pass
-POST /v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber
-POST /v1/log
-==> Your service is live 🎉
-🔍 ====== Nueva Solicitud ======
-📍 Método: HEAD
-📍 URL Original: /
-📍 URL Base: 
-📍 Ruta: /
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "Go-http-client/1.1"
-}
-===============================
-📤 Respuesta [200]: {"status":"OK","message":"Leu Beauty Lab API","version":"1.0.0","environment":"production"}
-🔍 ====== Nueva Solicitud ======
-📍 Método: GET
-📍 URL Original: /
-📍 URL Base: 
-📍 Ruta: /
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "leu-beauty-api.onrender.com",
-  "user-agent": "Go-http-client/2.0",
-  "accept-encoding": "gzip, br",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "34.83.194.43",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "US",
-  "cf-ray": "8e1950d16702deec-SEA",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "render-proxy-ttl": "4",
-  "rndr-id": "28e2ba05-e8ff-49eb",
-  "true-client-ip": "34.83.194.43",
-  "x-forwarded-for": "34.83.194.43, 162.158.41.159, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731443801859502"
-}
-===============================
-📤 Respuesta [200]: {"status":"OK","message":"Leu Beauty Lab API","version":"1.0.0","environment":"production"}
-✅ Prueba de escritura exitosa
-📖 Prueba de lectura: exitosa
-🧹 Prueba de eliminación exitosa
 🔍 ====== Nueva Solicitud ======
 📍 Método: POST
 📍 URL Original: /api/passes/generate
@@ -67,7 +7,7 @@ POST /v1/log
 🔒 Headers: {
   "host": "api.leubeautylab.com",
   "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-  "content-length": "307",
+  "content-length": "314",
   "accept": "application/json",
   "accept-encoding": "gzip, br",
   "accept-language": "es,es-419;q=0.9,en;q=0.8,en-US;q=0.7,pl;q=0.6,pt;q=0.5",
@@ -75,7 +15,7 @@ POST /v1/log
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e19517aa1e79e2b-MEX",
+  "cf-ray": "8e19bf4770735266-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
@@ -83,7 +23,7 @@ POST /v1/log
   "priority": "u=1, i",
   "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "9a94821d-907e-42da",
+  "rndr-id": "097beeca-d2de-461e",
   "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
   "sec-ch-ua-mobile": "?0",
   "sec-ch-ua-platform": "\"macOS\"",
@@ -91,55 +31,75 @@ POST /v1/log
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-site",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.68.174.253, 10.220.42.117",
+  "x-forwarded-for": "187.190.28.44, 172.69.164.157, 10.220.20.162",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731443828984854"
+  "x-request-start": "1731448326531751"
 }
 📦 Body: {
-  "nombre": "mando dooo",
-  "email": "mandodoo@gmail.com",
+  "nombre": "adrian marcii",
+  "email": "adrianmarcic@gmail.com",
   "telefono": "",
   "visitas": 0,
-  "ultimaVisita": "2024-11-12T20:37:08.036Z",
+  "ultimaVisita": "2024-11-12T21:52:05.476Z",
   "proximaRecompensa": "Postre Gratis",
   "recompensasCanjeadas": [],
-  "id": "0akuCD3ZiRm9Qyny0T1I",
-  "lastPassUpdate": "2024-11-12T20:37:08.512Z",
+  "id": "dOUMtEuqJnc3U8SSY1xl",
+  "lastPassUpdate": "2024-11-12T21:52:05.888Z",
   "passTypeIdentifier": "pass.com.salondenails.loyalty"
 }
 ===============================
 📝 Generando pase para: {
-  nombre: 'mando dooo',
-  email: 'mandodoo@gmail.com',
+  nombre: 'adrian marcii',
+  email: 'adrianmarcic@gmail.com',
   telefono: '',
   visitas: 0,
-  ultimaVisita: '2024-11-12T20:37:08.036Z',
+  ultimaVisita: '2024-11-12T21:52:05.476Z',
   proximaRecompensa: 'Postre Gratis',
   recompensasCanjeadas: [],
-  id: '0akuCD3ZiRm9Qyny0T1I',
-  lastPassUpdate: '2024-11-12T20:37:08.512Z',
+  id: 'dOUMtEuqJnc3U8SSY1xl',
+  lastPassUpdate: '2024-11-12T21:52:05.888Z',
   passTypeIdentifier: 'pass.com.salondenails.loyalty'
 }
-🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I
-📝 Generando pass.json con webServiceURL: https://api.leubeautylab.com/v1
-📝 Escribiendo pass.json
-🖼️ Copiando recursos
-📋 Generando manifest.json
-📌 Hash para pass.json: f221a85dedfa6293efef46fbb47d1809e3cbdb43
-📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
-📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
-📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
-🔐 Verificando certificados
-✅ Certificado encontrado: signer
-✅ Certificado encontrado: key
-✅ Certificado encontrado: wwdr
-✍️ Firmando el pase
-📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I/manifest.json" -out "/opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I/signature" -outform DER -binary
-📦 Creando archivo .pkpass
-🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I" && zip -r "/opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I.pkpass" *
-✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I.pkpass (685255 bytes)
-🧹 Directorio temporal no eliminado para conservar pases.
-📤 Respuesta [200]: {"passUrl":"/passes/1731443829020-0akuCD3ZiRm9Qyny0T1I.pkpass"}
+📤 Respuesta [200]: {"passUrl":"/passes/1731448326540-dOUMtEuqJnc3U8SSY1xl.pkpass"}
+🔍 ====== Nueva Solicitud ======
+📍 Método: GET
+📍 URL Original: /passes/1731448326540-dOUMtEuqJnc3U8SSY1xl.pkpass
+📍 URL Base: 
+📍 Ruta: /passes/1731448326540-dOUMtEuqJnc3U8SSY1xl.pkpass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
+  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "accept-encoding": "gzip, br",
+  "accept-language": "en-US,en;q=0.9",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "13.57.40.0",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "US",
+  "cf-ray": "8e19c00f850c2364-SJC",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGU4ZGJkODg3YTMwNDY5Nzc1MDU0ODZiZmYyZDM3YWIwZDdhZjg5NjVkZDQ4YjVjNDdmZWZhZGEwMTZjODA3NGI=;exp=1731448658",
+  "priority": "u=0, i",
+  "render-proxy-ttl": "4",
+  "rndr-id": "f3caef27-8950-4c8f",
+  "sec-fetch-dest": "document",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-site": "none",
+  "true-client-ip": "13.57.40.0",
+  "x-forwarded-for": "187.190.28.44,13.57.40.0, 172.68.174.222, 10.220.20.162",
+  "x-forwarded-host": "admin.leubeautylab.com",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731448358362979",
+  "x-vercel-forwarded-for": "187.190.28.44",
+  "x-vercel-id": "sfo1::mwbtq-1731448358177-192f0ca51eaa",
+  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
+  "x-vercel-proxied-for": "187.190.28.44",
+  "x-vercel-proxy-signature": "Bearer e8dbd887a3046977505486bff2d37ab0d7af8965dd48b5c47fefada016c8074b",
+  "x-vercel-proxy-signature-ts": "1731448658"
+}
+===============================
 🔍 ====== Nueva Solicitud ======
 📍 Método: GET
 📍 URL Original: /passes/1731443829020-0akuCD3ZiRm9Qyny0T1I.pkpass
@@ -153,29 +113,80 @@ POST /v1/log
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "54.193.50.240",
+  "cf-connecting-ip": "3.101.16.110",
   "cf-ew-via": "15",
   "cf-ipcountry": "US",
-  "cf-ray": "8e1951c724c42700-SJC",
+  "cf-ray": "8e19c010122096d8-SJC",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
-  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIDVjNDk5YmY0MTFjMzJkZjQ5OTNmNWY4NjZkZGNmNjgyYjQzNjkyMjdhMjRlOTA1NWY0YzRhMTgzYzRkMzU5OTg=;exp=1731444141",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGU4ZGJkODg3YTMwNDY5Nzc1MDU0ODZiZmYyZDM3YWIwZDdhZjg5NjVkZDQ4YjVjNDdmZWZhZGEwMTZjODA3NGI=;exp=1731448658",
   "priority": "u=0, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "c6326259-4031-4813",
+  "rndr-id": "9cd1ecef-064b-4a1d",
   "sec-fetch-dest": "document",
   "sec-fetch-mode": "navigate",
-  "sec-fetch-site": "none",
-  "true-client-ip": "54.193.50.240",
-  "x-forwarded-for": "187.190.28.44,54.193.50.240, 172.68.174.7, 10.220.159.198",
+  "sec-fetch-site": "cross-site",
+  "true-client-ip": "3.101.16.110",
+  "x-forwarded-for": "187.190.28.44,3.101.16.110, 172.68.174.209, 10.220.20.162",
   "x-forwarded-host": "admin.leubeautylab.com",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731443841180816",
+  "x-request-start": "1731448358453175",
   "x-vercel-forwarded-for": "187.190.28.44",
-  "x-vercel-id": "sfo1::fcdfs-1731443841076-b9abd519d4dd",
+  "x-vercel-id": "sfo1::clhnx-1731448358360-6dcac4ba9142",
   "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
   "x-vercel-proxied-for": "187.190.28.44",
-  "x-vercel-proxy-signature": "Bearer 5c499bf411c32df4993f5f866ddcf682b4369227a24e9055f4c4a183c4d35998",
-  "x-vercel-proxy-signature-ts": "1731444141"
+  "x-vercel-proxy-signature": "Bearer e8dbd887a3046977505486bff2d37ab0d7af8965dd48b5c47fefada016c8074b",
+  "x-vercel-proxy-signature-ts": "1731448658"
 }
 ===============================
+🔍 ====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /api/push/update-pass
+📍 URL Base: 
+📍 Ruta: /api/push/update-pass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+  "content-length": "36",
+  "accept": "application/json",
+  "accept-encoding": "gzip, br",
+  "accept-language": "es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "45.90.222.113",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "CA",
+  "cf-ray": "8e19c0eb2064ba15-SEA",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "content-type": "application/json",
+  "origin": "https://admin.leubeautylab.com",
+  "priority": "u=1, i",
+  "referer": "https://admin.leubeautylab.com/",
+  "render-proxy-ttl": "4",
+  "rndr-id": "8bf0ae19-6f4e-421e",
+  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+  "sec-ch-ua-mobile": "?1",
+  "sec-ch-ua-platform": "\"Android\"",
+  "sec-fetch-dest": "empty",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-site": "same-site",
+  "true-client-ip": "45.90.222.113",
+  "x-forwarded-for": "45.90.222.113, 162.158.42.80, 10.220.20.162",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731448393499059"
+}
+📦 Body: {
+  "clienteId": "dOUMtEuqJnc3U8SSY1xl"
+}
+===============================
+🔄 Iniciando actualización para cliente: dOUMtEuqJnc3U8SSY1xl
+🔍 Buscando registro de dispositivo...
+🔍 Buscando registros para cliente: dOUMtEuqJnc3U8SSY1xl
+⚠️ No se encontró registro para el cliente: dOUMtEuqJnc3U8SSY1xl
+❌ Error enviando notificación: Error: Cliente dOUMtEuqJnc3U8SSY1xl no tiene token push registrado
+    at /opt/render/project/src/dist/controllers/passController.js:170:23
+    at Generator.next (<anonymous>)
+    at fulfilled (/opt/render/project/src/dist/controllers/passController.js:6:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+📤 Respuesta [500]: {"error":"Error al enviar notificación","details":"Cliente dOUMtEuqJnc3U8SSY1xl no tiene token push registrado"}
