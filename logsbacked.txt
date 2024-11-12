@@ -1,22 +1,71 @@
+====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /api/passes/generate
+📍 URL Base: 
+📍 Ruta: /api/passes/generate
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+  "content-length": "308",
+  "accept": "application/json",
+  "accept-encoding": "gzip, br",
+  "accept-language": "es,es-419;q=0.9,en;q=0.8,en-US;q=0.7,pl;q=0.6,pt;q=0.5",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "187.190.28.44",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "MX",
+  "cf-ray": "8e18f26564c29e2d-MEX",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "content-type": "application/json",
+  "origin": "https://admin.leubeautylab.com",
+  "priority": "u=1, i",
+  "referer": "https://admin.leubeautylab.com/",
+  "render-proxy-ttl": "4",
+  "rndr-id": "83af93ea-bcda-447d",
+  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-ch-ua-platform": "\"macOS\"",
+  "sec-fetch-dest": "empty",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-site": "same-site",
+  "true-client-ip": "187.190.28.44",
+  "x-forwarded-for": "187.190.28.44, 172.69.164.137, 10.220.159.198",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731439934529917"
+}
+📦 Body: {
+  "nombre": "marcos ruiz",
+  "email": "marcosrr@gmail.com",
+  "telefono": "",
+  "visitas": 0,
+  "ultimaVisita": "2024-11-12T19:32:13.098Z",
+  "proximaRecompensa": "Postre Gratis",
+  "recompensasCanjeadas": [],
+  "id": "cRDGJS9ZRtmaRWP1IMzx",
+  "lastPassUpdate": "2024-11-12T19:32:13.813Z",
+  "passTypeIdentifier": "pass.com.salondenails.loyalty"
+}
 ===============================
 📝 Generando pase para: {
-  nombre: 'talent test',
-  email: 'talent@test.com',
+  nombre: 'marcos ruiz',
+  email: 'marcosrr@gmail.com',
   telefono: '',
   visitas: 0,
-  ultimaVisita: '2024-11-12T18:45:13.709Z',
+  ultimaVisita: '2024-11-12T19:32:13.098Z',
   proximaRecompensa: 'Postre Gratis',
   recompensasCanjeadas: [],
-  id: 'z9xhCQQtMLHv7noao0Rt',
-  lastPassUpdate: '2024-11-12T18:45:14.404Z',
+  id: 'cRDGJS9ZRtmaRWP1IMzx',
+  lastPassUpdate: '2024-11-12T19:32:13.813Z',
   passTypeIdentifier: 'pass.com.salondenails.loyalty'
 }
-🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt
+🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx
 📝 Generando pass.json con webServiceURL: https://api.leubeautylab.com/v1
 📝 Escribiendo pass.json
 🖼️ Copiando recursos
 📋 Generando manifest.json
-📌 Hash para pass.json: 7e5dbc155e4553da54b30ae49855bfdedcc475f1
+📌 Hash para pass.json: 44e270e913c5cb1e58ddc2bd06b0421fde6d31db
 📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
 📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
 📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
@@ -25,48 +74,9 @@
 ✅ Certificado encontrado: key
 ✅ Certificado encontrado: wwdr
 ✍️ Firmando el pase
-📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt/manifest.json" -out "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt/signature" -outform DER -binary
+📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx/manifest.json" -out "/opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx/signature" -outform DER -binary
 📦 Creando archivo .pkpass
-🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt" && zip -r "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass" *
-✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass (685252 bytes)
+🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx" && zip -r "/opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx.pkpass" *
+✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx.pkpass (685255 bytes)
 🧹 Directorio temporal limpiado
-📤 Respuesta [200]: {"passUrl":"/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass"}
-🔍 ====== Nueva Solicitud ======
-📍 Método: GET
-📍 URL Original: /passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass
-📍 URL Base: 
-📍 Ruta: /passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
-  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "54.219.67.206",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "US",
-  "cf-ray": "8e18ae9466fffa9a-SJC",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGYzOTBkNDg4ODZlZTU4MTVlMmQxMWI2MzZjNjVhODI2ZTE5OWEzZmM2ZTM2MDMyZThmYmYzMDgzMzczOTU5ODU=;exp=1731437456",
-  "priority": "u=0, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "9aee7aa9-139b-4c22",
-  "sec-fetch-dest": "document",
-  "sec-fetch-mode": "navigate",
-  "sec-fetch-site": "none",
-  "true-client-ip": "54.219.67.206",
-  "x-forwarded-for": "187.190.28.44,54.219.67.206, 172.68.174.75, 10.220.20.162",
-  "x-forwarded-host": "admin.leubeautylab.com",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731437156593745",
-  "x-vercel-forwarded-for": "187.190.28.44",
-  "x-vercel-id": "sfo1::ntc5g-1731437156477-5bfba5adc0d2",
-  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
-  "x-vercel-proxied-for": "187.190.28.44",
-  "x-vercel-proxy-signature": "Bearer f390d48886ee5815e2d11b636c65a826e199a3fc6e36032e8fbf308337395985",
-  "x-vercel-proxy-signature-ts": "1731437456"
-}
-===============================
+📤 Respuesta [200]: {"passUrl":"/passes/1731439934618-cRDGJS9ZRtmaRWP1IMzx.pkpass"}
