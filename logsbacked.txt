@@ -1,14 +1,8 @@
-Incoming Request: {
-  originalUrl: '/passes/1731431021144-hSD38KliqgpKwQ0bavoM.pkpass',
-  decodedUrl: '/passes/1731431021144-hSD38KliqgpKwQ0bavoM.pkpass',
-  method: 'GET',
-  headers: { host: 'api.leubeautylab.com', authorization: 'None' }
-}
-🔍 ====== Nueva Solicitud ======
+ ====== Nueva Solicitud ======
 📍 Método: GET
-📍 URL Original: /passes/1731431021144-hSD38KliqgpKwQ0bavoM.pkpass
+📍 URL Original: /passes/1731431783591-QXNokKMEFntEJE6GzmYU.pkpass
 📍 URL Base: 
-📍 Ruta: /passes/1731431021144-hSD38KliqgpKwQ0bavoM.pkpass
+📍 Ruta: /passes/1731431783591-QXNokKMEFntEJE6GzmYU.pkpass
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
@@ -17,86 +11,37 @@ Incoming Request: {
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "3.101.23.163",
+  "cf-connecting-ip": "54.153.39.118",
   "cf-ew-via": "15",
   "cf-ipcountry": "US",
-  "cf-ray": "8e18199b75d5ce68-SJC",
+  "cf-ray": "8e182c4b935f15b0-SJC",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
-  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGQ3OWM5NzUyZWI3Y2ZiMDgyMzQwMzJlZDI1YjhhZTcxMzVhZWJjMmZlYzM1ODQ0MmQ3NDgyZjBiNzc5NTNhY2E=;exp=1731431354",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGM4ZGQ1NWVkYzE4NTQxZjQyZGQyMmNlZjM5YzE0YmNhOWE1NmIwM2NiZGQwNDI4ODljMzcxOWU2MTI3MmE2YzA=;exp=1731432119",
   "priority": "u=0, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "a7145363-2c73-4f5f",
+  "rndr-id": "b169de4e-320b-436b",
   "sec-fetch-dest": "document",
   "sec-fetch-mode": "navigate",
   "sec-fetch-site": "none",
-  "true-client-ip": "3.101.23.163",
-  "x-forwarded-for": "187.190.28.44,3.101.23.163, 172.68.174.53, 10.220.20.162",
+  "true-client-ip": "54.153.39.118",
+  "x-forwarded-for": "187.190.28.44,54.153.39.118, 172.68.174.9, 10.220.20.162",
   "x-forwarded-host": "admin.leubeautylab.com",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731431054677898",
+  "x-request-start": "1731431820139659",
   "x-vercel-forwarded-for": "187.190.28.44",
-  "x-vercel-id": "sfo1::r7cr7-1731431054541-f432890b067f",
+  "x-vercel-id": "sfo1::dkwrl-1731431819947-9b97737dbf9f",
   "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
   "x-vercel-proxied-for": "187.190.28.44",
-  "x-vercel-proxy-signature": "Bearer d79c9752eb7cfb08234032ed25b8ae7135aebc2fec358442d7482f0b77953aca",
-  "x-vercel-proxy-signature-ts": "1731431354"
+  "x-vercel-proxy-signature": "Bearer c8dd55edc18541f42dd22cef39c14bca9a56b03cbdd042889c3719e61272a6c0",
+  "x-vercel-proxy-signature-ts": "1731432119"
 }
 ===============================
-🔍 Incoming Request: {
-  originalUrl: '/v1/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn',
-  decodedUrl: '/v1/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn',
-  method: 'DELETE',
-  headers: { host: 'api.leubeautylab.com', authorization: 'Present' }
-}
-🔍 ====== Nueva Solicitud ======
-📍 Método: DELETE
-📍 URL Original: /v1/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass boPbaDJn0uH827zYNhkn",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e1819a741989e2d-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "19a4b381-3c86-4e24",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.116, 10.220.159.198",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731431056663607"
-}
-===============================
-✅ Valid auth for: /v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn
-🎫 Wallet Route: {
-  method: 'DELETE',
-  originalUrl: '/v1/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn',
-  path: '/v1/devices/81588f4a3684e312f6953c62c83a62d3/registrations/pass.com.salondenails.loyalty/boPbaDJn0uH827zYNhkn',
-  params: {},
-  body: {}
-}
-🔍 Incoming Request: {
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  decodedUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  method: 'POST',
-  headers: { host: 'api.leubeautylab.com', authorization: 'Present' }
-}
 🔍 ====== Nueva Solicitud ======
 📍 Método: POST
-📍 URL Original: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 URL Original: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 URL Base: 
-📍 Ruta: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 Ruta: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
@@ -105,91 +50,33 @@ Incoming Request: {
   "accept": "*/*",
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass hSD38KliqgpKwQ0bavoM",
+  "authorization": "ApplePass QXNokKMEFntEJE6GzmYU",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e1819a756ed9a54-MEX",
+  "cf-ray": "8e182c5737269e2d-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
   "priority": "u=3, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "dd59b4f7-822b-4a48",
+  "rndr-id": "b2d384ac-b808-4497",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.162, 10.220.20.162",
+  "x-forwarded-for": "187.190.28.44, 172.71.151.101, 10.220.20.162",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731431056675923"
+  "x-request-start": "1731431822006184"
 }
 📦 Body: {
   "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
 }
 ===============================
-✅ Valid auth for: /v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
-🎫 Wallet Route: {
-  method: 'POST',
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  path: '/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  params: {},
-  body: {
-    pushToken: '4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879'
-  }
-}
-🔍 Incoming Request: {
-  originalUrl: '/v1/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB',
-  decodedUrl: '/v1/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB',
-  method: 'DELETE',
-  headers: { host: 'api.leubeautylab.com', authorization: 'Present' }
-}
-🔍 ====== Nueva Solicitud ======
-📍 Método: DELETE
-📍 URL Original: /v1/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass 4duSGa1ltMGlTOYtM2PB",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e1819a732639a5d-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "7a24938c-1e7e-4406",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.69.164.156, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731431056783195"
-}
-===============================
-✅ Valid auth for: /v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB
-🎫 Wallet Route: {
-  method: 'DELETE',
-  originalUrl: '/v1/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB',
-  path: '/v1/devices/51566d28ad196ddfd8be458a95f20ef8/registrations/pass.com.salondenails.loyalty/4duSGa1ltMGlTOYtM2PB',
-  params: {},
-  body: {}
-}
-🔍 Incoming Request: {
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  decodedUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  method: 'POST',
-  headers: { host: 'api.leubeautylab.com', authorization: 'Present' }
-}
+✅ Valid auth for: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 🔍 ====== Nueva Solicitud ======
 📍 Método: POST
-📍 URL Original: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 URL Original: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 URL Base: 
-📍 Ruta: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 Ruta: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
@@ -198,48 +85,33 @@ Incoming Request: {
   "accept": "*/*",
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass hSD38KliqgpKwQ0bavoM",
+  "authorization": "ApplePass QXNokKMEFntEJE6GzmYU",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e1819a933b89a4d-MEX",
+  "cf-ray": "8e182c5852ea5266-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
   "priority": "u=3, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "a5f9ce5a-6bd3-464d",
+  "rndr-id": "ec9d3649-5005-4f54",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.48, 10.220.20.162",
+  "x-forwarded-for": "187.190.28.44, 172.71.151.92, 10.220.20.162",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731431056926035"
+  "x-request-start": "1731431822210176"
 }
 📦 Body: {
   "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
 }
 ===============================
-✅ Valid auth for: /v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
-🎫 Wallet Route: {
-  method: 'POST',
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  path: '/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  params: {},
-  body: {
-    pushToken: '4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879'
-  }
-}
-🔍 Incoming Request: {
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  decodedUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  method: 'POST',
-  headers: { host: 'api.leubeautylab.com', authorization: 'Present' }
-}
+✅ Valid auth for: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 🔍 ====== Nueva Solicitud ======
 📍 Método: POST
-📍 URL Original: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 URL Original: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 URL Base: 
-📍 Ruta: /v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📍 Ruta: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
@@ -248,34 +120,25 @@ Incoming Request: {
   "accept": "*/*",
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass hSD38KliqgpKwQ0bavoM",
+  "authorization": "ApplePass QXNokKMEFntEJE6GzmYU",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e1819aa97655247-MEX",
+  "cf-ray": "8e182c59812b0695-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
   "priority": "u=3, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "b4af4f5e-3e7b-4087",
+  "rndr-id": "11b3641e-fde3-4d8b",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.150.46, 10.220.20.162",
+  "x-forwarded-for": "187.190.28.44, 172.71.151.108, 10.220.159.198",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731431057124139"
+  "x-request-start": "1731431822403704"
 }
 📦 Body: {
   "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
 }
 ===============================
-✅ Valid auth for: /v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
-🎫 Wallet Route: {
-  method: 'POST',
-  originalUrl: '/v1/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  path: '/v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM',
-  params: {},
-  body: {
-    pushToken: '4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879'
-  }
-}
+✅ Valid auth for: /v1/v1/devices/b25f3016f567073a3790ba65870c30ad/registrations/pass.com.salondenails.loyalty/QXNokKMEFntEJE6GzmYU
