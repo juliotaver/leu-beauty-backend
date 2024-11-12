@@ -15,6 +15,26 @@ const port = process.env.PORT || 3001;
 const walletRouter = Router();
 const pushNotificationService = new PushNotificationService();
 
+// Función para imprimir rutas
+function printRoutes(app: express.Application) {
+  console.log('\n🛣️  Rutas registradas:');
+  function print(path: string, layer: any) {
+    if (layer.route) {
+      layer.route.stack.forEach((stack: any) => {
+        console.log('%s %s', stack.method.toUpperCase(), path.concat(layer.route.path));
+      });
+    } else if (layer.name === 'router' && layer.handle.stack) {
+      layer.handle.stack.forEach((stack: any) => {
+        print(path.concat(layer.regexp.source.replace("^","").replace("/?(?=\\/|$)","").replace(/\\\//g, "/")), 
+              stack);
+      });
+    }
+  }
+  app._router.stack.forEach((layer: any) => {
+    print('', layer);
+  });
+}
+
 // Configuración CORS
 app.use(cors({
   origin: '*',
@@ -95,6 +115,17 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
 // Configurar rutas de Apple Wallet
 walletRouter.use(authMiddleware);
+
+walletRouter.use((req: Request, res: Response, next: NextFunction) => {
+  console.log('🎫 Wallet Route:', {
+    method: req.method,
+    originalUrl: req.originalUrl,
+    path: req.path,
+    params: req.params,
+    body: req.body
+  });
+  next();
+});
 
 // Rutas de Apple Wallet
 walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
@@ -219,25 +250,12 @@ app.post('/api/push/update-pass', async (req: Request, res: Response) => {
   }
 });
 
+// Imprimir todas las rutas registradas
+printRoutes(app);
+
 // Iniciar servidor
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
   console.log('\n📍 Rutas disponibles:');
-  
-  const getRoutes = (stack: any[]): string[] => {
-    return stack.reduce((routes: string[], layer: any) => {
-      if (layer.route) {
-        const method = Object.keys(layer.route.methods)[0].toUpperCase();
-        routes.push(`${method} ${layer.route.path}`);
-      }
-      return routes;
-    }, []);
-  };
-
-  getRoutes(app._router.stack).sort().forEach(route => {
-    console.log(`${route}`);
-  });
 });
-
-export default app;

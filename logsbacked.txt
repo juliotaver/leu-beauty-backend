@@ -1,80 +1,82 @@
-====== Nueva Solicitud ======
+🔍 ====== Nueva Solicitud ======
 📍 Método: POST
-📍 URL Original: /api/push/update-pass
+📍 URL Original: /api/passes/generate
 📍 URL Base: 
-📍 Ruta: /api/push/update-pass
+📍 Ruta: /api/passes/generate
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
-  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
-  "content-length": "36",
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+  "content-length": "305",
   "accept": "application/json",
   "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
+  "accept-language": "es,es-419;q=0.9,en;q=0.8,en-US;q=0.7,pl;q=0.6,pt;q=0.5",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e13a762534f9a63-MEX",
+  "cf-ray": "8e13b997e34c9e2d-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
   "origin": "https://admin.leubeautylab.com",
-  "priority": "u=3, i",
+  "priority": "u=1, i",
   "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "11323631-658a-432a",
+  "rndr-id": "6745176d-19b2-4705",
+  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-ch-ua-platform": "\"macOS\"",
   "sec-fetch-dest": "empty",
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-site",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.71.151.2, 10.220.42.117",
+  "x-forwarded-for": "187.190.28.44, 172.71.150.139, 10.220.42.117",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731384433132538"
+  "x-request-start": "1731385178966316"
 }
 📦 Body: {
-  "clienteId": "H9Z4kFDOrTX3GHdqoHWf"
+  "nombre": "marcos test",
+  "email": "test@marcos.com",
+  "telefono": "",
+  "visitas": 0,
+  "ultimaVisita": "2024-11-12T04:19:37.672Z",
+  "proximaRecompensa": "Postre Gratis",
+  "recompensasCanjeadas": [],
+  "id": "boPbaDJn0uH827zYNhkn",
+  "lastPassUpdate": "2024-11-12T04:19:38.444Z",
+  "passTypeIdentifier": "pass.com.salondenails.loyalty"
 }
 ===============================
-🔄 Iniciando actualización para cliente: H9Z4kFDOrTX3GHdqoHWf
-📄 Datos del cliente: {
-  "recompensasCanjeadas": [],
-  "nombre": "stebe amgesp",
-  "email": "stebeamps2@gmail.com",
-  "telefono": "",
-  "proximaRecompensa": "Postre Gratis",
-  "fechaRegistro": {
-    "_seconds": 1731384355,
-    "_nanoseconds": 247000000
-  },
-  "ultimaVisita": {
-    "_seconds": 1731384432,
-    "_nanoseconds": 135000000
-  },
-  "lastPassUpdate": {
-    "_seconds": 1731384432,
-    "_nanoseconds": 135000000
-  },
-  "visitas": 1
+📝 Generando pase para: {
+  nombre: 'marcos test',
+  email: 'test@marcos.com',
+  telefono: '',
+  visitas: 0,
+  ultimaVisita: '2024-11-12T04:19:37.672Z',
+  proximaRecompensa: 'Postre Gratis',
+  recompensasCanjeadas: [],
+  id: 'boPbaDJn0uH827zYNhkn',
+  lastPassUpdate: '2024-11-12T04:19:38.444Z',
+  passTypeIdentifier: 'pass.com.salondenails.loyalty'
 }
-🔍 Token no encontrado en cliente, buscando en registros...
-❌ No se encontró registro de dispositivo para el cliente: H9Z4kFDOrTX3GHdqoHWf
-❌ Error en sendUpdateNotification: Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado
-    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
-    at Generator.next (<anonymous>)
-    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-Error details: {
-  message: 'Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado',
-  stack: 'Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado\n' +
-    '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)\n' +
-    '    at Generator.next (<anonymous>)\n' +
-    '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
-    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
-}
-Error: Error: Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado
-    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
-    at Generator.next (<anonymous>)
-    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-📤 Respuesta [500]: {"error":"Error interno","details":"Cliente H9Z4kFDOrTX3GHdqoHWf no tiene token push o identificador de pase registrado"}
+🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn
+📝 Generando pass.json con webServiceURL: https://api.leubeautylab.com/v1
+📝 Escribiendo pass.json
+🖼️ Copiando recursos
+📋 Generando manifest.json
+📌 Hash para pass.json: 20a7ff06d43d7f9368d45b6f0171e29eb6af2c09
+📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
+📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
+📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
+🔐 Verificando certificados
+✅ Certificado encontrado: signer
+✅ Certificado encontrado: key
+✅ Certificado encontrado: wwdr
+✍️ Firmando el pase
+📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn/manifest.json" -out "/opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn/signature" -outform DER -binary
+📦 Creando archivo .pkpass
+🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn" && zip -r "/opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn.pkpass" *
+✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731385178979-boPbaDJn0uH827zYNhkn.pkpass (685256 bytes)
+🧹 Directorio temporal limpiado
+📤 Respuesta [200]: {"passUrl":"/passes/1731385178979-boPbaDJn0uH827zYNhkn.pkpass"}

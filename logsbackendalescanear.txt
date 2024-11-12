@@ -15,7 +15,7 @@
   "cf-connecting-ip": "45.90.222.113",
   "cf-ew-via": "15",
   "cf-ipcountry": "CA",
-  "cf-ray": "8e1394cfd05e308d-SEA",
+  "cf-ray": "8e13bd3a14532dab-YVR",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
@@ -23,7 +23,7 @@
   "priority": "u=1, i",
   "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "ed12f742-b953-4955",
+  "rndr-id": "765d7986-c531-4541",
   "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
   "sec-ch-ua-mobile": "?1",
   "sec-ch-ua-platform": "\"Android\"",
@@ -31,53 +31,53 @@
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-site",
   "true-client-ip": "45.90.222.113",
-  "x-forwarded-for": "45.90.222.113, 172.71.147.179, 10.220.20.162",
+  "x-forwarded-for": "45.90.222.113, 172.68.174.24, 10.220.20.162",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731383672317170"
+  "x-request-start": "1731385327728473"
 }
 📦 Body: {
-  "clienteId": "niar4jvUzJaQpK51gKj7"
+  "clienteId": "boPbaDJn0uH827zYNhkn"
 }
 ===============================
-🔄 Iniciando actualización para cliente: niar4jvUzJaQpK51gKj7
+🔄 Iniciando actualización para cliente: boPbaDJn0uH827zYNhkn
 📄 Datos del cliente: {
   "recompensasCanjeadas": [],
-  "nombre": "figo perro",
-  "email": "figoperro@gmail.com",
+  "nombre": "marcos test",
+  "email": "test@marcos.com",
   "telefono": "",
   "proximaRecompensa": "Postre Gratis",
   "fechaRegistro": {
-    "_seconds": 1731383502,
-    "_nanoseconds": 42000000
+    "_seconds": 1731385177,
+    "_nanoseconds": 673000000
   },
   "ultimaVisita": {
-    "_seconds": 1731383671,
-    "_nanoseconds": 256000000
+    "_seconds": 1731385326,
+    "_nanoseconds": 806000000
   },
   "lastPassUpdate": {
-    "_seconds": 1731383671,
-    "_nanoseconds": 256000000
+    "_seconds": 1731385326,
+    "_nanoseconds": 806000000
   },
   "visitas": 1
 }
 🔍 Token no encontrado en cliente, buscando en registros...
-❌ No se encontró registro de dispositivo para el cliente: niar4jvUzJaQpK51gKj7
-❌ Error en sendUpdateNotification: Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado
+❌ No se encontró registro de dispositivo para el cliente: boPbaDJn0uH827zYNhkn
+❌ Error en sendUpdateNotification: Error: Cliente boPbaDJn0uH827zYNhkn no tiene token push o identificador de pase registrado
     at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
 Error details: {
-  message: 'Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado',
-  stack: 'Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado\n' +
-📤 Respuesta [500]: {"error":"Error interno","details":"Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado"}
+  message: 'Cliente boPbaDJn0uH827zYNhkn no tiene token push o identificador de pase registrado',
+  stack: 'Error: Cliente boPbaDJn0uH827zYNhkn no tiene token push o identificador de pase registrado\n' +
     '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)\n' +
     '    at Generator.next (<anonymous>)\n' +
     '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
 }
-Error: Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado
+Error: Error: Cliente boPbaDJn0uH827zYNhkn no tiene token push o identificador de pase registrado
     at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+📤 Respuesta [500]: {"error":"Error interno","details":"Cliente boPbaDJn0uH827zYNhkn no tiene token push o identificador de pase registrado"}
