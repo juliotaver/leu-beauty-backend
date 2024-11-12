@@ -5,65 +5,94 @@ import { DeviceRegistration } from '../types';
 export class DeviceRegistrationService {
   private readonly COLLECTION_NAME = 'deviceRegistrations';
 
-  // En deviceRegistrationService.ts, modificar el método registerDevice
-async registerDevice(registration: Omit<DeviceRegistration, 'lastUpdated'>): Promise<void> {
-  try {
-    console.log('🔄 START registerDevice:', {
-      deviceId: registration.deviceLibraryIdentifier,
-      serialNumber: registration.serialNumber,
-      token: registration.pushToken?.substring(0, 10) + '...'
-    });
-
-    // Verificar que la colección existe
-    const collectionRef = db.collection(this.COLLECTION_NAME);
-    console.log('📁 Colección a usar:', this.COLLECTION_NAME);
-
-    const registrationId = `${registration.deviceLibraryIdentifier}-${registration.serialNumber}`;
-    console.log('🔑 ID de registro generado:', registrationId);
-
-    // Intentar crear la colección si no existe
-    try {
-      const testDoc = await collectionRef.doc('test').get();
-      if (!testDoc.exists) {
-        await collectionRef.doc('test').set({ test: true });
-        await collectionRef.doc('test').delete();
-      }
-    } catch (error) {
-      console.error('⚠️ Error verificando colección:', error);
-    }
-
-    // Crear el documento
-    const registrationData = {
-      ...registration,
-      lastUpdated: firestore.Timestamp.now()
-    };
-
-    console.log('💾 Intentando guardar documento...');
-    await collectionRef.doc(registrationId).set(registrationData);
-    console.log('✅ Documento guardado exitosamente');
-
-    // Verificar que se guardó
-    const savedDoc = await collectionRef.doc(registrationId).get();
-    console.log('📄 Documento guardado:', savedDoc.exists ? savedDoc.data() : 'No encontrado');
-
-    // Actualizar cliente
-    console.log('🔄 Actualizando cliente...');
-    await db.collection('clientes').doc(registration.serialNumber).update({
-      pushToken: registration.pushToken,
-      deviceLibraryIdentifier: registration.deviceLibraryIdentifier,
-      passTypeIdentifier: registration.passTypeIdentifier,
-      lastUpdated: firestore.Timestamp.now()
-    });
-
-    console.log('✅ Registro completado exitosamente');
-  } catch (error) {
-    console.error('❌ ERROR en registerDevice:', {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
-    });
-    throw error;
+  constructor() {
+    console.log('🔥 Inicializando DeviceRegistrationService');
+    // Test de conexión al iniciar
+    this.testConnection();
   }
-}
+
+  private async testConnection() {
+    try {
+      console.log('🔄 Probando conexión a Firestore...');
+      await db.collection(this.COLLECTION_NAME).doc('_test_').set({
+        test: true,
+        timestamp: firestore.Timestamp.now()
+      });
+      console.log('✅ Conexión a Firestore exitosa');
+      await db.collection(this.COLLECTION_NAME).doc('_test_').delete();
+    } catch (error) {
+      console.error('❌ Error conectando a Firestore:', error);
+    }
+  }
+
+  async registerDevice(registration: Omit<DeviceRegistration, 'lastUpdated'>): Promise<void> {
+    try {
+      console.log('🔄 START registerDevice:', {
+        deviceId: registration.deviceLibraryIdentifier,
+        serialNumber: registration.serialNumber,
+        token: registration.pushToken?.substring(0, 10) + '...'
+      });
+
+      // Test de escritura
+      const registrationId = `${registration.deviceLibraryIdentifier}-${registration.serialNumber}`;
+      console.log('📝 Intentando escribir documento:', registrationId);
+
+      const registrationData = {
+        ...registration,
+        lastUpdated: firestore.Timestamp.now(),
+        _debug: {
+          timestamp: firestore.Timestamp.now(),
+          attemptId: Math.random().toString(36).substring(7)
+        }
+      };
+
+      // Intentar guardar
+      await db.collection(this.COLLECTION_NAME)
+        .doc(registrationId)
+        .set(registrationData, { merge: true });
+
+      console.log('✅ Documento guardado exitosamente');
+
+      // Verificar que se guardó
+      const savedDoc = await db.collection(this.COLLECTION_NAME)
+        .doc(registrationId)
+        .get();
+
+      if (savedDoc.exists) {
+        console.log('📄 Documento verificado:', savedDoc.data());
+      } else {
+        console.error('❌ Documento no se guardó correctamente');
+        throw new Error('Document not saved');
+      }
+
+      // Actualizar cliente
+      await db.collection('clientes')
+        .doc(registration.serialNumber)
+        .update({
+          pushToken: registration.pushToken,
+          deviceLibraryIdentifier: registration.deviceLibraryIdentifier,
+          passTypeIdentifier: registration.passTypeIdentifier,
+          lastUpdated: firestore.Timestamp.now()
+        });
+
+      console.log('✅ Cliente actualizado exitosamente');
+    } catch (error) {
+      console.error('❌ Error en registerDevice:', error);
+      // Log más detallado del error
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+          registration: {
+            ...registration,
+            pushToken: '***redacted***'
+          }
+        });
+      }
+      throw error;
+    }
+  }
 
   async unregisterDevice(
     deviceLibraryIdentifier: string,
