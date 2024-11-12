@@ -1,11 +1,12 @@
-// src/index.ts
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { passController } from './controllers/passController';
 import { db } from './config/firebase';
+import { firestore } from 'firebase-admin';
 import { PushNotificationService } from './services/pushNotificationService';
+import { deviceRegistrationService } from './services/deviceRegistrationService';
 
 dotenv.config();
 
@@ -39,7 +40,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
   console.log('===============================\n');
 
-  // Capturar la respuesta con tipado correcto
+  // Capturar la respuesta
   const oldSend = res.send;
   res.send = function(body: any) {
     console.log(`📤 Respuesta [${res.statusCode}]:`, body);
@@ -92,25 +93,96 @@ app.use(authMiddleware);
 // Ruta para generar pases
 app.post('/api/passes/generate', passController.generatePass);
 
-// Rutas de Apple Wallet
-app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  passController.registerDevice
+// Rutas de Apple Wallet (corregidas sin el v1 duplicado)
+app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+  async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+      const { pushToken } = req.body;
+
+      console.log('📱 Registrando dispositivo:', {
+        device: deviceLibraryIdentifier,
+        pass: passTypeIdentifier,
+        serial: serialNumber,
+        token: pushToken
+      });
+
+      // Registrar usando deviceRegistrationService
+      await deviceRegistrationService.registerDevice({
+        deviceLibraryIdentifier,
+        pushToken,
+        passTypeIdentifier,
+        serialNumber
+      });
+
+      console.log('✅ Dispositivo registrado exitosamente');
+      res.status(201).send();
+    } catch (error) {
+      console.error('❌ Error en registro:', error);
+      res.status(500).send();
+    }
+  }
 );
 
-app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  passController.unregisterDevice
+app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+      
+      await deviceRegistrationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
+      
+      res.status(200).send();
+    } catch (error) {
+      console.error('❌ Error en unregister:', error);
+      res.status(500).send();
+    }
+  }
 );
 
-app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
-  passController.getSerialNumbers
+app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+  async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
+      const passesUpdatedSince = req.query.passesUpdatedSince as string;
+
+      const clientesSnapshot = await db.collection('clientes')
+        .where('passTypeIdentifier', '==', passTypeIdentifier)
+        .where('deviceLibraryIdentifier', '==', deviceLibraryIdentifier)
+        .get();
+
+      const serialNumbers = clientesSnapshot.docs.map(doc => doc.id);
+
+      if (serialNumbers.length > 0) {
+        res.json({ serialNumbers });
+      } else {
+        res.status(204).send();
+      }
+    } catch (error) {
+      console.error('❌ Error obteniendo registros:', error);
+      res.status(500).send();
+    }
+  }
 );
 
-app.get('/passes/:passTypeIdentifier/:serialNumber', 
-  passController.getLatestPass
+app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
+  async (req: Request, res: Response) => {
+    try {
+      const { passTypeIdentifier, serialNumber } = req.params;
+      const result = await passController.getLatestPass(req, res);
+      return result;
+    } catch (error) {
+      console.error('❌ Error obteniendo pase:', error);
+      res.status(500).send();
+    }
+  }
 );
 
-// Ruta de logs sin autenticación
-app.post('/log', (req: Request, res: Response) => {
+// Ruta de logs
+app.post('/v1/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });
