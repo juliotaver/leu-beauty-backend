@@ -67,12 +67,13 @@ app.get('/health', (_, res) => {
   });
 });
 
-// Middleware de autenticación
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.path === '/health' || 
-      req.path === '/log' || 
-      req.path.includes('/generate') || 
-      req.path.includes('/push/update-pass')) {
+// 1. Primero las rutas estáticas
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
+
+// 2. Middleware de autenticación como middleware del walletRouter
+walletRouter.use((req: Request, res: Response, next: NextFunction) => {
+  // Skip auth for logs
+  if (req.path === '/log') {
     return next();
   }
 
@@ -90,19 +91,21 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
   console.log('✅ Valid auth for:', req.path);
   next();
-};
+});
 
-// Middleware específico para rutas de Wallet
+// 3. Middleware de debugging para Wallet
 walletRouter.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('🎯 Wallet Router Middleware:', {
+  console.log('🎯 Wallet Router Debug:', {
+    fullPath: req.originalUrl,
     path: req.path,
     method: req.method,
-    params: req.params
+    params: req.params,
+    baseUrl: req.baseUrl
   });
   next();
 });
 
-// Rutas de Wallet con parámetros explícitos y regex para manejar puntos
+// 4. Rutas de Wallet con parámetros explícitos y regex para manejar puntos
 walletRouter.post(
   '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
   async (req: Request, res: Response) => {
@@ -110,11 +113,11 @@ walletRouter.post(
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('📱 Procesando registro de dispositivo:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber,
-        pushToken: pushToken?.substring(0, 10) + '...'
+      console.log('📱 POST Registration Debug:', {
+        params: req.params,
+        body: req.body,
+        path: req.path,
+        fullUrl: req.originalUrl
       });
 
       if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
@@ -127,7 +130,6 @@ walletRouter.post(
         return res.status(400).json({ error: 'Missing required parameters' });
       }
 
-      // Registrar el dispositivo
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
         pushToken,
@@ -147,6 +149,7 @@ walletRouter.post(
   }
 );
 
+// Otras rutas del walletRouter
 walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
   async (req: Request, res: Response) => {
     try {
@@ -208,17 +211,10 @@ walletRouter.post('/log', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
-// Configuración de rutas
-// Primero las rutas estáticas
-app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
-
-// Montar el router de Wallet antes que el middleware de autenticación
+// 5. Montar el router de Wallet al final
 app.use('/v1', walletRouter);
 
-// Middleware de autenticación después
-app.use(authMiddleware);
-
-// Rutas de API al final
+// 6. Rutas de API (sin autenticación)
 app.post('/api/passes/generate', passController.generatePass);
 app.post('/api/push/update-pass', passController.sendUpdateNotification);
 
