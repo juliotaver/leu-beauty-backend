@@ -1,9 +1,16 @@
+// loyalty-backend/src/services/passService.ts
+
 import fs from 'fs-extra';
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
+
+// Definir la URL base según el ambiente
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://api.leubeautylab.com'
+  : 'http://localhost:3001';
 
 interface ManifestData {
   [key: string]: string;
@@ -37,7 +44,7 @@ export class PassService {
         passTypeIdentifier: "pass.com.salondenails.loyalty",
         serialNumber: cliente.id,
         teamIdentifier: "C8PM27PK3X",
-        webServiceURL: "https://api.leubeautylab.com/v1",  // Actualización aquí
+        webServiceURL: `${BASE_URL}/v1`,  // URL corregida
         authenticationToken: cliente.id,
         organizationName: "Leu Beauty",
         description: `Tarjeta de Fidelidad - ${cliente.nombre}`,

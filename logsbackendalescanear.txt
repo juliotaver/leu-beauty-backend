@@ -1,112 +1,83 @@
-🔄 Iniciando actualización para cliente: mV9PYJOfRM05oeThA1HB
+ ====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /api/push/update-pass
+📍 URL Base: 
+📍 Ruta: /api/push/update-pass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+  "content-length": "36",
+  "accept": "application/json",
+  "accept-encoding": "gzip, br",
+  "accept-language": "es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "45.90.222.113",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "CA",
+  "cf-ray": "8e13530035312daf-YVR",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "content-type": "application/json",
+  "origin": "https://admin.leubeautylab.com",
+  "priority": "u=1, i",
+  "referer": "https://admin.leubeautylab.com/",
+  "render-proxy-ttl": "4",
+  "rndr-id": "3e1cfc1d-8987-4037",
+  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+  "sec-ch-ua-mobile": "?1",
+  "sec-ch-ua-platform": "\"Android\"",
+  "sec-fetch-dest": "empty",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-site": "same-site",
+  "true-client-ip": "45.90.222.113",
+  "x-forwarded-for": "45.90.222.113, 172.68.174.194, 10.220.42.117",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731380976707445"
+}
+📦 Body: {
+  "clienteId": "TESQbveiBTf7BsSCsr3u"
+}
+===============================
+🔄 Iniciando actualización para cliente: TESQbveiBTf7BsSCsr3u
 📄 Datos del cliente: {
   "recompensasCanjeadas": [],
-  "nombre": "jorge camacho",
-  "email": "jorget@test.com",
+  "nombre": "noviembre once",
+  "email": "novionce@gmail.com",
   "telefono": "",
   "proximaRecompensa": "Postre Gratis",
   "fechaRegistro": {
-    "_seconds": 1731379565,
-    "_nanoseconds": 869000000
+    "_seconds": 1731380868,
+    "_nanoseconds": 985000000
   },
   "ultimaVisita": {
-    "_seconds": 1731379801,
-    "_nanoseconds": 238000000
+    "_seconds": 1731380975,
+    "_nanoseconds": 496000000
   },
   "lastPassUpdate": {
-    "_seconds": 1731379801,
-    "_nanoseconds": 238000000
+    "_seconds": 1731380975,
+    "_nanoseconds": 496000000
   },
   "visitas": 1
 }
 🔍 Token no encontrado en cliente, buscando en registros...
-❌ Error en sendUpdateNotification: Error: 9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC
-    at callErrorFromStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/call.js:31:19)
-    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:357:73)
-    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:323:181)
-    at /opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/resolving-call.js:94:78
-    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
-for call at
-    at ServiceClientImpl.makeServerStreamRequest (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:340:32)
-    at ServiceClientImpl.<anonymous> (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)
-    at /opt/render/project/src/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js:227:29
-    at /opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:38:28
-    at /opt/render/project/src/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
-    at Object.request (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:130:40)
-    at makeRequest (/opt/render/project/src/node_modules/retry-request/index.js:141:28)
-    at retryRequest (/opt/render/project/src/node_modules/retry-request/index.js:109:5)
-    at StreamProxy.setStream (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:121:37)
-    at StreamingApiCaller.call (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:54:16)
-Caused by: Error
-    at Query._get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1738:23)
-    at Query.get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1726:21)
-    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:49:26)
+❌ No se encontró registro de dispositivo para el cliente: TESQbveiBTf7BsSCsr3u
+📤 Respuesta [500]: {"error":"Error interno","details":"Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado"}
+❌ Error en sendUpdateNotification: Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
-  code: 9,
-  details: 'The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC',
-  metadata: Metadata {
-    internalRepr: Map(1) { 'x-debug-tracking-id' => [Array] },
-    options: {}
-  }
-}
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
 Error details: {
-  message: '9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC',
-  stack: 'Error: 9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC\n' +
-    '    at callErrorFromStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/call.js:31:19)\n' +
-    '    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:357:73)\n' +
-    '    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:323:181)\n' +
-    '    at /opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/resolving-call.js:94:78\n' +
-    '    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)\n' +
-    'for call at\n' +
-    '    at ServiceClientImpl.makeServerStreamRequest (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:340:32)\n' +
-    '    at ServiceClientImpl.<anonymous> (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)\n' +
-    '    at /opt/render/project/src/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js:227:29\n' +
-    '    at /opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:38:28\n' +
-    '    at /opt/render/project/src/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16\n' +
-    '    at Object.request (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:130:40)\n' +
-    '    at makeRequest (/opt/render/project/src/node_modules/retry-request/index.js:141:28)\n' +
-    '    at retryRequest (/opt/render/project/src/node_modules/retry-request/index.js:109:5)\n' +
-    '    at StreamProxy.setStream (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:121:37)\n' +
-    '    at StreamingApiCaller.call (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:54:16)\n' +
-    'Caused by: Error\n' +
-    '    at Query._get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1738:23)\n' +
-    '    at Query.get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1726:21)\n' +
-    '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:49:26)\n' +
+  message: 'Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado',
+  stack: 'Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado\n' +
+    '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)\n' +
     '    at Generator.next (<anonymous>)\n' +
     '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
 }
-Error: Error: 9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC
-    at callErrorFromStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/call.js:31:19)
-    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:357:73)
-    at Object.onReceiveStatus (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:323:181)
-    at /opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/resolving-call.js:94:78
-    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
-for call at
-    at ServiceClientImpl.makeServerStreamRequest (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:340:32)
-    at ServiceClientImpl.<anonymous> (/opt/render/project/src/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)
-    at /opt/render/project/src/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js:227:29
-    at /opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:38:28
-    at /opt/render/project/src/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
-    at Object.request (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:130:40)
-    at makeRequest (/opt/render/project/src/node_modules/retry-request/index.js:141:28)
-    at retryRequest (/opt/render/project/src/node_modules/retry-request/index.js:109:5)
-    at StreamProxy.setStream (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streaming.js:121:37)
-    at StreamingApiCaller.call (/opt/render/project/src/node_modules/google-gax/build/src/streamingCalls/streamingApiCaller.js:54:16)
-Caused by: Error
-    at Query._get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1738:23)
-    at Query.get (/opt/render/project/src/node_modules/@google-cloud/firestore/build/src/reference.js:1726:21)
-    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:49:26)
+Error: Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
-  code: 9,
-  details: 'The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC',
-  metadata: Metadata {
-    internalRepr: Map(1) { 'x-debug-tracking-id' => [Array] },
-    options: {}
-  }
-}
-📤 Respuesta [500]: {"error":"Error interno","details":"9 FAILED_PRECONDITION: The query requires an index. You can create it here: https://console.firebase.google.com/v1/r/project/leu-beauty-loyalty/firestore/indexes?create_composite=Cl5wcm9qZWN0cy9sZXUtYmVhdXR5LWxveWFsdHkvZGF0YWJhc2VzLyhkZWZhdWx0KS9jb2xsZWN0aW9uR3JvdXBzL2RldmljZVJlZ2lzdHJhdGlvbnMvaW5kZXhlcy9fEAEaEAoMc2VyaWFsTnVtYmVyEAEaDwoLbGFzdFVwZGF0ZWQQAhoMCghfX25hbWVfXxAC"}
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
