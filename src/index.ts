@@ -35,6 +35,12 @@ function printRoutes(app: express.Application) {
   });
 }
 
+// Primero, añadimos un middleware para permitir puntos en las URLs
+app.use((req, res, next) => {
+  req.url = decodeURIComponent(req.url);
+  next();
+});
+
 // Configuración CORS
 app.use(cors({
   origin: '*',
@@ -46,6 +52,19 @@ app.use(cors({
 // Middlewares básicos
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log('🔍 Incoming Request:', {
+    originalUrl: req.originalUrl,
+    decodedUrl: decodeURIComponent(req.originalUrl),
+    method: req.method,
+    headers: {
+      host: req.headers.host,
+      authorization: req.headers.authorization ? 'Present' : 'None',
+    }
+  });
+  next();
+});
 
 // Middleware de logging
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -127,23 +146,20 @@ walletRouter.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Rutas de Apple Wallet
-walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+// Modificamos cómo definimos las rutas del wallet
+walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('🔍 DEBUG - Intento de registro:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
+      console.log('📱 Recibida solicitud de registro:', {
+        deviceId: deviceLibraryIdentifier,
+        passType: passTypeIdentifier,  // Debería mostrar pass.com.salondenails.loyalty correctamente
         serialNumber,
-        pushToken: pushToken?.substring(0, 10) + '...',
-        headers: req.headers,
-        path: req.path
+        pushToken: pushToken?.substring(0, 10) + '...'
       });
 
-      // Registrar usando deviceRegistrationService
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
         pushToken,
@@ -152,35 +168,15 @@ walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIden
       });
 
       console.log('✅ Dispositivo registrado exitosamente');
-      res.status(201).send();
+      return res.status(201).send();
     } catch (error) {
-      console.error('❌ Error detallado en registro:', error);
-      console.error('Stack:', error instanceof Error ? error.stack : 'No stack available');
-      res.status(500).send();
+      console.error('❌ Error en registro:', error);
+      return res.status(500).send();
     }
   }
 );
 
-walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
-  async (req: Request, res: Response) => {
-    try {
-      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-      
-      await deviceRegistrationService.unregisterDevice(
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      );
-      
-      res.status(200).send();
-    } catch (error) {
-      console.error('❌ Error en unregister:', error);
-      res.status(500).send();
-    }
-  }
-);
-
-walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -205,7 +201,26 @@ walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdent
   }
 );
 
-walletRouter.get('/passes/:passTypeIdentifier/:serialNumber',
+walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)/:serialNumber',
+  async (req: Request, res: Response) => {
+    try {
+      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
+      
+      await deviceRegistrationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
+      
+      res.status(200).send();
+    } catch (error) {
+      console.error('❌ Error en unregister:', error);
+      res.status(500).send();
+    }
+  }
+);
+
+walletRouter.get('/passes/:passTypeIdentifier([^/]*?)/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
