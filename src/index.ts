@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction, Router } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -12,6 +12,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+const walletRouter = Router();
 const pushNotificationService = new PushNotificationService();
 
 // Configuración CORS
@@ -40,7 +41,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
   console.log('===============================\n');
 
-  // Capturar la respuesta
   const oldSend = res.send;
   res.send = function(body: any) {
     console.log(`📤 Respuesta [${res.statusCode}]:`, body);
@@ -50,8 +50,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Servir archivos estáticos
-app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
+// Ruta raíz
+app.get('/', (_, res) => {
+  res.json({ 
+    status: 'OK',
+    message: 'Leu Beauty Lab API',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV 
+  });
+});
 
 // Ruta de health check
 app.get('/health', (_, res) => {
@@ -61,13 +68,12 @@ app.get('/health', (_, res) => {
   });
 });
 
-// Middleware de autenticación
+// Servir archivos estáticos
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
+
+// Middleware de autenticación para rutas de Apple Wallet
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  // Rutas que no requieren autenticación
-  if (req.path === '/health' || 
-      req.path === '/log' || 
-      req.path.includes('/generate') || 
-      req.path.includes('/push/update-pass')) {
+  if (req.path === '/log') {
     return next();
   }
 
@@ -87,14 +93,11 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-// Aplicar middleware de autenticación globalmente
-app.use(authMiddleware);
+// Configurar rutas de Apple Wallet
+walletRouter.use(authMiddleware);
 
-// Ruta para generar pases
-app.post('/api/passes/generate', passController.generatePass);
-
-// Rutas de Apple Wallet (corregidas sin el v1 duplicado)
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+// Rutas de Apple Wallet
+walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -107,7 +110,6 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
         token: pushToken
       });
 
-      // Registrar usando deviceRegistrationService
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
         pushToken,
@@ -124,7 +126,7 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
   }
 );
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
+walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -143,7 +145,7 @@ app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifi
   }
 );
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
+walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -168,10 +170,9 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
   }
 );
 
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
+walletRouter.get('/passes/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     try {
-      const { passTypeIdentifier, serialNumber } = req.params;
       const result = await passController.getLatestPass(req, res);
       return result;
     } catch (error) {
@@ -181,13 +182,17 @@ app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
   }
 );
 
-// Ruta de logs
-app.post('/v1/log', (req: Request, res: Response) => {
+walletRouter.post('/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });
 
-// Ruta de actualización de pases
+// Montar las rutas de Wallet
+app.use('/v1', walletRouter);
+
+// Rutas de API
+app.post('/api/passes/generate', passController.generatePass);
+
 app.post('/api/push/update-pass', async (req: Request, res: Response) => {
   try {
     const { clienteId } = req.body;
