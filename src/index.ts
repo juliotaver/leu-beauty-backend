@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction, Router } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -11,7 +11,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-const walletRouter = Router();
 const pushNotificationService = new PushNotificationService();
 
 // Configuración CORS
@@ -70,9 +69,9 @@ app.get('/health', (_, res) => {
 // 1. Primero las rutas estáticas
 app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
 
-// 2. Middleware de autenticación como middleware del walletRouter
-walletRouter.use((req: Request, res: Response, next: NextFunction) => {
-  // Skip auth for logs
+// 2. Middleware de autenticación para rutas de Wallet
+app.use('/v1', (req: Request, res: Response, next: NextFunction) => {
+  // Saltar autenticación para logs
   if (req.path === '/log') {
     return next();
   }
@@ -93,9 +92,9 @@ walletRouter.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// 3. Middleware de debugging para Wallet
-walletRouter.use((req: Request, res: Response, next: NextFunction) => {
-  console.log('🎯 Wallet Router Debug:', {
+// 3. Middleware de debugging para rutas de Wallet
+app.use('/v1', (req: Request, res: Response, next: NextFunction) => {
+  console.log('🎯 Wallet Route Debug:', {
     fullPath: req.originalUrl,
     path: req.path,
     method: req.method,
@@ -105,20 +104,18 @@ walletRouter.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// 4. Rutas de Wallet con parámetros explícitos y regex para manejar puntos
-walletRouter.post(
-  '/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
+// 4. Rutas de Wallet directamente definidas
+app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
   async (req: Request, res: Response) => {
     try {
+      console.log('🎯 Direct Route Debug:', {
+        fullPath: req.originalUrl,
+        params: req.params,
+        body: req.body
+      });
+
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
-
-      console.log('📱 POST Registration Debug:', {
-        params: req.params,
-        body: req.body,
-        path: req.path,
-        fullUrl: req.originalUrl
-      });
 
       if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
         console.error('❌ Faltan datos requeridos:', {
@@ -149,8 +146,7 @@ walletRouter.post(
   }
 );
 
-// Otras rutas del walletRouter
-walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
+app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -169,7 +165,7 @@ walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeId
   }
 );
 
-walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)',
+app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]+)',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -194,7 +190,7 @@ walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdent
   }
 );
 
-walletRouter.get('/passes/:passTypeIdentifier([^/]+)/:serialNumber',
+app.get('/v1/passes/:passTypeIdentifier([^/]+)/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
@@ -206,15 +202,12 @@ walletRouter.get('/passes/:passTypeIdentifier([^/]+)/:serialNumber',
   }
 );
 
-walletRouter.post('/log', (req: Request, res: Response) => {
+app.post('/v1/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });
 
-// 5. Montar el router de Wallet al final
-app.use('/v1', walletRouter);
-
-// 6. Rutas de API (sin autenticación)
+// 5. Rutas de API (sin autenticación)
 app.post('/api/passes/generate', passController.generatePass);
 app.post('/api/push/update-pass', passController.sendUpdateNotification);
 
