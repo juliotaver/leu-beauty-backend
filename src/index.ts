@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction, Router } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -11,6 +11,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+const walletRouter = Router();
 const pushNotificationService = new PushNotificationService();
 
 // Configuración CORS
@@ -48,9 +49,30 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Middleware de autenticación para rutas de Wallet
-const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.path === '/log') {
+// Ruta raíz
+app.get('/', (_, res) => {
+  res.json({ 
+    status: 'OK',
+    message: 'Leu Beauty Lab API',
+    version: '1.0.0',
+    environment: process.env.NODE_ENV 
+  });
+});
+
+// Ruta de health check
+app.get('/health', (_, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString() 
+  });
+});
+
+// Middleware de autenticación
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  if (req.path === '/health' || 
+      req.path === '/log' || 
+      req.path.includes('/generate') || 
+      req.path.includes('/push/update-pass')) {
     return next();
   }
 
@@ -70,78 +92,76 @@ const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) =
   next();
 };
 
-// Rutas que no requieren autenticación
-app.get('/', (_, res) => {
-  res.json({ 
-    status: 'OK',
-    message: 'Leu Beauty Lab API',
-    version: '1.0.0',
-    environment: process.env.NODE_ENV 
-  });
-});
-
-app.get('/health', (_, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString() 
-  });
-});
-
-// Rutas de API (sin autenticación)
-app.post('/api/passes/generate', passController.generatePass);
-app.post('/api/push/update-pass', passController.sendUpdateNotification);
-
-// Rutas de Wallet (con autenticación)
-
-// Registrar dispositivo
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  walletAuthMiddleware,
+// Wallet Routes
+walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
-      console.log('📱 Registro de dispositivo:', {
-        params: req.params,
-        body: {
-          ...req.body,
-          pushToken: req.body.pushToken?.substring(0, 10) + '...'
-        }
-      });
-
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      await deviceRegistrationService.registerDevice({
-        deviceLibraryIdentifier,
-        pushToken,
-        passTypeIdentifier,
-        serialNumber
+      console.log('📱 Procesando registro de dispositivo:', {
+        params: req.params,
+        body: {
+          ...req.body,
+          pushToken: pushToken?.substring(0, 10) + '...'
+        }
       });
 
-      return res.status(201).send();
+      // Validaciones explícitas
+      if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
+        console.error('❌ Faltan datos requeridos:', {
+          deviceLibraryIdentifier: !!deviceLibraryIdentifier,
+          passTypeIdentifier: !!passTypeIdentifier,
+          serialNumber: !!serialNumber,
+          pushToken: !!pushToken
+        });
+        return res.status(400).json({ error: 'Missing required parameters' });
+      }
+
+      // Intentar registro
+      try {
+        await deviceRegistrationService.registerDevice({
+          deviceLibraryIdentifier,
+          pushToken,
+          passTypeIdentifier,
+          serialNumber
+        });
+        console.log('✅ Registro completado');
+        return res.status(201).send();
+      } catch (regError) {
+        console.error('❌ Error en registerDevice:', regError);
+        return res.status(500).json({ 
+          error: 'Registration failed', 
+          details: regError instanceof Error ? regError.message : 'Unknown error'
+        });
+      }
     } catch (error) {
-      console.error('❌ Error en registro de dispositivo:', error);
+      console.error('❌ Error general en handler:', error);
       return res.status(500).send();
     }
   }
 );
 
-// Eliminar dispositivo
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
-  walletAuthMiddleware,
+walletRouter.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-      await deviceRegistrationService.unregisterDevice(deviceLibraryIdentifier, passTypeIdentifier, serialNumber);
-      return res.status(200).send();
+      
+      await deviceRegistrationService.unregisterDevice(
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
+        serialNumber
+      );
+      
+      res.status(200).send();
     } catch (error) {
-      console.error('❌ Error al eliminar registro de dispositivo:', error);
-      return res.status(500).send();
+      console.error('❌ Error en unregister:', error);
+      res.status(500).send();
     }
   }
 );
 
-// Obtener registros de dispositivos
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
-  walletAuthMiddleware,
+walletRouter.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier',
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -160,31 +180,60 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
         res.status(204).send();
       }
     } catch (error) {
-      console.error('❌ Error al obtener registros de dispositivos:', error);
+      console.error('❌ Error obteniendo registros:', error);
       res.status(500).send();
     }
   }
 );
 
-// Obtener pase específico
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
-  walletAuthMiddleware,
+walletRouter.get('/passes/:passTypeIdentifier/:serialNumber',
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
       return result;
     } catch (error) {
-      console.error('❌ Error al obtener pase:', error);
+      console.error('❌ Error obteniendo pase:', error);
       res.status(500).send();
     }
   }
 );
 
-// Log para Apple Wallet
-app.post('/v1/log', (req: Request, res: Response) => {
+walletRouter.post('/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });
+
+// Configuración de rutas
+app.use('/passes', express.static(path.join(__dirname, '../public/passes')));
+app.use(authMiddleware);
+
+// Rutas de API
+app.post('/api/passes/generate', passController.generatePass);
+
+app.post('/api/push/update-pass', async (req: Request, res: Response) => {
+  try {
+    const { clienteId } = req.body;
+    if (!clienteId) {
+      return res.status(400).json({ error: 'ClienteId requerido' });
+    }
+
+    await pushNotificationService.sendUpdateNotification(clienteId);
+    res.status(200).json({ 
+      success: true, 
+      message: 'Notificación enviada correctamente',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ 
+      error: 'Error interno',
+      details: error instanceof Error ? error.message : 'Error desconocido'
+    });
+  }
+});
+
+// Montar las rutas de Wallet
+app.use('/v1', walletRouter);
 
 // Iniciar servidor
 app.listen(port, () => {

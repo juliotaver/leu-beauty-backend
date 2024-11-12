@@ -1,329 +1,72 @@
 ===============================
-✅ Valid auth for: /v1/devices/0ea0b6aa228a993750df683a8f0b073e/registrations/pass.com.salondenails.loyalty/hSD38KliqgpKwQ0bavoM
+📝 Generando pase para: {
+  nombre: 'talent test',
+  email: 'talent@test.com',
+  telefono: '',
+  visitas: 0,
+  ultimaVisita: '2024-11-12T18:45:13.709Z',
+  proximaRecompensa: 'Postre Gratis',
+  recompensasCanjeadas: [],
+  id: 'z9xhCQQtMLHv7noao0Rt',
+  lastPassUpdate: '2024-11-12T18:45:14.404Z',
+  passTypeIdentifier: 'pass.com.salondenails.loyalty'
+}
+🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt
+📝 Generando pass.json con webServiceURL: https://api.leubeautylab.com/v1
+📝 Escribiendo pass.json
+🖼️ Copiando recursos
+📋 Generando manifest.json
+📌 Hash para pass.json: 7e5dbc155e4553da54b30ae49855bfdedcc475f1
+📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
+📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
+📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
+🔐 Verificando certificados
+✅ Certificado encontrado: signer
+✅ Certificado encontrado: key
+✅ Certificado encontrado: wwdr
+✍️ Firmando el pase
+📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt/manifest.json" -out "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt/signature" -outform DER -binary
+📦 Creando archivo .pkpass
+🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt" && zip -r "/opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass" *
+✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass (685252 bytes)
+🧹 Directorio temporal limpiado
+📤 Respuesta [200]: {"passUrl":"/passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass"}
 🔍 ====== Nueva Solicitud ======
-📍 Método: DELETE
-📍 URL Original: /v1/v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
+📍 Método: GET
+📍 URL Original: /passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass
 📍 URL Base: 
-📍 Ruta: /v1/v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
+📍 Ruta: /passes/1731437115208-z9xhCQQtMLHv7noao0Rt.pkpass
 📍 Parámetros: {}
 🔒 Headers: {
   "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass sQ8XdA4WSRi3kX1rHh2h",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e189ab817dc9a47-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "8ab60f13-8254-4dae",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.68.174.39, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731436343151944"
-}
-===============================
-✅ Valid auth for: /v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
-🔍 ====== Nueva Solicitud ======
-📍 Método: DELETE
-📍 URL Original: /v1/v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
-📍 URL Base: 
-📍 Ruta: /v1/v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "authorization": "ApplePass sQ8XdA4WSRi3kX1rHh2h",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e189ab96047524d-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "97a13022-a79c-4617",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.68.174.26, 10.220.159.198",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731436343330428"
-}
-===============================
-✅ Valid auth for: /v1/devices/bd5382c036389c9597c8e95c65ff8e67/registrations/pass.com.salondenails.loyalty/sQ8XdA4WSRi3kX1rHh2h
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /api/passes/v1/v1/log
-📍 URL Base: 
-📍 Ruta: /api/passes/v1/v1/log
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "14534",
-  "accept": "*/*",
+  "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Mobile/15E148 Safari/604.1",
+  "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
   "accept-encoding": "gzip, br",
   "accept-language": "en-US,en;q=0.9",
   "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
+  "cf-connecting-ip": "54.219.67.206",
   "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e189ab881fb9a5d-MEX",
+  "cf-ipcountry": "US",
+  "cf-ray": "8e18ae9466fffa9a-SJC",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "priority": "u=3, i",
+  "forwarded": "for=187.190.28.44;host=admin.leubeautylab.com;proto=https;sig=0QmVhcmVyIGYzOTBkNDg4ODZlZTU4MTVlMmQxMWI2MzZjNjVhODI2ZTE5OWEzZmM2ZTM2MDMyZThmYmYzMDgzMzczOTU5ODU=;exp=1731437456",
+  "priority": "u=0, i",
   "render-proxy-ttl": "4",
-  "rndr-id": "b93d850d-fc2b-4a66",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.69.164.157, 10.220.159.198",
+  "rndr-id": "9aee7aa9-139b-4c22",
+  "sec-fetch-dest": "document",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-site": "none",
+  "true-client-ip": "54.219.67.206",
+  "x-forwarded-for": "187.190.28.44,54.219.67.206, 172.68.174.75, 10.220.20.162",
+  "x-forwarded-host": "admin.leubeautylab.com",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731436343330362"
-}
-📦 Body: {
-  "logs": [
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:41 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404"
-  ]
+  "x-request-start": "1731437156593745",
+  "x-vercel-forwarded-for": "187.190.28.44",
+  "x-vercel-id": "sfo1::ntc5g-1731437156477-5bfba5adc0d2",
+  "x-vercel-ja4-digest": "t13d2014h2_a09f3c656075_e42f34c56612",
+  "x-vercel-proxied-for": "187.190.28.44",
+  "x-vercel-proxy-signature": "Bearer f390d48886ee5815e2d11b636c65a826e199a3fc6e36032e8fbf308337395985",
+  "x-vercel-proxy-signature-ts": "1731437456"
 }
 ===============================
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /api/passes/v1/v1/log
-📍 URL Base: 
-📍 Ruta: /api/passes/v1/v1/log
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "14534",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e189aba96a09a48-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "67eedabc-be4a-4604",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.68.174.177, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731436343524737"
-}
-📦 Body: {
-  "logs": [
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:41 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404"
-  ]
-}
-===============================
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:41 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404"
-  ]
-}
-===============================
-🔍 ====== Nueva Solicitud ======
-📍 Método: POST
-📍 URL Original: /api/passes/v1/v1/log
-📍 URL Base: 
-📍 Ruta: /api/passes/v1/v1/log
-📍 Parámetros: {}
-🔒 Headers: {
-  "host": "api.leubeautylab.com",
-  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
-  "content-length": "14534",
-  "accept": "*/*",
-  "accept-encoding": "gzip, br",
-  "accept-language": "en-US,en;q=0.9",
-  "cdn-loop": "cloudflare; loops=1; subreqs=1",
-  "cf-connecting-ip": "187.190.28.44",
-  "cf-ew-via": "15",
-  "cf-ipcountry": "MX",
-  "cf-ray": "8e189aba96a09a48-MEX",
-  "cf-visitor": "{\"scheme\":\"https\"}",
-  "cf-worker": "onrender.com",
-  "content-type": "application/json",
-  "priority": "u=3, i",
-  "render-proxy-ttl": "4",
-  "rndr-id": "67eedabc-be4a-4604",
-  "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.68.174.177, 10.220.42.117",
-  "x-forwarded-proto": "https",
-  "x-request-start": "1731436343524737"
-}
-📦 Body: {
-  "logs": [
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:22 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:23 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:39:30 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:43 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:54:44 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:11 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 12:57:12 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 2:59:58 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 6:58:26 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 955b4e79ae365c892bffecb3b0074c92, pass type pass.com.salondenails.loyalty, serial number cU6cT357oJ2fHSmgfRGt; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Unregister task (for device 559e20c19e1413fa9e8e9481eb3a1a4a, pass type pass.com.salondenails.loyalty, serial number iJ2KvYIrjHLJTccv3la9; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 7:49:16 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Unregister task (for device 9ed8cd2ddf0bdac02f7fe2484296f639, pass type pass.com.salondenails.loyalty, serial number H7LDifrKM9B1rb7LmzpV; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number wBMYkrVrzgAQcSlkLPpG; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:38 PM -0600] Register task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:41 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:42 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number bCLFxiS7AVe0YCRLvmgq; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404",
-    "[2024-11-10 8:09:45 PM -0600] Unregister task (for device ea15eaa603cff6f66a07a7232b15d442, pass type pass.com.salondenails.loyalty, serial number D39AkI1hkeSN7msSpvXp; with web service url https://api.leubeautylab.com/api/passes/v1) encountered error: Unexpected response code 404"
-  ]
-}
-===============================
-==> Detected service running on port 3001
-==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
