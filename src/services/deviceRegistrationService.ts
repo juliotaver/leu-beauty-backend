@@ -68,7 +68,7 @@ export class DeviceRegistrationService {
       console.log('💾 Guardando documento...');
       const docRef = db.collection(this.COLLECTION_NAME).doc(registrationId);
       await docRef.set(registrationData);
-      
+
       const savedDoc = await docRef.get();
       if (savedDoc.exists) {
         console.log('✅ Documento guardado y verificado:', savedDoc.data());
