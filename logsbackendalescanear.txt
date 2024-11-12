@@ -1,4 +1,4 @@
- ====== Nueva Solicitud ======
+====== Nueva Solicitud ======
 📍 Método: POST
 📍 URL Original: /api/push/update-pass
 📍 URL Base: 
@@ -15,7 +15,7 @@
   "cf-connecting-ip": "45.90.222.113",
   "cf-ew-via": "15",
   "cf-ipcountry": "CA",
-  "cf-ray": "8e13530035312daf-YVR",
+  "cf-ray": "8e1394cfd05e308d-SEA",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
@@ -23,7 +23,7 @@
   "priority": "u=1, i",
   "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "3e1cfc1d-8987-4037",
+  "rndr-id": "ed12f742-b953-4955",
   "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
   "sec-ch-ua-mobile": "?1",
   "sec-ch-ua-platform": "\"Android\"",
@@ -31,52 +31,52 @@
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-site",
   "true-client-ip": "45.90.222.113",
-  "x-forwarded-for": "45.90.222.113, 172.68.174.194, 10.220.42.117",
+  "x-forwarded-for": "45.90.222.113, 172.71.147.179, 10.220.20.162",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731380976707445"
+  "x-request-start": "1731383672317170"
 }
 📦 Body: {
-  "clienteId": "TESQbveiBTf7BsSCsr3u"
+  "clienteId": "niar4jvUzJaQpK51gKj7"
 }
 ===============================
-🔄 Iniciando actualización para cliente: TESQbveiBTf7BsSCsr3u
+🔄 Iniciando actualización para cliente: niar4jvUzJaQpK51gKj7
 📄 Datos del cliente: {
   "recompensasCanjeadas": [],
-  "nombre": "noviembre once",
-  "email": "novionce@gmail.com",
+  "nombre": "figo perro",
+  "email": "figoperro@gmail.com",
   "telefono": "",
   "proximaRecompensa": "Postre Gratis",
   "fechaRegistro": {
-    "_seconds": 1731380868,
-    "_nanoseconds": 985000000
+    "_seconds": 1731383502,
+    "_nanoseconds": 42000000
   },
   "ultimaVisita": {
-    "_seconds": 1731380975,
-    "_nanoseconds": 496000000
+    "_seconds": 1731383671,
+    "_nanoseconds": 256000000
   },
   "lastPassUpdate": {
-    "_seconds": 1731380975,
-    "_nanoseconds": 496000000
+    "_seconds": 1731383671,
+    "_nanoseconds": 256000000
   },
   "visitas": 1
 }
 🔍 Token no encontrado en cliente, buscando en registros...
-❌ No se encontró registro de dispositivo para el cliente: TESQbveiBTf7BsSCsr3u
-📤 Respuesta [500]: {"error":"Error interno","details":"Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado"}
-❌ Error en sendUpdateNotification: Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado
+❌ No se encontró registro de dispositivo para el cliente: niar4jvUzJaQpK51gKj7
+❌ Error en sendUpdateNotification: Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado
     at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
 Error details: {
-  message: 'Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado',
-  stack: 'Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado\n' +
+  message: 'Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado',
+  stack: 'Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado\n' +
+📤 Respuesta [500]: {"error":"Error interno","details":"Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado"}
     '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)\n' +
     '    at Generator.next (<anonymous>)\n' +
     '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
     '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
 }
-Error: Error: Cliente TESQbveiBTf7BsSCsr3u no tiene token push o identificador de pase registrado
+Error: Error: Cliente niar4jvUzJaQpK51gKj7 no tiene token push o identificador de pase registrado
     at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:84:27)
     at Generator.next (<anonymous>)
     at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)

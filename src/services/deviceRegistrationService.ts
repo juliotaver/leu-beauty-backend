@@ -14,23 +14,29 @@ export class DeviceRegistrationService {
 
   async registerDevice(registration: Omit<DeviceRegistration, 'lastUpdated'>): Promise<void> {
     try {
-      console.log('📱 Registrando dispositivo:', registration);
-
-      // Crear un ID único para el registro que combine dispositivo y serialNumber
+      console.log('📱 Iniciando registro de dispositivo:', {
+        deviceId: registration.deviceLibraryIdentifier,
+        passType: registration.passTypeIdentifier,
+        serialNumber: registration.serialNumber,
+        token: registration.pushToken?.substring(0, 10) + '...'
+      });
+  
       const registrationId = `${registration.deviceLibraryIdentifier}-${registration.serialNumber}`;
-
-      // Crear objeto de registro completo
+      console.log('🔑 ID de registro generado:', registrationId);
+  
       const registrationData: DeviceRegistration = {
         ...registration,
         lastUpdated: firestore.Timestamp.now()
       };
-
+  
       // Guardar en deviceRegistrations
       await db.collection(this.COLLECTION_NAME)
         .doc(registrationId)
         .set(registrationData, { merge: true });
-
-      // Actualizar el documento del cliente
+  
+      console.log('💾 Registro guardado en deviceRegistrations');
+  
+      // Actualizar cliente
       await db.collection('clientes')
         .doc(registration.serialNumber)
         .update({
@@ -39,10 +45,16 @@ export class DeviceRegistrationService {
           passTypeIdentifier: registration.passTypeIdentifier,
           lastUpdated: firestore.Timestamp.now()
         });
-
-      console.log('✅ Dispositivo registrado exitosamente:', registrationId);
+  
+      console.log('✅ Cliente actualizado con información del dispositivo');
     } catch (error) {
-      console.error('❌ Error registrando dispositivo:', error);
+      console.error('❌ Error en registerDevice:', error);
+      if (error instanceof Error) {
+        console.error('Detalles del error:', {
+          message: error.message,
+          stack: error.stack
+        });
+      }
       throw error;
     }
   }
