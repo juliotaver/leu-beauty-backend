@@ -105,7 +105,7 @@ app.use('/v1', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // 4. Rutas de Wallet directamente definidas
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -143,7 +143,7 @@ app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier
   }
 );
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
@@ -156,7 +156,7 @@ app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifi
   }
 );
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
+app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
@@ -181,7 +181,7 @@ app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier'
   }
 );
 
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
+app.get('/passes/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const result = await passController.getLatestPass(req, res);
@@ -193,7 +193,7 @@ app.get('/v1/passes/:passTypeIdentifier/:serialNumber',
   }
 );
 
-app.post('/v1/log', (req: Request, res: Response) => {
+app.post('/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });
