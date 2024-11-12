@@ -93,24 +93,24 @@ app.use(authMiddleware);
 app.post('/api/passes/generate', passController.generatePass);
 
 // Rutas de Apple Wallet
-app.post('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+app.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   passController.registerDevice
 );
 
-app.delete('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
+app.delete('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   passController.unregisterDevice
 );
 
-app.get('/v1/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
+app.get('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier', 
   passController.getSerialNumbers
 );
 
-app.get('/v1/passes/:passTypeIdentifier/:serialNumber', 
+app.get('/passes/:passTypeIdentifier/:serialNumber', 
   passController.getLatestPass
 );
 
 // Ruta de logs sin autenticación
-app.post('/v1/log', (req: Request, res: Response) => {
+app.post('/log', (req: Request, res: Response) => {
   console.log('📱 Apple Wallet Log:', req.body);
   res.status(200).send();
 });

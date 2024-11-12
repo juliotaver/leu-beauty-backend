@@ -1,174 +1,119 @@
-POST /api/push/update-pass
-Headers: {
-  host: 'api.leubeautylab.com',
-  'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36',
-  'content-length': '36',
-  accept: 'application/json',
-  'accept-encoding': 'gzip, br',
-  'accept-language': 'es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6',
-  'cdn-loop': 'cloudflare; loops=1; subreqs=1',
-  'cf-connecting-ip': '45.90.222.113',
-  'cf-ew-via': '15',
-  'cf-ipcountry': 'CA',
-  'cf-ray': '8e12fe9dd31261f3-YVR',
-  'cf-visitor': '{"scheme":"https"}',
-  'cf-worker': 'onrender.com',
-  'content-type': 'application/json',
-  origin: 'https://admin.leubeautylab.com',
-  priority: 'u=1, i',
-  referer: 'https://admin.leubeautylab.com/',
-  'render-proxy-ttl': '4',
-  'rndr-id': '40c71dfd-d95a-48e8',
-  'sec-ch-ua': '"Chromium";v="130", "Google Chrome";v="130", "Not?A_Brand";v="99"',
-  'sec-ch-ua-mobile': '?1',
-  'sec-ch-ua-platform': '"Android"',
-  'sec-fetch-dest': 'empty',
-  'sec-fetch-mode': 'cors',
-  'sec-fetch-site': 'same-site',
-  'true-client-ip': '45.90.222.113',
-  'x-forwarded-for': '45.90.222.113, 172.68.174.185, 10.220.20.162',
-  'x-forwarded-proto': 'https',
-  'x-request-start': '1731377520329966'
+Valid auth for: /v1/v1/devices/ceec07ddb693925113cbd0261f5b3539/registrations/pass.com.salondenails.loyalty/1XHWLZPIgxQPWcn1fKaz
+🔍 ====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /v1/v1/devices/ceec07ddb693925113cbd0261f5b3539/registrations/pass.com.salondenails.loyalty/1XHWLZPIgxQPWcn1fKaz
+📍 URL Base: 
+📍 Ruta: /v1/v1/devices/ceec07ddb693925113cbd0261f5b3539/registrations/pass.com.salondenails.loyalty/1XHWLZPIgxQPWcn1fKaz
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0",
+  "content-length": "80",
+  "accept": "*/*",
+  "accept-encoding": "gzip, br",
+  "accept-language": "en-US,en;q=0.9",
+  "authorization": "ApplePass 1XHWLZPIgxQPWcn1fKaz",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "187.190.28.44",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "MX",
+  "cf-ray": "8e1308d0b0fe9e2d-MEX",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "content-type": "application/json",
+  "priority": "u=3, i",
+  "render-proxy-ttl": "4",
+  "rndr-id": "18c31480-1e5f-4aec",
+  "true-client-ip": "187.190.28.44",
+  "x-forwarded-for": "187.190.28.44, 172.71.151.37, 10.220.42.117",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731377938106530"
 }
-Body: { clienteId: 'Q9WNAebbUdWxDdJw4Ker' }
-🔄 Iniciando actualización para cliente: Q9WNAebbUdWxDdJw4Ker
+📦 Body: {
+  "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
+}
+===============================
+✅ Valid auth for: /v1/v1/devices/ceec07ddb693925113cbd0261f5b3539/registrations/pass.com.salondenails.loyalty/1XHWLZPIgxQPWcn1fKaz
+🔍 ====== Nueva Solicitud ======
+📍 Método: POST
+📍 URL Original: /api/push/update-pass
+📍 URL Base: 
+📍 Ruta: /api/push/update-pass
+📍 Parámetros: {}
+🔒 Headers: {
+  "host": "api.leubeautylab.com",
+  "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+  "content-length": "36",
+  "accept": "application/json",
+  "accept-encoding": "gzip, br",
+  "accept-language": "es-MX,es;q=0.9,en-US;q=0.8,en;q=0.7,es-419;q=0.6",
+  "cdn-loop": "cloudflare; loops=1; subreqs=1",
+  "cf-connecting-ip": "45.90.222.113",
+  "cf-ew-via": "15",
+  "cf-ipcountry": "CA",
+  "cf-ray": "8e1309a1c2437660-SEA",
+  "cf-visitor": "{\"scheme\":\"https\"}",
+  "cf-worker": "onrender.com",
+  "content-type": "application/json",
+  "origin": "https://admin.leubeautylab.com",
+  "priority": "u=1, i",
+  "referer": "https://admin.leubeautylab.com/",
+  "render-proxy-ttl": "4",
+  "rndr-id": "dcbde743-e22b-4e45",
+  "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
+  "sec-ch-ua-mobile": "?1",
+  "sec-ch-ua-platform": "\"Android\"",
+  "sec-fetch-dest": "empty",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-site": "same-site",
+  "true-client-ip": "45.90.222.113",
+  "x-forwarded-for": "45.90.222.113, 172.68.23.157, 10.220.159.198",
+  "x-forwarded-proto": "https",
+  "x-request-start": "1731377971519344"
+}
+📦 Body: {
+  "clienteId": "1XHWLZPIgxQPWcn1fKaz"
+}
+===============================
+🔄 Iniciando actualización para cliente: 1XHWLZPIgxQPWcn1fKaz
 📄 Datos del cliente: {
   "recompensasCanjeadas": [],
-  "nombre": "adrian marcelo",
-  "email": "adrianm@gmail.com",
+  "nombre": "ramoncito perez",
+  "email": "ramoncis@gmail.com",
   "telefono": "",
   "proximaRecompensa": "Postre Gratis",
   "fechaRegistro": {
-    "_seconds": 1731377419,
-    "_nanoseconds": 855000000
+    "_seconds": 1731377908,
+    "_nanoseconds": 391000000
   },
-  "deviceLibraryIdentifier": "420ac1c129d2e86f5b9770e55a441cbd",
-  "lastUpdated": {
-    "_seconds": 1731377430,
-    "_nanoseconds": 708000000
-  },
-  "passTypeIdentifier": "pass.com.salondenails.loyalty",
-  "pushToken": "4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879",
   "ultimaVisita": {
-    "_seconds": 1731377519,
-    "_nanoseconds": 257000000
+    "_seconds": 1731377970,
+    "_nanoseconds": 603000000
   },
   "lastPassUpdate": {
-    "_seconds": 1731377519,
-    "_nanoseconds": 257000000
+    "_seconds": 1731377970,
+    "_nanoseconds": 603000000
   },
   "visitas": 1
 }
-🚀 Enviando notificación push...
-Comando: curl -v -X POST         --cert "/opt/render/project/src/certificates/pass.pem"         --key "/opt/render/project/src/certificates/pass.key"         -H "apns-topic: pass.com.salondenails.loyalty"         -H "apns-push-type: background"         -H "apns-priority: 5"         -H "Content-Type: application/json"         --data '{"aps":{"content-available":1}}'         "https://api.push.apple.com/3/device/4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879"
-📝 Detalles de curl (stderr): Note: Unnecessary use of -X or --request, POST is already inferred.
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 17.188.169.95:443...
-* Connected to api.push.apple.com (17.188.169.95) port 443 (#0)
-* ALPN: offers h2,http/1.1
-} [5 bytes data]
-* TLSv1.3 (OUT), TLS handshake, Client hello (1):
-} [512 bytes data]
-*  CAfile: /etc/ssl/certs/ca-certificates.crt
-*  CApath: /etc/ssl/certs
-{ [5 bytes data]
-* TLSv1.3 (IN), TLS handshake, Server hello (2):
-{ [122 bytes data]
-* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
-{ [19 bytes data]
-* TLSv1.3 (IN), TLS handshake, Request CERT (13):
-{ [927 bytes data]
-* TLSv1.3 (IN), TLS handshake, Certificate (11):
-{ [3156 bytes data]
-* TLSv1.3 (IN), TLS handshake, CERT verify (15):
-{ [264 bytes data]
-* TLSv1.3 (IN), TLS handshake, Finished (20):
-{ [52 bytes data]
-* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
-} [1 bytes data]
-* TLSv1.3 (OUT), TLS handshake, Certificate (11):
-} [1608 bytes data]
-* TLSv1.3 (OUT), TLS handshake, CERT verify (15):
-} [264 bytes data]
-* TLSv1.3 (OUT), TLS handshake, Finished (20):
-} [52 bytes data]
-* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384
-* ALPN: server accepted h2
-* Server certificate:
-*  subject: C=US; ST=California; O=Apple Inc.; CN=api.push.apple.com
-*  start date: Jun 19 16:31:31 2024 GMT
-*  expire date: Apr 10 00:00:00 2025 GMT
-*  subjectAltName: host "api.push.apple.com" matched cert's "api.push.apple.com"
-*  issuer: CN=Apple Public Server RSA CA 12 - G1; O=Apple Inc.; ST=California; C=US
-*  SSL certificate verify ok.
-} [5 bytes data]
-* using HTTP/2
-* h2h3 [:method: POST]
-* h2h3 [:path: /3/device/4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879]
-* h2h3 [:scheme: https]
-* h2h3 [:authority: api.push.apple.com]
-* h2h3 [user-agent: curl/7.88.1]
-* h2h3 [accept: */*]
-* h2h3 [apns-topic: pass.com.salondenails.loyalty]
-* h2h3 [apns-push-type: background]
-* h2h3 [apns-priority: 5]
-* h2h3 [content-type: application/json]
-* h2h3 [content-length: 31]
-* Using Stream ID: 1 (easy handle 0x555ba06bcce0)
-} [5 bytes data]
-> POST /3/device/4b2e5a72f578b56fc412e30a401a72f20455e32ee775a5917b45c1d4f4ba7879 HTTP/2
-> Host: api.push.apple.com
-> user-agent: curl/7.88.1
-> accept: */*
-> apns-topic: pass.com.salondenails.loyalty
-> apns-push-type: background
-> apns-priority: 5
-> content-type: application/json
-> content-length: 31
-> 
-} [5 bytes data]
-* We are completely uploaded and fine
-{ [5 bytes data]
-* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
-{ [1814 bytes data]
-* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
-{ [1814 bytes data]
-* old SSL session ID is stale, removing
-{ [5 bytes data]
-< HTTP/2 200 
-< apns-id: 4D30BF77-D390-22D6-47F6-379ACE7D3D55
-< 
-{ [0 bytes data]
-
-100    31    0     0  100    31      0     97 --:--:-- --:--:-- --:--:--    98
-* Connection #0 to host api.push.apple.com left intact
-✅ Notificación enviada exitosamente para cliente: Q9WNAebbUdWxDdJw4Ker
-🔍 POST /v1/v1/log
-Headers: {
-  host: 'api.leubeautylab.com',
-  'user-agent': 'passd/1.0 CFNetwork/1568.300.91 Darwin/24.2.0',
-  'content-length': '13889',
-  accept: '*/*',
-  'accept-encoding': 'gzip, br',
-  'accept-language': 'en-US,en;q=0.9',
-  'cdn-loop': 'cloudflare; loops=1; subreqs=1',
-  'cf-connecting-ip': '187.190.28.44',
-  'cf-ew-via': '15',
-  'cf-ipcountry': 'MX',
-  'cf-ray': '8e12fea2d68c9a48-MEX',
-  'cf-visitor': '{"scheme":"https"}',
-  'cf-worker': 'onrender.com',
-  'content-type': 'application/json',
-  priority: 'u=3, i',
-  'render-proxy-ttl': '4',
-  'rndr-id': '06168a15-54d8-4b69',
-  'true-client-ip': '187.190.28.44',
-  'x-forwarded-for': '187.190.28.44, 172.71.151.64, 10.220.42.117',
-  'x-forwarded-proto': 'https',
-  'x-request-start': '1731377521166945'
+🔍 Buscando registro de dispositivo...
+❌ No se encontró registro de dispositivo para el cliente: 1XHWLZPIgxQPWcn1fKaz
+❌ Error en sendUpdateNotification: Error: Cliente 1XHWLZPIgxQPWcn1fKaz no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:66:27)
+    at Generator.next (<anonymous>)
+    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+Error details: {
+  message: 'Cliente 1XHWLZPIgxQPWcn1fKaz no tiene token push o identificador de pase registrado',
+  stack: 'Error: Cliente 1XHWLZPIgxQPWcn1fKaz no tiene token push o identificador de pase registrado\n' +
+    '    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:66:27)\n' +
+    '    at Generator.next (<anonymous>)\n' +
+    '    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)'
 }
-Body: {
-  logs: [
-    '[2024-11-10 8:32:36 PM -0600] Register task (for device ae8875e181101e074a1df0829ccf7177, pass type pass.com.salondenails.loyalty, serial number BBQLxUhA2F5E1eTaAbCk; with web service url https://api.leubeautylab.com/v1) encountered error: Unexpected response code 404',
+Error: Error: Cliente 1XHWLZPIgxQPWcn1fKaz no tiene token push o identificador de pase registrado
+    at PushNotificationService.<anonymous> (/opt/render/project/src/dist/services/pushNotificationService.js:66:27)
+    at Generator.next (<anonymous>)
+    at fulfilled (/opt/render/project/src/dist/services/pushNotificationService.js:5:58)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+📤 Respuesta [500]: {"error":"Error interno","details":"Cliente 1XHWLZPIgxQPWcn1fKaz no tiene token push o identificador de pase registrado"}
