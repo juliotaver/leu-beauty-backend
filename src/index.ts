@@ -147,18 +147,24 @@ walletRouter.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Modificamos cómo definimos las rutas del wallet
-walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier([^/]*?)/:serialNumber', 
+walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIdentifier/:serialNumber', 
   async (req: Request, res: Response) => {
     try {
       const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
       const { pushToken } = req.body;
 
-      console.log('📱 Recibida solicitud de registro:', {
-        deviceId: deviceLibraryIdentifier,
-        passType: passTypeIdentifier,  // Debería mostrar pass.com.salondenails.loyalty correctamente
+      console.log('📱 DEBUG - Datos recibidos:', {
+        deviceLibraryIdentifier,
+        passTypeIdentifier,
         serialNumber,
         pushToken: pushToken?.substring(0, 10) + '...'
       });
+
+      // Validar que tenemos todos los datos necesarios
+      if (!deviceLibraryIdentifier || !passTypeIdentifier || !serialNumber || !pushToken) {
+        console.error('❌ Faltan datos requeridos para el registro');
+        return res.status(400).send('Missing required parameters');
+      }
 
       await deviceRegistrationService.registerDevice({
         deviceLibraryIdentifier,
@@ -167,10 +173,11 @@ walletRouter.post('/devices/:deviceLibraryIdentifier/registrations/:passTypeIden
         serialNumber
       });
 
-      console.log('✅ Dispositivo registrado exitosamente');
+      console.log('✅ Registro completado exitosamente');
       return res.status(201).send();
     } catch (error) {
       console.error('❌ Error en registro:', error);
+      console.error('Stack:', error instanceof Error ? error.stack : 'No stack available');
       return res.status(500).send();
     }
   }

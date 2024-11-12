@@ -1,4 +1,4 @@
-// src/types/index.ts
+import { firestore } from 'firebase-admin';
 
 export interface Cliente {
   id: string;
@@ -16,5 +16,5 @@ export interface DeviceRegistration {
   pushToken: string;
   passTypeIdentifier: string;
   serialNumber: string;
-  registeredAt: Date;
+  lastUpdated: firestore.Timestamp;
 }
