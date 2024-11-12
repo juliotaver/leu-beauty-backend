@@ -1,0 +1,32 @@
+===============================
+📝 Generando pase para: {
+  nombre: 'jorge camacho',
+  email: 'jorget@test.com',
+  telefono: '',
+  visitas: 0,
+  ultimaVisita: '2024-11-12T02:46:05.869Z',
+  proximaRecompensa: 'Postre Gratis',
+  recompensasCanjeadas: [],
+  id: 'mV9PYJOfRM05oeThA1HB',
+  lastPassUpdate: '2024-11-12T02:46:06.684Z',
+  passTypeIdentifier: 'pass.com.salondenails.loyalty'
+}
+🔍 Creando directorio temporal: /opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB
+📝 Escribiendo pass.json
+🖼️ Copiando recursos
+📋 Generando manifest.json
+📌 Hash para pass.json: 433c022fc434c32cf8dc885baa57d9f2fa88424f
+📌 Hash para icon.png: 5eece35d93b14c39d3bbb96783274697a75bbddc
+📌 Hash para logo.png: a644c5ce109283c702c9c6db47c91cf0d2b7abca
+📌 Hash para strip.png: 407b781171c54c03d43d6e9e0dc3f22203fe9dc6
+🔐 Verificando certificados
+✅ Certificado encontrado: signer
+✅ Certificado encontrado: key
+✅ Certificado encontrado: wwdr
+✍️ Firmando el pase
+📜 Comando de firma: openssl smime -sign -signer "/opt/render/project/src/certificates/pass.pem" -inkey "/opt/render/project/src/certificates/pass.key" -certfile "/opt/render/project/src/certificates/WWDR.pem" -in "/opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB/manifest.json" -out "/opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB/signature" -outform DER -binary
+📦 Creando archivo .pkpass
+🤐 Comando zip: cd "/opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB" && zip -r "/opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB.pkpass" *
+✅ Archivo .pkpass creado: /opt/render/project/src/public/passes/1731379567387-mV9PYJOfRM05oeThA1HB.pkpass (685262 bytes)
+🧹 Directorio temporal limpiado
+📤 Respuesta [200]: {"passUrl":"/passes/1731379567387-mV9PYJOfRM05oeThA1HB.pkpass"}
