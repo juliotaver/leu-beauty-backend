@@ -160,20 +160,24 @@ export class DeviceRegistrationService {
     }
   }
 
-  async getAllRegistrationsForPass(passTypeIdentifier: string): Promise<DeviceRegistration[]> {
+  async getSerialNumbers(deviceLibraryIdentifier: string, passTypeIdentifier: string): Promise<string[]> {
     try {
-      console.log('🔍 Buscando todos los registros para el pass:', passTypeIdentifier);
+      console.log('🔍 Obteniendo números de serie para el dispositivo:', {
+        deviceLibraryIdentifier,
+        passTypeIdentifier
+      });
 
-      const registrations = await db.collection(this.COLLECTION_NAME)
+      const clientesSnapshot = await db.collection('clientes')
+        .where('deviceLibraryIdentifier', '==', deviceLibraryIdentifier)
         .where('passTypeIdentifier', '==', passTypeIdentifier)
         .get();
 
-      const result = registrations.docs.map(doc => doc.data() as DeviceRegistration);
-      console.log(`✅ Encontrados ${result.length} registros en Firestore`);
-      
-      return result;
+      const serialNumbers = clientesSnapshot.docs.map(doc => doc.id);
+
+      console.log('✅ Números de serie obtenidos:', serialNumbers);
+      return serialNumbers;
     } catch (error) {
-      console.error('❌ Error buscando registros en Firestore:', error);
+      console.error('❌ Error al obtener números de serie:', error);
       throw error;
     }
   }
