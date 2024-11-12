@@ -17,18 +17,15 @@ export class DeviceRegistrationService {
       console.log('🔍 Verificando colección:', this.COLLECTION_NAME);
       const testDocRef = db.collection(this.COLLECTION_NAME).doc('_test_');
       
-      // Intentar escribir
       await testDocRef.set({
         test: true,
         timestamp: firestore.Timestamp.now()
       });
       console.log('✅ Prueba de escritura exitosa');
 
-      // Intentar leer
       const doc = await testDocRef.get();
       console.log('📖 Prueba de lectura:', doc.exists ? 'exitosa' : 'fallida');
 
-      // Limpiar
       await testDocRef.delete();
       console.log('🧹 Prueba de eliminación exitosa');
     } catch (error) {
@@ -47,7 +44,6 @@ export class DeviceRegistrationService {
         timestamp: new Date().toISOString()
       });
 
-      // Verificar la colección
       const testDoc = await db.collection(this.COLLECTION_NAME).get();
       console.log('📚 Estado de colección:', {
         empty: testDoc.empty,
@@ -58,7 +54,6 @@ export class DeviceRegistrationService {
       const registrationId = `${registration.deviceLibraryIdentifier}-${registration.serialNumber}`;
       console.log('🔑 ID generado:', registrationId);
 
-      // Crear documento con datos de debug
       const registrationData = {
         ...registration,
         lastUpdated: firestore.Timestamp.now(),
@@ -70,12 +65,10 @@ export class DeviceRegistrationService {
         }
       };
 
-      // Intentar crear documento
       console.log('💾 Guardando documento...');
       const docRef = db.collection(this.COLLECTION_NAME).doc(registrationId);
       await docRef.set(registrationData);
       
-      // Verificar inmediatamente
       const savedDoc = await docRef.get();
       if (savedDoc.exists) {
         console.log('✅ Documento guardado y verificado:', savedDoc.data());
@@ -83,7 +76,6 @@ export class DeviceRegistrationService {
         throw new Error('Documento no se guardó correctamente');
       }
 
-      // Actualizar cliente
       await db.collection('clientes')
         .doc(registration.serialNumber)
         .update({
