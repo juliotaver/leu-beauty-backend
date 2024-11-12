@@ -38,34 +38,36 @@ export class PassService {
     const manifestPath = path.join(__dirname, '../../public/passes', 'manifest.json');
     fs.writeFileSync(manifestPath, JSON.stringify(passManifest));
 
-    const manifestHash = forge.md.sha1.create().update(fs.readFileSync(manifestPath)).digest().toHex();
+    const manifestHash = forge.md.sha1.create().update(fs.readFileSync(manifestPath, 'utf8')).digest().toHex();
 
     const pkcs7 = forge.pkcs7.createSignedData();
-    pkcs7.content = forge.util.createBuffer(JSON.stringify(passManifest), 'utf8');
-    pkcs7.addCertificate(fs.readFileSync(path.join(__dirname, '../../certificates/pass.pem')));
-    pkcs7.addSigner({
-      key: fs.readFileSync(path.join(__dirname, '../../certificates/pass.key')),
-      certificate: fs.readFileSync(path.join(__dirname, '../../certificates/pass.pem')),
-      digestAlgorithm: forge.pki.oids.sha1,
-      authenticatedAttributes: [
-        {
-          type: forge.pki.oids.contentType,
-          value: forge.pki.oids.data
-        },
-        {
-          type: forge.pki.oids.messageDigest,
-          value: manifestHash
-        },
-        {
-          type: forge.pki.oids.signingTime,
-          value: new Date()
-        }
-      ]
-    });
-    pkcs7.sign();
+pkcs7.content = forge.util.createBuffer(JSON.stringify(passManifest), 'utf8');
+pkcs7.addCertificate(fs.readFileSync(path.join(__dirname, '../../certificates/pass.pem'), 'utf8'));
+pkcs7.addSigner({
+  key: fs.readFileSync(path.join(__dirname, '../../certificates/pass.key'), 'utf8'), // Convertimos a string
+  certificate: fs.readFileSync(path.join(__dirname, '../../certificates/pass.pem'), 'utf8'), // Convertimos a string
+  digestAlgorithm: forge.pki.oids.sha1,
+  authenticatedAttributes: [
+    {
+      type: forge.pki.oids.contentType,
+      value: forge.pki.oids.data
+    },
+    {
+      type: forge.pki.oids.messageDigest,
+      value: manifestHash
+    },
+    {
+      type: forge.pki.oids.signingTime,
+      value: new Date().toISOString() // Cadena en formato ISO, compatible con UTC
+    }
+  ]
+});
+pkcs7.sign();
 
-    const signaturePath = path.join(__dirname, '../../public/passes', 'signature');
-    fs.writeFileSync(signaturePath, forge.util.encode64(pkcs7.toDer().getBytes()));
+// Usamos forge.asn1.toDer() para convertir pkcs7 a DER y obtener los bytes
+const derBytes = forge.asn1.toDer(pkcs7.toAsn1()).getBytes();
+const signaturePath = path.join(__dirname, '../../public/passes', 'signature');
+fs.writeFileSync(signaturePath, forge.util.encode64(derBytes));
 
     const zipPath = path.join(__dirname, '../../public/passes', passFilename);
     const archiver = require('archiver');
