@@ -201,6 +201,12 @@ app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
   console.log('\n📍 Rutas disponibles:');
+  console.log('🛣️ Rutas activas en el servidor:');
+app._router.stack.forEach((middleware: any) => {
+  if (middleware.route) { // Si el middleware es una ruta
+    console.log(`${Object.keys(middleware.route.methods).join(',').toUpperCase()} ${middleware.route.path}`);
+  }
+});
   
   const getRoutes = (stack: any[]): string[] => {
     return stack.reduce((routes: string[], layer: any) => {
