@@ -93,7 +93,7 @@ const walletAuthMiddleware = (req: Request, res: Response, next: NextFunction) =
 };
 
 // Aplicar el middleware de autenticación solo a las rutas /v1
-app.use(walletAuthMiddleware);
+app.use(['/devices', '/passes'], walletAuthMiddleware);
 
 // 3. Middleware de debugging para rutas de Wallet
 app.use((req: Request, res: Response, next: NextFunction) => {
