@@ -48,6 +48,14 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+// Middleware para ajustar la ruta en solicitudes DELETE con duplicado de '/v1'
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.method === 'DELETE' && req.path.startsWith('/v1/v1')) {
+    req.url = req.url.replace('/v1/v1', '/v1');  // Ajusta la ruta eliminando el primer '/v1'
+  }
+  next();
+});
+
 // Ruta raíz
 app.get('/', (_, res) => {
   res.json({
@@ -202,11 +210,11 @@ app.listen(port, () => {
   console.log(`🌍 Environment: ${process.env.NODE_ENV}`);
   console.log('\n📍 Rutas disponibles:');
   console.log('🛣️ Rutas activas en el servidor:');
-app._router.stack.forEach((middleware: any) => {
-  if (middleware.route) { // Si el middleware es una ruta
-    console.log(`${Object.keys(middleware.route.methods).join(',').toUpperCase()} ${middleware.route.path}`);
-  }
-});
+  app._router.stack.forEach((middleware: any) => {
+    if (middleware.route) { // Si el middleware es una ruta
+      console.log(`${Object.keys(middleware.route.methods).join(',').toUpperCase()} ${middleware.route.path}`);
+    }
+  });
   
   const getRoutes = (stack: any[]): string[] => {
     return stack.reduce((routes: string[], layer: any) => {
