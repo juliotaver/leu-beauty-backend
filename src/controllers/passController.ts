@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { passService } from '../services/passService';
 import { pushNotificationService } from '../services/pushNotificationService';
 import { deviceRegistrationService } from '../services/deviceRegistrationService';
+import path from 'path'; 
 
 export const passController = {
   async generatePass(req: Request, res: Response): Promise<Response | void> {
@@ -12,11 +13,16 @@ export const passController = {
 
       console.log('🚀 Generando pase para cliente:', { clienteId, nombreCliente });
 
+      // Genera el pase y obtiene la ruta del archivo
       const passPath = await passService.generatePass(clienteId, nombreCliente);
 
-      console.log('✅ Pase generado con éxito en ruta:', passPath);
+      // Construye la URL completa para el pase
+      const passUrl = `${process.env.API_BASE_URL}/passes/${path.basename(passPath)}`;
 
-      return res.status(200).json({ passPath });
+      console.log('✅ Pase generado con éxito en URL:', passUrl);
+
+      // Envía la URL completa al frontend
+      return res.status(200).json({ passUrl });
     } catch (error) {
       console.error('❌ Error en la generación del pase:', error);
       return res.status(500).json({ error: 'Error interno en la generación del pase' });
