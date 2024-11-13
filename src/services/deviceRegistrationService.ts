@@ -81,6 +81,7 @@ export class DeviceRegistrationService {
       await db.collection('clientes')
         .doc(registration.serialNumber)
         .update({
+          serialNumber: registration.serialNumber,
           pushToken: registration.pushToken,
           deviceLibraryIdentifier: registration.deviceLibraryIdentifier,
           passTypeIdentifier: registration.passTypeIdentifier,
