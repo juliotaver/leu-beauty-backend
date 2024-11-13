@@ -7,7 +7,7 @@
 🔒 Headers: {
   "host": "api.leubeautylab.com",
   "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-  "content-length": "308",
+  "content-length": "312",
   "accept": "application/json",
   "accept-encoding": "gzip, br",
   "accept-language": "es,es-419;q=0.9,en;q=0.8,en-US;q=0.7,pl;q=0.6,pt;q=0.5",
@@ -15,7 +15,7 @@
   "cf-connecting-ip": "187.190.28.44",
   "cf-ew-via": "15",
   "cf-ipcountry": "MX",
-  "cf-ray": "8e1aa328600c5222-MEX",
+  "cf-ray": "8e1ab2be5762522f-MEX",
   "cf-visitor": "{\"scheme\":\"https\"}",
   "cf-worker": "onrender.com",
   "content-type": "application/json",
@@ -23,7 +23,7 @@
   "priority": "u=1, i",
   "referer": "https://admin.leubeautylab.com/",
   "render-proxy-ttl": "4",
-  "rndr-id": "f711dee3-8b18-4db3",
+  "rndr-id": "01b4ac79-c0ac-40ea",
   "sec-ch-ua": "\"Chromium\";v=\"130\", \"Google Chrome\";v=\"130\", \"Not?A_Brand\";v=\"99\"",
   "sec-ch-ua-mobile": "?0",
   "sec-ch-ua-platform": "\"macOS\"",
@@ -31,24 +31,24 @@
   "sec-fetch-mode": "cors",
   "sec-fetch-site": "same-site",
   "true-client-ip": "187.190.28.44",
-  "x-forwarded-for": "187.190.28.44, 172.69.164.179, 10.220.159.198",
+  "x-forwarded-for": "187.190.28.44, 172.69.164.178, 10.220.42.117",
   "x-forwarded-proto": "https",
-  "x-request-start": "1731457660271903"
+  "x-request-start": "1731458298891780"
 }
 📦 Body: {
-  "nombre": "raul orbananos",
-  "email": "arauf@gmail.com",
+  "nombre": "luisillo pillo",
+  "email": "luisillop@gmail.com",
   "telefono": "",
   "visitas": 0,
-  "ultimaVisita": "2024-11-13T00:27:38.952Z",
+  "ultimaVisita": "2024-11-13T00:38:17.405Z",
   "proximaRecompensa": "Postre Gratis",
   "recompensasCanjeadas": [],
-  "id": "JwtAIm0REfFc29yvnoQI",
-  "lastPassUpdate": "2024-11-13T00:27:39.695Z",
+  "id": "798ggjbXR9eqVNUOT3b3",
+  "lastPassUpdate": "2024-11-13T00:38:18.114Z",
   "passTypeIdentifier": "pass.com.salondenails.loyalty"
 }
 ===============================
 🚀 Generando pase para cliente: { clienteId: undefined, nombreCliente: undefined }
-✅ Pase generado y guardado en: /opt/render/project/src/public/passes/1731457660352-f9b806be-8dd4-4abd-8ef6-94f7c06ef44c.pkpass
-✅ Pase generado con éxito en ruta: /opt/render/project/src/public/passes/1731457660352-f9b806be-8dd4-4abd-8ef6-94f7c06ef44c.pkpass
-📤 Respuesta [200]: {"passPath":"/opt/render/project/src/public/passes/1731457660352-f9b806be-8dd4-4abd-8ef6-94f7c06ef44c.pkpass"}
+✅ Pase generado y guardado en: /opt/render/project/src/public/passes/1731458298911-fb10c355-b414-4498-97e9-0ee62b6faf0e.pkpass
+✅ Pase generado con éxito en URL: https://api.leubeautylab.com/passes/1731458298911-fb10c355-b414-4498-97e9-0ee62b6faf0e.pkpass
+📤 Respuesta [200]: {"passUrl":"https://api.leubeautylab.com/passes/1731458298911-fb10c355-b414-4498-97e9-0ee62b6faf0e.pkpass"}

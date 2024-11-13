@@ -3,26 +3,19 @@
 import { Request, Response } from 'express';
 import { passService } from '../services/passService';
 import { pushNotificationService } from '../services/pushNotificationService';
-import { deviceRegistrationService } from '../services/deviceRegistrationService';
-import path from 'path'; 
 
 export const passController = {
   async generatePass(req: Request, res: Response): Promise<Response | void> {
     try {
-      const { clienteId, nombreCliente } = req.body;
+      const { id, nombre } = req.body;
 
-      console.log('🚀 Generando pase para cliente:', { clienteId, nombreCliente });
+      console.log('🚀 Generando pase para cliente:', { id, nombre });
 
-      // Genera el pase y obtiene la ruta del archivo
-      const passPath = await passService.generatePass(clienteId, nombreCliente);
+      const passUrl = await passService.generatePass(req.body);
 
-      // Construye la URL completa para el pase
-      const passUrl = `${process.env.API_BASE_URL}/passes/${path.basename(passPath)}`;
+      console.log('✅ Pase generado con éxito en URL:', `${process.env.API_BASE_URL}${passUrl}`);
 
-      console.log('✅ Pase generado con éxito en URL:', passUrl);
-
-      // Envía la URL completa al frontend
-      return res.status(200).json({ passUrl });
+      return res.status(200).json({ passUrl: `${process.env.API_BASE_URL}${passUrl}` });
     } catch (error) {
       console.error('❌ Error en la generación del pase:', error);
       return res.status(500).json({ error: 'Error interno en la generación del pase' });
@@ -35,8 +28,8 @@ export const passController = {
 
       console.log('🔍 Obteniendo ruta para el pase:', { passTypeIdentifier, serialNumber });
 
-      const passPath = await passService.getPassPath(passTypeIdentifier, serialNumber);
-
+      const passPath = await passService.getPassPath(`${passTypeIdentifier}-${serialNumber}`);
+      
       if (passPath) {
         console.log('✅ Ruta del pase encontrada:', passPath);
         return res.status(200).sendFile(passPath);
@@ -76,7 +69,7 @@ export const passController = {
 
       console.log('📲 Solicitando pase actualizado:', { passTypeIdentifier, serialNumber });
 
-      const passPath = await passService.getPassPath(passTypeIdentifier, serialNumber);
+      const passPath = await passService.getPassPath(`${passTypeIdentifier}-${serialNumber}`);
 
       if (passPath) {
         console.log('✅ Pase actualizado encontrado en ruta:', passPath);
@@ -88,81 +81,6 @@ export const passController = {
     } catch (error) {
       console.error('❌ Error al obtener pase actualizado:', error);
       return res.status(500).json({ error: 'Error interno al obtener pase actualizado' });
-    }
-  },
-
-  async registerDevice(req: Request, res: Response): Promise<Response | void> {
-    try {
-      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-      const { pushToken } = req.body;
-
-      console.log('📱 Intento de registro de dispositivo:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber,
-        pushToken
-      });
-
-      await deviceRegistrationService.registerDevice({
-        deviceLibraryIdentifier,
-        pushToken,
-        passTypeIdentifier,
-        serialNumber
-      });
-
-      console.log('✅ Dispositivo registrado exitosamente');
-      return res.status(201).send();
-    } catch (error) {
-      console.error('❌ Error en el registro de dispositivo:', error);
-      return res.status(500).json({ error: 'Error registrando dispositivo' });
-    }
-  },
-
-  async unregisterDevice(req: Request, res: Response): Promise<Response | void> {
-    try {
-      const { deviceLibraryIdentifier, passTypeIdentifier, serialNumber } = req.params;
-
-      console.log('🗑️ Solicitud de baja de dispositivo:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      });
-
-      await deviceRegistrationService.unregisterDevice(
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        serialNumber
-      );
-
-      console.log('✅ Dispositivo dado de baja exitosamente');
-      return res.status(200).send();
-    } catch (error) {
-      console.error('❌ Error dando de baja el dispositivo:', error);
-      return res.status(500).json({ error: 'Error al dar de baja el dispositivo' });
-    }
-  },
-
-  async getSerialNumbers(req: Request, res: Response): Promise<Response | void> {
-    try {
-      const { deviceLibraryIdentifier, passTypeIdentifier } = req.params;
-      const passesUpdatedSince = req.query.passesUpdatedSince as string;
-
-      console.log('🔍 Obteniendo números de serie actualizados:', {
-        deviceLibraryIdentifier,
-        passTypeIdentifier,
-        passesUpdatedSince
-      });
-
-      const serialNumbers = await deviceRegistrationService.getSerialNumbers(
-        deviceLibraryIdentifier,
-        passTypeIdentifier
-      );
-
-      console.log('✅ Números de serie encontrados:', serialNumbers);
-      return res.status(200).json({ serialNumbers });
-    } catch (error) {
-      console.error('❌ Error obteniendo números de serie:', error);
-      return res.status(500).json({ error: 'Error al obtener números de serie' });
     }
   }
 };
