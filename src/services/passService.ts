@@ -41,7 +41,7 @@ export class PassService {
         passTypeIdentifier: "pass.com.salondenails.loyalty",
         serialNumber: cliente.id,
         teamIdentifier: "C8PM27PK3X",
-        webServiceURL: `${BASE_URL}/v1`,
+        webServiceURL: `${BASE_URL}`,
         authenticationToken: cliente.id,
         organizationName: "Leu Beauty",
         description: `Tarjeta de Fidelidad - ${cliente.nombre}`,
